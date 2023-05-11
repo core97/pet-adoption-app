@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from 'app/api/auth/[...nextauth]/route';
-import { UserRole, isValidRole, isValidEmail } from '@user/model';
+import { UserRole } from '@user/model';
+import { getSession } from '@/modules/shared/presentation/services/auth-service';
 import { httpHandler } from '@/modules/shared/application/http/http-handler';
 import { ERROR_CODE_TO_HTTP_STATUS } from '@/modules/shared/application/http/http-errors';
 import { AppError } from '@/modules/shared/application/errors/app-error';
@@ -15,40 +14,28 @@ export const controller = (
   options: ControllerOptions = {}
 ) => ({
   run: async (request: Request) => {
+    console.log(`${request.method} ${request.url}`);
+
+    request.context = {};
+    
     try {
       if (options.roles?.length) {
-        const session = await getServerSession(authOptions);
+        const session = await getSession(request.headers.get('cookie') ?? '');
+        const hasRole = options.roles.some(role => role === session?.user?.role);
 
-        if (!session) {
+        if (!session?.user) {
           return httpHandler.unauthorized('You are not logged in');
         }
-
-        const hasRole =
-          session.user &&
-          'role' in session.user &&
-          isValidRole(session.user.role) &&
-          options.roles.includes(session.user.role);
 
         if (!hasRole) {
           return httpHandler.forbidden('You have no permissions');
         }
 
-        if (
-          session.user &&
-          isValidEmail(session.user?.email) &&
-          'id' in session.user &&
-          typeof session.user.id === 'string' &&
-          'role' in session.user &&
-          isValidRole(session.user.role)
-        ) {
-          request.context.user = {
-            email: session.user.email,
-            id: session.user.id,
-            role: session.user.role,
-          };
-        } else {
-          return httpHandler.fail('Authentication data is invalid');
-        }
+        request.context.user = {
+          email: session.user.email as string,
+          id: session.user.id as string,
+          role: session.user.role as UserRole,
+        };
       }
 
       const res = await callback(request);

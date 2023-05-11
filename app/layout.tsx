@@ -1,7 +1,7 @@
+import { headers } from 'next/headers';
 import { Inter } from 'next/font/google';
-import { getServerSession } from 'next-auth';
-import { authOptions } from 'app/api/auth/[...nextauth]/route';
 import { userPrivateFinderByEmail } from '@user/application/user-finder-by-email';
+import { getSession } from '@shared/presentation/services/auth-service';
 import { UserContextProvider } from '@user/presentation/hooks/useUser';
 import { User } from '@user/model';
 
@@ -13,7 +13,7 @@ export const metadata = {
 };
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
-  const session = await getServerSession(authOptions);
+  const session = await getSession(headers().get('cookie') ?? '');
   let user: Omit<User, 'password'> | null = null;
 
   if (session?.user?.email) {

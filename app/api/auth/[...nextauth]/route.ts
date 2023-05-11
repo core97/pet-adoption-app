@@ -2,7 +2,9 @@ import NextAuth from 'next-auth';
 import type { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { isValidRole } from '@user/model';
 import { prisma } from '@shared/application/prisma';
+import { CustomSession } from '@shared/application/auth';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -21,13 +23,13 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     session({ session, token }) {
-      const customSession = {
+      const customSession: CustomSession = {
         ...session,
         user: {
           ...(!!session.user && session.user),
           ...(token && {
-            ...('role' in token && { role: token.role }),
-            ...('userId' in token && { id: token.userId }),
+            ...('userId' in token && { id: token.userId as string }),
+            ...(isValidRole(token.role) && { role: token.role }),
           }),
         },
       };
