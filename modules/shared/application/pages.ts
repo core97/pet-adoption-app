@@ -6,12 +6,20 @@ export const PAGES = {
   SIGN_IN: '/sign-in',
 };
 
+export const DASHBOARD_PAGES = {
+  HOME: '/dashboard',
+};
+
 export const PROTECTED_PAGES: { route: string; roles: UserRole[] }[] = [
   { route: PAGES.PROFILE, roles: ['USER', 'ADMIN'] },
+  { route: DASHBOARD_PAGES.HOME, roles: ['ADMIN'] },
 ];
 
 export function findCurrentPage(currentRoute: string) {
-  const currentPage = Object.values(PAGES).find(page => {
+  const currentPage = [
+    ...Object.values(PAGES),
+    ...Object.values(DASHBOARD_PAGES),
+  ].find(page => {
     let result = false;
 
     if (page === currentRoute) {
