@@ -22,7 +22,9 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@components/*": ["./modules/shared/presentation/components/*"],
       "@shared/*": ["./modules/shared/*"],
+      "@ui/*": ["./modules/shared/presentation/ui/*"],
       "@user/*": ["./modules/user/*"],
     }
   },
