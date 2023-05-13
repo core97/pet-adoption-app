@@ -1,9 +1,10 @@
 import { headers } from 'next/headers';
 import { Inter } from 'next/font/google';
-import { userPrivateFinderByEmail } from '@user/application/user-finder-by-email';
-import { getSession } from '@shared/presentation/services/auth-service';
-import { UserContextProvider } from '@user/presentation/hooks/useUser';
 import { User } from '@user/model';
+import { UserContextProvider } from '@user/presentation/hooks/useUser';
+import { userPrivateFinderByEmail } from '@user/application/user-finder-by-email';
+import { ChakraProvider } from '@shared/presentation/chakra-ui/chakra-provider';
+import { getSession } from '@shared/presentation/services/auth-service';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,7 +24,11 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <UserContextProvider initialUser={user}>{children}</UserContextProvider>
+        <ChakraProvider>
+          <UserContextProvider initialUser={user}>
+            {children}
+          </UserContextProvider>
+        </ChakraProvider>
       </body>
     </html>
   );
