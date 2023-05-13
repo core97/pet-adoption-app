@@ -1,0 +1,24 @@
+.navigation {
+  display: none;
+  width: 25%;
+  height: 100vh;
+  position: fixed;
+  border-right: 1px solid black;
+}
+
+.main {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  margin-left: 25%;
+}
+
+@media screen and (min-width: 1024px) {
+  .navigation {
+    display: block;
+  }
+}
