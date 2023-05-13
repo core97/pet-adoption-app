@@ -8,6 +8,9 @@ import {
 } from '@shared/application/pages';
 
 export async function middleware(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', request.nextUrl.pathname);
+
   const currentPage = findCurrentPage(request.nextUrl.pathname);
   const protectedPage = PROTECTED_PAGES.find(
     page => page.route === currentPage
@@ -37,6 +40,12 @@ export async function middleware(request: NextRequest) {
       return redirect(PAGES.SIGN_IN);
     }
   }
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {
