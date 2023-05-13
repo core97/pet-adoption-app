@@ -1,0 +1,26 @@
+.nav-section {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.nav-items {
+  display: none;
+}
+
+.menu-btn {
+  display: block;
+}
+
+@media screen and (min-width: 1024px) {
+  .nav-section {
+    flex-direction: row;
+  }
+
+  .nav-items {
+    display: block;
+  }
+
+  .menu-btn {
+    display: none;
+  }
+}
