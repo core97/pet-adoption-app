@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
-import { Icon } from '@ui/Icon';
+import { Icon } from '@components/Icon';
 import {
   AppNavbarDesktop,
   AppNavbarMobile,

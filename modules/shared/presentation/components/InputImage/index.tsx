@@ -9,7 +9,7 @@ import {
   HStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Icon } from '@ui/Icon';
+import { Icon } from '@components/Icon';
 import { InputFileModal } from './InputFileModal';
 import { ImageModal } from './ImageModal';
 import { ImageRoundedButton } from './ImageRoundedButton';

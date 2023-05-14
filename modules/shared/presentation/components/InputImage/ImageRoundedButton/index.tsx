@@ -1,5 +1,5 @@
 import { Box, Button } from '@chakra-ui/react';
-import { Icon } from '@ui/Icon';
+import { Icon } from '@components/Icon';
 import { SIZE_IMG } from '../InputImage.constants';
 import styles from './ImageRoundedButton.module.css';
 

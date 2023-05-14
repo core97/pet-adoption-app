@@ -1,6 +1,6 @@
 import { headers } from 'next/headers';
 import { Inter } from 'next/font/google';
-import { Sidebar } from '@ui/Sidebar';
+import { Sidebar } from '@components/Sidebar';
 import { DashboardNavbar } from '@components/DashboardNavbar';
 import { AppHeader } from '@components/AppHeader';
 import { User } from '@user/model';

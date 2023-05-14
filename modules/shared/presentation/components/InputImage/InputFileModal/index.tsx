@@ -15,7 +15,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { Icon } from '@ui/Icon';
+import { Icon } from '@components/Icon';
 import { InputFileModalProps } from './InputFileModal.interface';
 
 export const InputFileModal = ({
