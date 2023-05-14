@@ -1,0 +1,12 @@
+.select > div {
+  cursor: pointer;
+}
+
+.select > div:hover {
+  border-color: transparent;
+  /* background-color: #E2E8F0; */
+}
+
+.select--error > div {
+  border-color: #e53e3e;
+}
