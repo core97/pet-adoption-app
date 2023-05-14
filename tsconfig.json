@@ -22,6 +22,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@breed/*": ["./modules/breed/*"],
       "@components/*": ["./modules/shared/presentation/components/*"],
       "@shared/*": ["./modules/shared/*"],
       "@ui/*": ["./modules/shared/presentation/ui/*"],
