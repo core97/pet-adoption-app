@@ -3,6 +3,9 @@ import { UserRole } from '@user/model';
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      CLOUDINARY_NAME: string;
+      CLOUDINARY_API_KEY: string;
+      CLOUDINARY_API_SECRET: string;
       DATABASE_URL: string;
       NEXTAUTH_SECRET: string;
       NEXTAUTH_URL: string;
@@ -13,6 +16,18 @@ declare global {
   }
 
   export interface Request {
+    context: {
+      user?: {
+        email: string;
+        id: string;
+        role: UserRole;
+      };
+    };
+  }
+}
+
+declare module 'next' {
+  export interface NextApiRequest {
     context: {
       user?: {
         email: string;

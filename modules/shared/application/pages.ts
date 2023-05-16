@@ -8,6 +8,7 @@ export const PAGES = {
 
 export const DASHBOARD_PAGES = {
   HOME: '/dashboard',
+  BREEDS: '/dashboard/breeds',
 };
 
 export const PROTECTED_PAGES: { route: string; roles: UserRole[] }[] = [

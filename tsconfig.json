@@ -23,7 +23,9 @@
     "paths": {
       "@/*": ["./*"],
       "@breed/*": ["./modules/breed/*"],
+      "@components": ["./modules/shared/presentation/components"],
       "@components/*": ["./modules/shared/presentation/components/*"],
+      "@pet-ad/*": ["./modules/pet-ad/*"],
       "@shared/*": ["./modules/shared/*"],
       "@user/*": ["./modules/user/*"],
     }

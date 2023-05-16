@@ -2,11 +2,15 @@ export const fetcher = async <T>(
   url: string,
   init?: RequestInit
 ): Promise<Exclude<T, void>> => {
+  const bodyIsFormData = init?.body && init.body instanceof FormData;
+
   const requestInit: RequestInit = {
     ...(!!Object.keys(init || {}).length && init),
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      ...(!bodyIsFormData && {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
       ...(!!Object.keys(init?.headers || {}).length && init?.headers),
     },
   };

@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { UserRole } from '@user/model';
-import { getSession } from '@/modules/shared/presentation/services/auth-service';
-import { httpHandler } from '@/modules/shared/application/http/http-handler';
-import { ERROR_CODE_TO_HTTP_STATUS } from '@/modules/shared/application/http/http-errors';
-import { AppError } from '@/modules/shared/application/errors/app-error';
+import { getSession } from '@shared/presentation/services/auth-service';
+import { httpHandler } from '@shared/application/http/http-handler';
+import { ERROR_CODE_TO_HTTP_STATUS } from '@shared/application/http/http-errors';
+import { AppError } from '@shared/application/errors/app-error';
 
 interface ControllerOptions {
   roles?: UserRole[];
@@ -17,11 +17,13 @@ export const controller = (
     console.log(`${request.method} ${request.url}`);
 
     request.context = {};
-    
+
     try {
       if (options.roles?.length) {
         const session = await getSession(request.headers.get('cookie') ?? '');
-        const hasRole = options.roles.some(role => role === session?.user?.role);
+        const hasRole = options.roles.some(
+          role => role === session?.user?.role
+        );
 
         if (!session?.user) {
           return httpHandler.unauthorized('You are not logged in');
