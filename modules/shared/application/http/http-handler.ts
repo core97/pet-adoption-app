@@ -4,7 +4,10 @@ import { HttpStatus } from '@/modules/shared/application/http/http-status';
 export const httpHandler = {
   jsonResponse(code: HttpStatus, message?: string) {
     if (message) {
-      return new NextResponse(JSON.stringify({ message }), { status: code });
+      return new NextResponse(JSON.stringify({ message }), {
+        status: code,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     return new NextResponse(null, { status: code });
@@ -12,7 +15,10 @@ export const httpHandler = {
 
   ok<T>(dto?: T) {
     if (dto) {
-      return new NextResponse(JSON.stringify(dto), { status: HttpStatus.OK });
+      return new NextResponse(JSON.stringify(dto), {
+        status: HttpStatus.OK,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     return new NextResponse(null, { status: HttpStatus.OK });

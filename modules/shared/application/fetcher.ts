@@ -1,7 +1,7 @@
-export const fetcher = async <T>(
+export const fetcher = async <T = void>(
   url: string,
   init?: RequestInit
-): Promise<Exclude<T, void>> => {
+): Promise<T> => {
   const bodyIsFormData = init?.body && init.body instanceof FormData;
 
   const requestInit: RequestInit = {

@@ -25,6 +25,7 @@
       "@breed/*": ["./modules/breed/*"],
       "@components": ["./modules/shared/presentation/components"],
       "@components/*": ["./modules/shared/presentation/components/*"],
+      "@hooks/*": ["./modules/shared/presentation/hooks/*"],
       "@pet-ad/*": ["./modules/pet-ad/*"],
       "@shared/*": ["./modules/shared/*"],
       "@user/*": ["./modules/user/*"],

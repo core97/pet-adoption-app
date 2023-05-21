@@ -4,5 +4,6 @@ export * from './DashboardNavbar';
 export * from './Icon';
 export * from './InputImage';
 export * from './InputText';
+export * from './Table';
 export * from './Select';
 export * from './Sidebar';

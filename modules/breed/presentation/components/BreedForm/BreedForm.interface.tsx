@@ -5,7 +5,7 @@ import { FormProps } from '@shared/presentation/types/form-type';
 
 export type BreedFormFields = {
   name: string;
-  images: File[];
+  images: (File | string)[];
   petType: PetType;
 };
 

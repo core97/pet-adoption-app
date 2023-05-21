@@ -1,8 +1,7 @@
-import Link from 'next/link';
-import { DASHBOARD_PAGES } from '@shared/application/pages';
+import { BreedTable } from '@breed/presentation/components/BreedTable';
 
-const Breeds = () => (
-  <Link href={`${DASHBOARD_PAGES.BREEDS}/creation`}>Crear raza</Link>
-);
+export const revalidate = 0;
+
+const Breeds = () => <BreedTable />;
 
 export default Breeds;
