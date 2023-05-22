@@ -116,11 +116,18 @@ model Visit {
 
 type Address {
   city         String
+  coordinates  Coordinates
   country      CountryIso
   placeId      String
   displayName  String
   postalCode   Int
+  streetName   String
   streetNumber String?
+}
+
+type Coordinates {
+  lat String
+  lng String
 }
 
 type FileStoraged {

@@ -5,6 +5,7 @@ const nextConfig = {
     serverComponentsExternalPackages: [
       '@next-auth/prisma-adapter',
       '@prisma/client',
+      'cloudinary',
     ],
   },
 };

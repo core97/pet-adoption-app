@@ -17,14 +17,18 @@ export const BreedForm = ({
   defaultValue,
   status,
 }: BreedFormProps) => {
-  const { control, handleSubmit } = useForm<BreedFormFields>();
+  const { register, control, handleSubmit, formState } =
+    useForm<BreedFormFields>();
 
   const handleSubmitForm = useAsync(async (data: BreedFormFields) => {
     const filesToUpload = data.images.filter(item => typeof item !== 'string');
     let filesStoraged: FileStoraged[] = [];
 
     if (filesToUpload.length) {
-      filesStoraged = await uploadFiles(filesToUpload as File[], 'BREED_IMAGES');
+      filesStoraged = await uploadFiles(
+        filesToUpload as File[],
+        'BREED_IMAGES'
+      );
     }
 
     onSubmit({
@@ -53,10 +57,11 @@ export const BreedForm = ({
         rules={{ required: true }}
       />
       <InputText
-        control={control}
+        register={register}
         name="name"
         rules={{ required: true }}
         defaultValue={defaultValue?.name}
+        errors={formState.errors}
       />
       <Select
         control={control}

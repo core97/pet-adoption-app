@@ -9,8 +9,8 @@ const IMAGES_PER_BREED = {
 export const validateBreed = (breed: Partial<Breed>) => {
   if (
     breed.images &&
-    breed.images.length < IMAGES_PER_BREED.MIN &&
-    breed.images.length > IMAGES_PER_BREED.MAX
+    (breed.images.length < IMAGES_PER_BREED.MIN ||
+      breed.images.length > IMAGES_PER_BREED.MAX)
   ) {
     throw new ConflictError(
       `Breed must have between ${IMAGES_PER_BREED.MIN} and ${IMAGES_PER_BREED.MAX} images`

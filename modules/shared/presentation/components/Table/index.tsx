@@ -99,6 +99,7 @@ export const Table = <T extends Record<string, RowType>>({
               <Th
                 key={column.toString()}
                 onClick={() => handleClickColumn(column)}
+                _hover={{ cursor: 'pointer' }}
               >
                 {`${
                   sorting?.column === column ? sorting.icon : ' '
@@ -109,7 +110,12 @@ export const Table = <T extends Record<string, RowType>>({
         </Thead>
         <Tbody>
           {validRows.map((row, index) => (
-            <Tr key={index} onClick={() => onClickRow?.(row)}>
+            <Tr
+              key={index}
+              onClick={() => onClickRow?.(row)}
+              transition="background 0.2s ease-out"
+              _hover={{ cursor: 'pointer', backgroundColor: '#edf2f7' }}
+            >
               {columns.map(column => (
                 <Td key={column.toString()}>{row[column].toString()}</Td>
               ))}

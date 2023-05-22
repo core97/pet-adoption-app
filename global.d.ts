@@ -3,6 +3,7 @@ import { UserRole } from '@user/model';
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      API_KEY_GOOGLE_CLOUD_PLATFORM: string;
       CLOUDINARY_NAME: string;
       CLOUDINARY_API_KEY: string;
       CLOUDINARY_API_SECRET: string;

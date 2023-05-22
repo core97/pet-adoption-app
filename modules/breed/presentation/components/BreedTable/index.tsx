@@ -10,7 +10,7 @@ import { DASHBOARD_PAGES } from '@shared/application/pages';
 
 export const BreedTable = () => {
   const { data, isLoading } = useSWR(
-    '/api/breeds',
+    'a',
     () => getBreedsList({ sortBy: { createdAt: 'desc' } }),
     {}
   );
@@ -20,7 +20,6 @@ export const BreedTable = () => {
   return (
     <VStack width="100%" spacing={4} alignItems="flex-start">
       <Link href={`${DASHBOARD_PAGES.BREEDS}/creation`}>Crear raza</Link>
-
       <Table
         enableGlobalFilter
         isLoading={isLoading}

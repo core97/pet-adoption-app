@@ -115,7 +115,6 @@ export const InputFileModal = ({
           </Button>
           <Button
             onClick={handleClickConfirm}
-            variant="outline"
             colorScheme="blue"
             disabled={!file}
           >

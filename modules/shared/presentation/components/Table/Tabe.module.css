@@ -1,0 +1,11 @@
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.row {
+  transition: background 0.2s ease-out;
+}
+
+.row:hover {
+  background-color: var(--gray-100);
+}

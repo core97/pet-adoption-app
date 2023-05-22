@@ -1,9 +1,9 @@
-import { Breed } from '@breed/model';
-import { BreedsListFinder } from '@breed/application/breeds-list-finder';
-import { BreedUpdaterById } from '@breed/application/breed-updater-by-id';
-import { EntityCreation } from '@shared/domain/entity';
-import { PaginationResult } from '@shared/domain/pagination';
 import { fetcher } from '@shared/application/fetcher';
+import type { Breed } from '@breed/model';
+import type { BreedsListFinder } from '@breed/application/breeds-list-finder';
+import type { BreedUpdaterById } from '@breed/application/breed-updater-by-id';
+import type { EntityCreation } from '@shared/domain/entity';
+import type { PaginationResult } from '@shared/domain/pagination';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_URL}/api/breeds`;
 

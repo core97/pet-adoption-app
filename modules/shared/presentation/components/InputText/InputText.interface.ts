@@ -1,8 +1,8 @@
 import { FieldValues } from 'react-hook-form';
-import { ControlValidatedFormElement } from '@shared/presentation/types/form-type';
+import { RegisterValidatedFormElement } from '@shared/presentation/types/form-type';
 
 export type InputTextProps<TFormValues extends FieldValues> =
-  ControlValidatedFormElement<TFormValues> &
+  RegisterValidatedFormElement<TFormValues> &
     Omit<
       React.InputHTMLAttributes<HTMLInputElement>,
       | 'accept'

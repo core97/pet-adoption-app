@@ -1,4 +1,5 @@
 import { Breed } from '@breed/model';
+import { validateBreed } from '@breed/application/breed-validator';
 import { prisma } from '@shared/application/prisma';
 import { deleteFile } from '@shared/infra/storage';
 
@@ -14,6 +15,8 @@ export const breedUpdaterById: BreedUpdaterById = async ({
   searchParam,
 }) => {
   try {
+    validateBreed(data);
+
     if (data.images?.length) {
       const oldBreed = await prisma.breed.findUnique({
         where: { id: searchParam.id },

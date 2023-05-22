@@ -1,6 +1,5 @@
 'use client';
 
-import { useController } from 'react-hook-form';
 import {
   FormErrorMessage,
   FormLabel,
@@ -15,40 +14,28 @@ export const InputText = <TFormValues extends Record<string, unknown>>({
   rules,
   type,
   defaultValue,
-  control,
+  register,
+  errors,
   ...rest
-}: InputTextProps<TFormValues>) => {
-  const { field, formState } = useController<TFormValues>({
-    name,
-    control,
-    defaultValue,
-    rules,
-  });
-
-  return (
-    <FormControl
-      isInvalid={!!formState.errors?.[field.name]?.message}
-      isRequired={!!rules?.required}
-    >
-      {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
-      <Input
-        id={field.name}
-        ref={field.ref}
-        name={field.name}
-        type={type}
-        autoComplete="off"
-        onBlur={field.onBlur}
-        onChange={field.onChange}
-        value={
-          field.value as React.InputHTMLAttributes<HTMLInputElement>['value']
-        }
-        {...rest}
-      />
-      {formState.errors?.[field.name]?.message && (
-        <FormErrorMessage role="alert">
-          {formState.errors?.[field.name]?.message?.toString()}
-        </FormErrorMessage>
-      )}
-    </FormControl>
-  );
-};
+}: InputTextProps<TFormValues>) => (
+  <FormControl
+    isInvalid={!!errors?.[name]?.message}
+    isRequired={!!rules?.required}
+  >
+    {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
+    <Input
+      id={name}
+      name={name}
+      type={type}
+      autoComplete="off"
+      defaultValue={defaultValue}
+      {...(register && register(name, rules))}
+      {...rest}
+    />
+    {errors?.[name]?.message && (
+      <FormErrorMessage role="alert">
+        {errors?.[name]?.message?.toString()}
+      </FormErrorMessage>
+    )}
+  </FormControl>
+);

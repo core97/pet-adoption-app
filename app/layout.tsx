@@ -9,6 +9,7 @@ import { userPrivateFinderByEmail } from '@user/application/user-finder-by-email
 import { ChakraProvider } from '@shared/presentation/chakra-ui/chakra-provider';
 import { DASHBOARD_PAGES } from '@shared/application/pages';
 import { getSession } from '@shared/presentation/services/auth-service';
+import './global.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
