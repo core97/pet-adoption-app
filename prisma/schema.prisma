@@ -46,6 +46,7 @@ model PetAd {
   dateBirth DateTime
   images    FileStoraged[]
   name      String
+  petType   PetType
   user      User           @relation(fields: [userId], references: [id])
   userId    String         @db.ObjectId
   requests  PetAdRequest[]
