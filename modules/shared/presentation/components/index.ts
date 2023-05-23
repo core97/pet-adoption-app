@@ -2,6 +2,7 @@ export * from './AppHeader';
 export * from './AppNavbar';
 export * from './DashboardNavbar';
 export * from './Icon';
+export * from './InputDate';
 export * from './InputImage';
 export * from './InputText';
 export * from './Table';
