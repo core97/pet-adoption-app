@@ -2,6 +2,7 @@ import { UserRole } from '@user/model';
 
 export const PAGES = {
   HOME: '/',
+  PET_ADS: '/pet-ads',
   PROFILE: '/profile',
   SIGN_IN: '/sign-in',
 };
