@@ -1,6 +1,7 @@
 export * from './AppHeader';
 export * from './AppNavbar';
 export * from './DashboardNavbar';
+export * from './FormStepper';
 export * from './Icon';
 export * from './InputDate';
 export * from './InputImage';
