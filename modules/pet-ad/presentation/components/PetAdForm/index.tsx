@@ -50,10 +50,6 @@ export const PetAdForm = ({
     });
   });
 
-  if (breeds.isLoading || !breeds.data) {
-    return <h1>Cargando...</h1>;
-  }
-
   return (
     <VStack as="form" onSubmit={handleSubmit(handleSubmitForm.execute)}>
       <InputImage
@@ -82,9 +78,11 @@ export const PetAdForm = ({
       />
       <Select
         label="Razas"
+        isMulti
+        isLoading={breeds.isLoading || !breeds.data}
         control={control}
         name="breedIds"
-        options={breeds.data.results.map(breed => ({
+        options={(breeds?.data?.results || []).map(breed => ({
           label: breed.name,
           value: breed.id,
         }))}
