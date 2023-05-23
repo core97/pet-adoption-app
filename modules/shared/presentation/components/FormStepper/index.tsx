@@ -17,25 +17,24 @@ export const FormStepper = ({
   return (
     <VStack width="100%">
       <Box ref={dummyRef} />
-      <HStack spacing={10} justify="space-around" wrap="wrap" rowGap={8}>
+      <HStack width="100%" justify="space-around" wrap="wrap" rowGap={8}>
         {Array.from({ length: childrenArray.length }).map((v, index) => {
           const child = childrenArray[index];
 
           return (
-            <VStack key={index}>
-              <FormStepIndicator
-                index={index + 1}
-                disabled={index > activeStep}
-                isCompleted={index < activeStep}
-                isActive={index === activeStep}
-                onClick={currentStep => onChangeActiveStep(currentStep - 1)}
-                label={
-                  isValidElement(child) &&
-                  child.type === FormStep &&
-                  child.props.label
-                }
-              />
-            </VStack>
+            <FormStepIndicator
+              key={index}
+              index={index + 1}
+              disabled={index > activeStep}
+              isCompleted={index < activeStep}
+              isActive={index === activeStep}
+              onClick={currentStep => onChangeActiveStep(currentStep - 1)}
+              label={
+                isValidElement(child) &&
+                child.type === FormStep &&
+                child.props.label
+              }
+            />
           );
         })}
       </HStack>
@@ -58,7 +57,7 @@ export const FormStepper = ({
                 inline: 'nearest',
               })
             }
-            style={{ width: '100%', marginTop: '80px' }}
+            style={{ width: '100%', marginTop: '40px' }}
           >
             {child}
           </ScaleFade>

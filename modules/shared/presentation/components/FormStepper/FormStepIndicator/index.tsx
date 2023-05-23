@@ -21,10 +21,6 @@ export const FormStepIndicator = ({
     >
       {index}
     </Button>
-    {label && (
-      <Text fontWeight={600} whiteSpace="nowrap">
-        {label}
-      </Text>
-    )}
+    {label && <Text whiteSpace="nowrap">{label}</Text>}
   </VStack>
 );
