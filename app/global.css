@@ -4,6 +4,10 @@ body {
   margin: 0;
 }
 
+ul {
+  list-style: none;
+}
+
 input[type='file'] {
   padding: 0.25rem;
   width: 100%;
