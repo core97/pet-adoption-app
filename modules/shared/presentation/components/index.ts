@@ -5,6 +5,7 @@ export * from './FormStepper';
 export * from './Icon';
 export * from './InputDate';
 export * from './InputImage';
+export * from './InputRadioCard';
 export * from './InputText';
 export * from './Table';
 export * from './Select';

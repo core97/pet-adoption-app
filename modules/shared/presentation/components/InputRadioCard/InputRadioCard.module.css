@@ -1,0 +1,25 @@
+.radio-card:hover {
+  cursor: pointer;
+}
+
+.radio-card input {
+  display: none;
+}
+
+.radio-card__container {
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  transition: all 0.2s ease-out;
+}
+
+.radio-card__container--error {
+  border-color: #e53e3e;
+  background-color: #fff5f5;
+}
+
+.radio-card input:checked + .radio-card__container {
+  background-color: #319795;
+  color: #ffffff;
+}
