@@ -121,14 +121,14 @@ type Address {
   country      CountryIso
   placeId      String
   displayName  String
-  postalCode   Int
+  postalCode   String
   streetName   String
   streetNumber String?
 }
 
 type Coordinates {
-  lat String
-  lng String
+  lat Float
+  lng Float
 }
 
 type FileStoraged {

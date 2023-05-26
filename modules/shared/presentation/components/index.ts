@@ -10,3 +10,4 @@ export * from './InputText';
 export * from './Table';
 export * from './Select';
 export * from './Sidebar';
+export * from './Switch';

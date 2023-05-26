@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { VStack, Button } from '@chakra-ui/react';
 import { useAsync } from '@hooks/useAsync';
-import { InputText, Select } from '@components';
+import { InputText, Select, Switch } from '@components';
+import { useUser } from '@user/presentation/hooks/useUser';
+import { upsertUserAddress } from '@user/presentation/user-service';
 import { COUNTRY_ISO } from '@shared/domain/country-iso';
 import { validateAddress } from '@shared/presentation/services/address-service';
 import { AddressFormProps, AddressFormFields } from './AddressForm.interface';
@@ -16,12 +18,24 @@ export const AddressForm = ({
   submitButtonLabel,
   defaultValue,
   status,
+  enableSaveAddress,
 }: AddressFormProps) => {
   const { register, control, handleSubmit, formState } =
     useForm<AddressFormFields>();
 
+  const { setUser } = useUser();
+
   const handleSubmitForm = useAsync(async (data: AddressFormFields) => {
     const address = await validateAddress(data);
+
+    if (enableSaveAddress && data.shouldSaveAddress) {
+      await upsertUserAddress(address);
+
+      setUser(prev =>
+        prev ? { ...prev, addresses: prev.addresses.concat(address) } : null
+      );
+    }
+
     onSubmit(address);
   });
 
@@ -76,6 +90,14 @@ export const AddressForm = ({
         rules={{ required: true }}
         defaultValue={defaultValue?.postalCode.toString()}
       />
+      {Boolean(!defaultValue && enableSaveAddress) && (
+        <Switch
+          label="Marca si quieres guardar la dirección"
+          register={register}
+          name="shouldSaveAddress"
+          errors={formState.errors}
+        />
+      )}
       <Button
         type="submit"
         isLoading={

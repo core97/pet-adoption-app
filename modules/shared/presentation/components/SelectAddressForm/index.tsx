@@ -23,6 +23,8 @@ import {
   SelectAddressFormFields,
 } from './SelectAddressForm.interface';
 
+export type { SelectAddressSubmit } from './SelectAddressForm.interface';
+
 export const SelectAddressForm = ({
   addresses,
   onSubmit,
@@ -115,6 +117,7 @@ export const SelectAddressForm = ({
           <ModalCloseButton />
           <ModalBody>
             <AddressForm
+              enableSaveAddress
               submitButtonLabel="Añadir dirección"
               onSubmit={newAddress => {
                 setAddressesOptions(prev => prev.concat(newAddress));
