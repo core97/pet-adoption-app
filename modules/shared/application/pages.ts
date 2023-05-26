@@ -3,6 +3,7 @@ import { UserRole } from '@user/model';
 export const PAGES = {
   HOME: '/',
   PET_ADS: '/pet-ads',
+  PET_AD_CREATION: '/pet-ads/creation',
   PROFILE: '/profile',
   SIGN_IN: '/sign-in',
 };
@@ -14,6 +15,7 @@ export const DASHBOARD_PAGES = {
 
 export const PROTECTED_PAGES: { route: string; roles: UserRole[] }[] = [
   { route: PAGES.PROFILE, roles: ['USER', 'ADMIN'] },
+  { route: PAGES.PET_AD_CREATION, roles: ['USER', 'ADMIN'] },
   { route: DASHBOARD_PAGES.HOME, roles: ['ADMIN'] },
 ];
 

@@ -1,4 +1,5 @@
 import { PetAd } from '@pet-ad/model';
+import { Breed } from '@breed/model';
 import { EntityCreation } from '@shared/domain/entity';
 import { FormProps } from '@shared/presentation/types/form-type';
 import { PetType } from '@shared/domain/pet-type';
@@ -14,4 +15,7 @@ export type PetAdDefaultValues = Omit<PetAdFormFields, 'images'> &
 
 export type PetAdFormProps = FormProps<PetAdSubmit, PetAdDefaultValues> & {
   petType: PetType;
+  options: {
+    breeds: Breed[];
+  };
 };

@@ -18,6 +18,6 @@ export const UPLOAD_OPTIONS: {
     type: 'PET_AD_IMAGES',
     maxFiles: 4,
     roles: ['USER', 'ADMIN'],
-    folder: 'breeds',
+    folder: 'pet-ads',
   },
 ];

@@ -1,10 +1,8 @@
-import useSwr from 'swr';
 import { useForm } from 'react-hook-form';
 import { VStack, Button } from '@chakra-ui/react';
 import { InputDate, InputImage, InputText, Select } from '@components';
 import { useAsync } from '@hooks/useAsync';
 import { useUser } from '@user/presentation/hooks/useUser';
-import { getBreedsList } from '@breed/presentation/breed-service';
 import { FileStoraged } from '@shared/domain/file-storaged';
 import { uploadFiles } from '@shared/presentation/services/storage-service';
 import { PetAdFormFields, PetAdFormProps } from './PetAdForm.interface';
@@ -17,11 +15,10 @@ export const PetAdForm = ({
   defaultValue,
   status,
   petType,
+  options,
 }: PetAdFormProps) => {
   const { register, formState, handleSubmit, control } =
     useForm<PetAdFormFields>();
-
-  const breeds = useSwr('/api/breeds', () => getBreedsList({ petType }));
 
   const { user } = useUser();
 
@@ -79,10 +76,9 @@ export const PetAdForm = ({
       <Select
         label="Razas"
         isMulti
-        isLoading={breeds.isLoading || !breeds.data}
         control={control}
         name="breedIds"
-        options={(breeds?.data?.results || []).map(breed => ({
+        options={options.breeds.map(breed => ({
           label: breed.name,
           value: breed.id,
         }))}
