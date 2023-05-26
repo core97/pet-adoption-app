@@ -18,7 +18,6 @@ export const Switch = <TFormValues extends Record<string, unknown>>({
   defaultChecked,
   description,
   label,
-  ...rest
 }: SwitchProps<TFormValues>) => (
   <NoSSR>
     <FormControl
@@ -31,7 +30,6 @@ export const Switch = <TFormValues extends Record<string, unknown>>({
         id={name}
         name={name}
         defaultChecked={defaultChecked}
-        {...rest}
         {...(register && register(name, rules))}
       />
       <VStack alignItems="flex-start" ml={6}>

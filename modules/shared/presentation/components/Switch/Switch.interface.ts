@@ -1,11 +1,9 @@
 import { FieldValues } from 'react-hook-form';
-import { BaseRegisterValidatedFormElement } from 'types/components';
+import { RegisterValidatedFormElement } from '@shared/presentation/types/form-type';
 
 export type SwitchProps<TFormValues extends FieldValues> =
-  BaseRegisterValidatedFormElement<TFormValues> & {
+  RegisterValidatedFormElement<TFormValues> & {
     defaultChecked?: boolean;
     description?: string;
     label?: string;
-    value?: string | number;
-    'aria-invalid'?: true;
   };
