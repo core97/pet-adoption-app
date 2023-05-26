@@ -3,7 +3,7 @@ import type { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { isValidRole } from '@user/model';
-import { prisma } from '@shared/application/prisma';
+import prisma from '@shared/application/prisma';
 import { CustomSession } from '@shared/application/auth';
 
 export const authOptions: NextAuthOptions = {

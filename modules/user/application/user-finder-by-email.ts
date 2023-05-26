@@ -1,4 +1,4 @@
-import { prisma } from '@shared/application/prisma';
+import prisma from '@shared/application/prisma';
 import { NotFoundError } from '@shared/application/errors/not-found.error';
 
 export const userPrivateFinderByEmail = async (email: string) => {

@@ -1,7 +1,7 @@
 import { Breed } from '@breed/model';
 import { validateBreed } from '@breed/application/breed-validator';
 import { EntityCreation } from '@shared/domain/entity';
-import { prisma } from '@shared/application/prisma';
+import prisma from '@shared/application/prisma';
 
 export const breedCreator = async (breed: EntityCreation<Breed>) => {
   try {

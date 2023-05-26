@@ -1,5 +1,5 @@
 import { Breed } from '@breed/model';
-import { prisma } from '@shared/application/prisma';
+import prisma from '@shared/application/prisma';
 import { NotFoundError } from '@shared/application/errors/not-found.error';
 
 export interface BreedFinderById {

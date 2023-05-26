@@ -1,6 +1,6 @@
 import { User } from '@user/model';
 import { Address } from '@shared/domain/address';
-import { prisma } from '@shared/application/prisma';
+import prisma from '@shared/application/prisma';
 import { NotFoundError } from '@shared/application/errors/not-found.error';
 
 export const userAddressUpsert = async ({

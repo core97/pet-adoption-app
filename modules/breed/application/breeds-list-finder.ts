@@ -1,7 +1,7 @@
 import { Breed } from '@breed/model';
 import { PaginationParams, PaginationResult } from '@shared/domain/pagination';
 import { SortBy } from '@shared/domain/sort-by';
-import { prisma } from '@shared/application/prisma';
+import prisma from '@shared/application/prisma';
 
 export interface BreedsListFinder {
   (

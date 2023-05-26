@@ -1,6 +1,10 @@
+import { PrismaClient } from '@prisma/client';
 import { UserRole } from '@user/model';
 
 declare global {
+  // eslint-disable-next-line vars-on-top, no-var
+  var prisma: PrismaClient;
+  
   namespace NodeJS {
     interface ProcessEnv {
       API_KEY_GOOGLE_CLOUD_PLATFORM: string;

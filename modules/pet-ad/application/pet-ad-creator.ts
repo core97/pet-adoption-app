@@ -1,7 +1,7 @@
 import { PetAd } from '@pet-ad/model';
 import { validatePetAd } from '@pet-ad/application/pet-ad-validator';
 import { EntityCreation } from '@shared/domain/entity';
-import { prisma } from '@shared/application/prisma';
+import prisma from '@shared/application/prisma';
 
 export interface PetAdCreator {
   (petAd: EntityCreation<PetAd>): Promise<PetAd>;

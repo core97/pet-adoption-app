@@ -1,6 +1,6 @@
 import { PetAd } from '@pet-ad/model';
 import { isValidPetType } from '@shared/domain/pet-type';
-import { prisma } from '@shared/application/prisma';
+import prisma from '@shared/application/prisma';
 import { ConflictError } from '@shared/application/errors/conflict.error';
 
 const IMAGES_PER_PET_AD = {

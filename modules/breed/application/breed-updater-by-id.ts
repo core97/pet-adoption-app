@@ -1,6 +1,6 @@
 import { Breed } from '@breed/model';
 import { validateBreed } from '@breed/application/breed-validator';
-import { prisma } from '@shared/application/prisma';
+import prisma from '@shared/application/prisma';
 import { deleteFile } from '@shared/infra/storage';
 
 export interface BreedUpdaterById {
