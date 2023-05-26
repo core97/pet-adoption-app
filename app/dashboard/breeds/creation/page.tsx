@@ -4,7 +4,7 @@ import {
   BreedForm,
   BreedSubmit,
 } from '@breed/presentation/components/BreedForm';
-import { createBreed } from '@breed/presentation/breed-service';
+import { createBreed } from '@breed/presentation/breed-fetcher';
 import { DASHBOARD_PAGES } from '@shared/application/pages';
 import { useAsync } from '@shared/presentation/hooks/useAsync';
 

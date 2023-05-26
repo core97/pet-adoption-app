@@ -3,7 +3,7 @@ import { validateBreed } from '@breed/application/breed-validator';
 import { EntityCreation } from '@shared/domain/entity';
 import { prisma } from '@shared/application/prisma';
 
-export const createBreed = async (breed: EntityCreation<Breed>) => {
+export const breedCreator = async (breed: EntityCreation<Breed>) => {
   try {
     validateBreed(breed);
 

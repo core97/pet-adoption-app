@@ -6,7 +6,7 @@ import {
   BreedDefaultValues,
   BreedSubmit,
 } from '@breed/presentation/components/BreedForm';
-import { updateBreedById } from '@breed/presentation/breed-service';
+import { updateBreedById } from '@breed/presentation/breed-fetcher';
 import { useAsync } from '@hooks/useAsync';
 import { DASHBOARD_PAGES } from '@shared/application/pages';
 

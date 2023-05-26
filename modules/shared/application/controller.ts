@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { UserRole } from '@user/model';
 import { getSession } from '@shared/presentation/services/auth-service';
 import { httpHandler } from '@shared/application/http/http-handler';
@@ -41,6 +42,15 @@ export const controller = (
       }
 
       const res = await callback(request);
+
+      const cacheTags = new URL(request.url).searchParams.getAll('cacheTag');
+
+      if (cacheTags.length) {
+        cacheTags.forEach(tag => {
+          revalidateTag(tag);
+        });
+      }
+
       return res;
     } catch (error) {
       console.error('*** ERRROR ***');

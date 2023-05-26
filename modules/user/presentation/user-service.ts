@@ -3,6 +3,8 @@ import type { Address } from '@shared/domain/address';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_URL}/api/users`;
 
+export const USER_CACHE_TAGS = {};
+
 export const upsertUserAddress = async (address: Address) => {
   await fetcher(`${BASE_URL}/address`, {
     method: 'PUT',

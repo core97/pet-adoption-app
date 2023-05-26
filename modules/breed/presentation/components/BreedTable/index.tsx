@@ -5,13 +5,16 @@ import { useRouter } from 'next/navigation';
 import { VStack } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { Table } from '@components/Table';
-import { getBreedsList } from '@breed/presentation/breed-service';
 import { DASHBOARD_PAGES } from '@shared/application/pages';
+import {
+  getBreedsList,
+  BREED_CACHE_TAGS,
+} from '@breed/presentation/breed-fetcher';
 
 export const BreedTable = () => {
   const { data, isLoading } = useSWR(
-    'a',
-    () => getBreedsList({ sortBy: { createdAt: 'desc' } }),
+    BREED_CACHE_TAGS.LIST,
+    () => getBreedsList({ data: { sortBy: { createdAt: 'desc' } } }),
     {}
   );
 

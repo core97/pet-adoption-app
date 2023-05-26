@@ -1,3 +1,8 @@
+export type FetchCacheConfig<T> = {
+  data: T;
+  cacheConfig?: Pick<RequestInit, 'cache' | 'next'>;
+};
+
 export const fetcher = async <T = void>(
   url: string,
   init?: RequestInit

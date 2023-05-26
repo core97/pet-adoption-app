@@ -1,15 +1,8 @@
-import { breedFinderById } from '@breed/application/breed-finder-by-id';
 import { BreedFormUpdate } from '@breed/presentation/components/BreedFormUpdate';
-
-export const revalidate = 0;
-
-const getBreedById = async (id: string) => {
-  const breed = await breedFinderById({ id });
-  return breed;
-};
+import { getBreedById } from '@breed/presentation/breed-fetcher';
 
 const BreedDetailDashboard = async ({ params }: { params: { id: string } }) => {
-  const breed = await getBreedById(params.id);
+  const breed = await getBreedById({ data: { id: params.id } });
 
   return (
     <BreedFormUpdate
