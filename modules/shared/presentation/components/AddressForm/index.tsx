@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 import { VStack, Button } from '@chakra-ui/react';
 import { useAsync } from '@hooks/useAsync';
 import { InputText, Select, Switch } from '@components';
-import { useUser } from '@user/presentation/hooks/useUser';
 import { upsertUserAddress } from '@user/presentation/user-service';
 import { COUNTRY_ISO } from '@shared/domain/country-iso';
 import { validateAddress } from '@shared/presentation/services/address-service';
@@ -23,17 +22,11 @@ export const AddressForm = ({
   const { register, control, handleSubmit, formState } =
     useForm<AddressFormFields>();
 
-  const { setUser } = useUser();
-
   const handleSubmitForm = useAsync(async (data: AddressFormFields) => {
     const address = await validateAddress(data);
 
     if (enableSaveAddress && data.shouldSaveAddress) {
       await upsertUserAddress(address);
-
-      setUser(prev =>
-        prev ? { ...prev, addresses: prev.addresses.concat(address) } : null
-      );
     }
 
     onSubmit(address);

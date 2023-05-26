@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Container } from '@chakra-ui/react';
 import { FormStep, FormStepper } from '@components';
 import { useAsync } from '@hooks/useAsync';
-import { useUser } from '@user/presentation/hooks/useUser';
 import { createPetAd } from '@pet-ad/presentation/pet-ad-service';
 import { PAGES } from '@shared/application/pages';
 import {
@@ -24,11 +23,9 @@ export const PetAdCreationForm = ({
   const [activeStep, setActiveStep] = useState(0);
   const [petAdSubmit, setPetAdSubmit] = useState<PetAdSubmit>();
 
-  const { user } = useUser();
-
   const handleFinalSubmit = useAsync(
     async (data: SelectAddressSubmit) => {
-      if (!petAdSubmit || !user) {
+      if (!petAdSubmit) {
         throw Error('Missing form data to create pet ad');
       }
 
@@ -36,7 +33,6 @@ export const PetAdCreationForm = ({
         ...petAdSubmit,
         address: data,
         petType,
-        userId: user.id,
       });
     },
     {
@@ -64,7 +60,7 @@ export const PetAdCreationForm = ({
         <FormStep label="Dirección">
           <SelectAddressForm
             onSubmit={handleFinalSubmit.execute}
-            addresses={user?.addresses}
+            addresses={options.addresses}
             submitButtonLabel="Crear anuncio"
             status={handleFinalSubmit.status}
           />

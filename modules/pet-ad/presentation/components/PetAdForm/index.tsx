@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 import { VStack, Button } from '@chakra-ui/react';
 import { InputDate, InputImage, InputText, Select } from '@components';
 import { useAsync } from '@hooks/useAsync';
-import { useUser } from '@user/presentation/hooks/useUser';
 import { FileStoraged } from '@shared/domain/file-storaged';
 import { uploadFiles } from '@shared/presentation/services/storage-service';
 import { PetAdFormFields, PetAdFormProps } from './PetAdForm.interface';
@@ -20,11 +19,7 @@ export const PetAdForm = ({
   const { register, formState, handleSubmit, control } =
     useForm<PetAdFormFields>();
 
-  const { user } = useUser();
-
   const handleSubmitForm = useAsync(async (data: PetAdFormFields) => {
-    if (!user) return;
-
     const filesToUpload = data.images.filter(item => typeof item !== 'string');
     let filesStoraged: FileStoraged[] = [];
 
@@ -43,7 +38,6 @@ export const PetAdForm = ({
       breedIds: data.breedIds,
       dateBirth: new Date(data.dateBirth),
       petType,
-      userId: user.id,
     });
   });
 

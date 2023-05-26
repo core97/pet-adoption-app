@@ -8,6 +8,7 @@ export async function getSession(cookie: string) {
       headers: {
         cookie,
       },
+      cache: 'no-store',
     }
   );
 

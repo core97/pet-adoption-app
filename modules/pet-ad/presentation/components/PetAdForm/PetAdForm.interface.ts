@@ -8,7 +8,7 @@ export type PetAdFormFields = Pick<PetAd, 'breedIds' | 'dateBirth' | 'name'> & {
   images: (File | string)[];
 };
 
-export type PetAdSubmit = Omit<EntityCreation<PetAd>, 'address'>;
+export type PetAdSubmit = Omit<EntityCreation<PetAd>, 'address' | 'userId'>;
 
 export type PetAdDefaultValues = Omit<PetAdFormFields, 'images'> &
   Pick<PetAd, 'images'>;

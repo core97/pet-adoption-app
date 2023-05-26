@@ -1,4 +1,4 @@
-export type FetchCacheConfig<T> = {
+export type FetchCacheConfig<T = void> = {
   data: T;
   cacheConfig?: Pick<RequestInit, 'cache' | 'next'>;
 };

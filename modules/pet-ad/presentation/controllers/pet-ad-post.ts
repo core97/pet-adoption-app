@@ -6,7 +6,7 @@ export const petAdPost = controller(
   async req => {
     const body = await req.json();
 
-    const petAd = await petAdCreator(body);
+    const petAd = await petAdCreator({ ...body, userId: req.context.user?.id });
 
     return httpHandler.ok(petAd);
   },

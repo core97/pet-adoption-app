@@ -15,13 +15,14 @@ import {
 } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { Icon } from '@components/Icon';
-import {
-  AppNavbarDesktop,
-  AppNavbarMobile,
-} from '@components/AppNavbar';
+import { AppNavbarDesktop, AppNavbarMobile } from '@components/AppNavbar';
 import styles from './AppHeader.module.css';
 
-export const AppHeader = () => {
+export const AppHeader = ({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean;
+}) => {
   const navigationDrawerHandler = useDisclosure();
 
   return (
@@ -31,7 +32,7 @@ export const AppHeader = () => {
           <Link href="/">My App</Link>
           <div className={styles['nav-section']}>
             <div className={styles['nav-items']}>
-              <AppNavbarDesktop />
+              <AppNavbarDesktop isAuthenticated={isAuthenticated} />
             </div>
             <div className={styles['menu-btn']}>
               <Button type="button" onClick={navigationDrawerHandler.onOpen}>
@@ -52,7 +53,7 @@ export const AppHeader = () => {
           <DrawerHeader>My App</DrawerHeader>
           <DrawerBody>
             <VStack mt={8}>
-              <AppNavbarMobile />
+              <AppNavbarMobile isAuthenticated={isAuthenticated} />
             </VStack>
           </DrawerBody>
         </DrawerContent>
