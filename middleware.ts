@@ -1,25 +1,15 @@
-/* eslint-disable consistent-return */
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@shared/presentation/services/auth-service';
-import {
-  PAGES,
-  PROTECTED_PAGES,
-  findCurrentPage,
-} from '@shared/application/pages';
+import { PAGES, DASHBOARD_PAGES } from '@shared/application/pages';
 
 export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-pathname', request.nextUrl.pathname);
 
-  const currentPage = findCurrentPage(request.nextUrl.pathname);
-  const protectedPage = PROTECTED_PAGES.find(
-    page => page.route === currentPage
-  );
-
   const redirect = (url: string) =>
     NextResponse.redirect(new URL(url, request.url));
 
-  if (protectedPage) {
+  if (request.nextUrl.pathname?.startsWith(DASHBOARD_PAGES.HOME)) {
     try {
       const session = await getSession(request.headers.get('cookie') ?? '');
 
@@ -27,9 +17,7 @@ export async function middleware(request: NextRequest) {
         return redirect(PAGES.SIGN_IN);
       }
 
-      const hasRole = protectedPage.roles.includes(session.user.role);
-
-      if (!hasRole || protectedPage.route === PAGES.SIGN_IN) {
+      if (session.user.role !== 'ADMIN') {
         return redirect(PAGES.HOME);
       }
     } catch (error) {

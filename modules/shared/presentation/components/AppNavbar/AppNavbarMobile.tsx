@@ -1,24 +1,11 @@
-import { signIn, signOut } from 'next-auth/react';
-import { VStack, Button } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
+import { PAGES } from '@shared/application/pages';
 
-export const AppNavbarMobile = ({
-  isAuthenticated,
-}: {
-  isAuthenticated: boolean;
-}) => (
+export const AppNavbarMobile = () => (
   <VStack as="nav">
     <Link href="/dogs">Perros</Link>
     <Link href="/cats">Gatos</Link>
-    {isAuthenticated && (
-      <Button type="button" variant="link" onClick={() => signOut()}>
-        Salir
-      </Button>
-    )}
-    {!isAuthenticated && (
-      <Button type="button" onClick={() => signIn()}>
-        Iniciar sesión
-      </Button>
-    )}
+    <Link href={PAGES.PROFILE}>Mi cuenta</Link>
   </VStack>
 );

@@ -18,11 +18,7 @@ import { Icon } from '@components/Icon';
 import { AppNavbarDesktop, AppNavbarMobile } from '@components/AppNavbar';
 import styles from './AppHeader.module.css';
 
-export const AppHeader = ({
-  isAuthenticated,
-}: {
-  isAuthenticated: boolean;
-}) => {
+export const AppHeader = () => {
   const navigationDrawerHandler = useDisclosure();
 
   return (
@@ -32,7 +28,7 @@ export const AppHeader = ({
           <Link href="/">My App</Link>
           <div className={styles['nav-section']}>
             <div className={styles['nav-items']}>
-              <AppNavbarDesktop isAuthenticated={isAuthenticated} />
+              <AppNavbarDesktop />
             </div>
             <div className={styles['menu-btn']}>
               <Button type="button" onClick={navigationDrawerHandler.onOpen}>
@@ -53,7 +49,7 @@ export const AppHeader = ({
           <DrawerHeader>My App</DrawerHeader>
           <DrawerBody>
             <VStack mt={8}>
-              <AppNavbarMobile isAuthenticated={isAuthenticated} />
+              <AppNavbarMobile />
             </VStack>
           </DrawerBody>
         </DrawerContent>

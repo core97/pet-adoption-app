@@ -10,7 +10,7 @@ const PetAdCreation = async () => {
   const session = await getSession(headers().get('cookie') ?? '');
 
   if (!session?.user?.email) {
-    redirect(PAGES.HOME);
+    redirect(PAGES.SIGN_IN);
   }
 
   const [breeds, addresses] = await Promise.all([
