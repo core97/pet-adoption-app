@@ -4,6 +4,7 @@ import { getSession } from '@shared/presentation/services/auth-service';
 import { nextApiHttpHandler } from '@shared/application/http/next-api-http-handler';
 import { ERROR_CODE_TO_HTTP_STATUS } from '@shared/application/http/http-errors';
 import { AppError } from '@shared/application/errors/app-error';
+import { createLogger } from '@shared/application/logger';
 
 interface ControllerOptions {
   roles?: UserRole[];
@@ -17,9 +18,13 @@ export const nextApiController = (
   options: ControllerOptions = {}
 ) => ({
   run: async (req: NextApiRequest, res: NextApiResponse) => {
-    console.log(`${req.method} ${req.url}`);
+    const logger = createLogger({ method: req.method, url: req.url });
 
-    req.context = {};
+    logger.info('Starting request');
+
+    req.context = {
+      log: logger,
+    };
 
     try {
       if (options.roles?.length) {
@@ -44,10 +49,12 @@ export const nextApiController = (
       }
 
       const resCallback = await callback(req, res);
+
+      logger.info('Request completed');
+
       return resCallback;
     } catch (error) {
-      console.error('*** ERRROR ***');
-      console.error(error);
+      logger.error(error);
 
       if (error instanceof AppError) {
         return nextApiHttpHandler.jsonResponse(

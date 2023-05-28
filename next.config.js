@@ -6,6 +6,8 @@ const nextConfig = {
       '@next-auth/prisma-adapter',
       '@prisma/client',
       'cloudinary',
+      'pino',
+      'pino-pretty',
     ],
   },
 };

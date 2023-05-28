@@ -5,6 +5,7 @@ import { getSession } from '@shared/presentation/services/auth-service';
 import { httpHandler } from '@shared/application/http/http-handler';
 import { ERROR_CODE_TO_HTTP_STATUS } from '@shared/application/http/http-errors';
 import { AppError } from '@shared/application/errors/app-error';
+import { createLogger } from '@shared/application/logger';
 
 interface ControllerOptions {
   roles?: UserRole[];
@@ -15,9 +16,13 @@ export const controller = (
   options: ControllerOptions = {}
 ) => ({
   run: async (request: Request) => {
-    console.log(`${request.method} ${request.url}`);
+    const logger = createLogger({ method: request.method, url: request.url });
 
-    request.context = {};
+    logger.info('Starting request');
+
+    request.context = {
+      log: logger,
+    };
 
     try {
       if (options.roles?.length) {
@@ -51,10 +56,11 @@ export const controller = (
         });
       }
 
+      logger.info('Request completed');
+
       return res;
     } catch (error) {
-      console.error('*** ERRROR ***');
-      console.error(error);
+      logger.error(error);
 
       if (error instanceof AppError) {
         return httpHandler.jsonResponse(ERROR_CODE_TO_HTTP_STATUS[error.code]);

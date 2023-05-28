@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { UserRole } from '@user/model';
+import { createLogger } from '@shared/application/logger';
 
 declare global {
   // eslint-disable-next-line vars-on-top, no-var
   var prisma: PrismaClient;
-  
+
   namespace NodeJS {
     interface ProcessEnv {
       API_KEY_GOOGLE_CLOUD_PLATFORM: string;
@@ -22,6 +23,7 @@ declare global {
 
   export interface Request {
     context: {
+      log: ReturnType<createLogger>;
       user?: {
         email: string;
         id: string;
@@ -34,6 +36,7 @@ declare global {
 declare module 'next' {
   export interface NextApiRequest {
     context: {
+      log: ReturnType<createLogger>;
       user?: {
         email: string;
         id: string;
