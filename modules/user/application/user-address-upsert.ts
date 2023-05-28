@@ -36,7 +36,7 @@ export const userAddressUpsert = async ({
       user = await prisma.user.update({
         where: { email },
         data: {
-          addresses: { set: [address] },
+          addresses: { push: [address] },
         },
       });
     }

@@ -5,17 +5,35 @@ import {
   PetAdForm,
   PetAdSubmit,
 } from '@pet-ad/presentation/components/PetAdForm';
+import { updatePetAdById } from '@pet-ad/presentation/pet-ad-fetcher';
 import {
   SelectAddressForm,
   SelectAddressSubmit,
 } from '@shared/presentation/components/SelectAddressForm';
 import { useAsync } from '@hooks/useAsync';
+import { PAGES } from '@shared/application/pages';
 import { PetAdUserProps } from './PetAdUser.interface';
 
 export const PetAdUser = ({ options, petAd }: PetAdUserProps) => {
-  const handleSubmitPetAdForm = useAsync((data: PetAdSubmit) => {});
+  const handleSubmitPetAdForm = useAsync(
+    async (data: PetAdSubmit) => {
+      await updatePetAdById({
+        data,
+        searchParam: { id: petAd.id, userId: petAd.userId },
+      });
+    },
+    { onSuccess: { redirect: PAGES.USER_PET_ADS_LIST } }
+  );
 
-  const handleSubmitAddressForm = useAsync((data: SelectAddressSubmit) => {});
+  const handleSubmitAddressForm = useAsync(
+    async (data: SelectAddressSubmit) => {
+      await updatePetAdById({
+        data: { address: data },
+        searchParam: { id: petAd.id, userId: petAd.userId },
+      });
+    },
+    { onSuccess: { redirect: PAGES.USER_PET_ADS_LIST } }
+  );
 
   return (
     <Tabs>

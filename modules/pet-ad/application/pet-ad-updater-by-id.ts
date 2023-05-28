@@ -17,7 +17,8 @@ export const petAdUpdaterById: PetAdUpdaterById = async ({
   searchParam,
 }) => {
   try {
-    validatePetAd(data);
+    await validatePetAd(data);
+
     const oldPetAd = await prisma.petAd.findUnique({
       where: { id: searchParam.id },
       select: { images: true, userId: true },
@@ -42,14 +43,14 @@ export const petAdUpdaterById: PetAdUpdaterById = async ({
     const { petType, userId, ...dataToUpdate } = data;
 
     const petAd = await prisma.petAd.update({
-      where: searchParam,
+      where: { id: searchParam.id },
       data: dataToUpdate,
     });
 
     return petAd;
   } catch (error) {
     if (error instanceof Error) {
-      error.message = `Breed could not be updated by id. ${error.message}`;
+      error.message = `Pet ad could not be updated by id. ${error.message}`;
     }
 
     throw error;

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Container } from '@chakra-ui/react';
 import { FormStep, FormStepper } from '@components';
 import { useAsync } from '@hooks/useAsync';
-import { createPetAd } from '@/modules/pet-ad/presentation/pet-ad-fetcher';
+import { createPetAd } from '@pet-ad/presentation/pet-ad-fetcher';
 import { PAGES } from '@shared/application/pages';
 import {
   PetAdForm,

@@ -24,35 +24,36 @@ export const validatePetAd = async (petAd: Partial<PetAd>) => {
     );
   }
 
-  if (
-    petAd.breedIds &&
-    (petAd.breedIds.length > BREEDS_PER_PET_AD.MIN ||
-      petAd.breedIds.length > BREEDS_PER_PET_AD.MAX)
-  ) {
-    throw new ConflictError(
-      `Pet ad must have between ${BREEDS_PER_PET_AD.MIN} and ${BREEDS_PER_PET_AD.MAX} images`
+  if (petAd.breedIds) {
+    if (
+      petAd.breedIds.length < BREEDS_PER_PET_AD.MIN ||
+      petAd.breedIds.length > BREEDS_PER_PET_AD.MAX
+    ) {
+      throw new ConflictError(
+        `Pet ad must have between ${BREEDS_PER_PET_AD.MIN} and ${BREEDS_PER_PET_AD.MAX} breeds`
+      );
+    }
+
+    const breeds = await prisma.breed.findMany({
+      where: { id: { in: petAd.breedIds } },
+    });
+
+    if (
+      breeds.length > BREEDS_PER_PET_AD.MIN ||
+      breeds.length > BREEDS_PER_PET_AD.MAX
+    ) {
+      throw new ConflictError(`Not found pet ad breeds`);
+    }
+
+    const areValidBreeds = breeds.every(({ petType }) =>
+      petAd.petType
+        ? petType === petAd.petType
+        : isValidPetType(petType) && petType === breeds[0].petType
     );
-  }
 
-  const breeds = await prisma.breed.findMany({
-    where: { id: { in: petAd.breedIds } },
-  });
-
-  if (
-    breeds.length > BREEDS_PER_PET_AD.MIN ||
-    breeds.length > BREEDS_PER_PET_AD.MAX
-  ) {
-    throw new ConflictError(`Not found pet ad breeds`);
-  }
-
-  const areValidBreeds = breeds.every(({ petType }) =>
-    petAd.petType
-      ? petType === petAd.petType
-      : isValidPetType(petType) && petType === breeds[0].petType
-  );
-
-  if (!areValidBreeds) {
-    throw new ConflictError('Pet ad breeds are invalid');
+    if (!areValidBreeds) {
+      throw new ConflictError('Pet ad breeds are invalid');
+    }
   }
 
   if (
