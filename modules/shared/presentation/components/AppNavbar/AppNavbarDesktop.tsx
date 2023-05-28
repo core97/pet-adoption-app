@@ -6,6 +6,6 @@ export const AppNavbarDesktop = () => (
   <HStack as="nav">
     <Link href="/dogs">Perros</Link>
     <Link href="/cats">Gatos</Link>
-    <Link href={PAGES.PROFILE}>Mi cuenta</Link>
+    <Link href={PAGES.USER_PET_ADS_LIST}>Mi cuenta</Link>
   </HStack>
 );

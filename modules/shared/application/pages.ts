@@ -4,6 +4,7 @@ export const PAGES = {
   PET_AD_CREATION: '/pet-ads/creation',
   PROFILE: '/profile',
   SIGN_IN: '/sign-in',
+  USER_PET_ADS_LIST: '/profile/pet-ads',
 };
 
 export const DASHBOARD_PAGES = {
