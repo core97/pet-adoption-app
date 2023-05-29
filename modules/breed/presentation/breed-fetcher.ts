@@ -43,16 +43,16 @@ export const getBreedsList = async ({
   let url = `${BASE_URL}?`;
 
   if (petType) {
-    url += `petType=${petType}`;
+    url += `&petType=${petType}`;
   }
 
   if (pagination) {
-    url += `page=${pagination.page}&limit=${pagination.limit}`;
+    url += `&page=${pagination.page}&limit=${pagination.limit}`;
   }
 
   if (sortBy) {
     Object.entries(sortBy).forEach(([key, value]) => {
-      url += `${key}=${value}`;
+      url += `&${key}=${value}`;
     });
   }
 

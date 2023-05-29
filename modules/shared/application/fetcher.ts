@@ -29,13 +29,11 @@ export const fetcher = async <T = void>(
 
   if (!res.ok) {
     const { status } = res;
-    const info = isJson ? await res.json() : undefined;
+    const errorFromRequest = (await res.text?.()) || '';
 
     const errorMsg = `An error occurred (${status}) while fetching to "${
       init?.method || 'GET'
-    } ${url}". ${info || ''}`;
-
-    console.error(errorMsg);
+    } ${url}". ${errorFromRequest}`;
 
     throw new Error(errorMsg);
   }

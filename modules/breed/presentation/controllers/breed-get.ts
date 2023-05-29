@@ -3,7 +3,7 @@ import { controller } from '@shared/application/controller';
 import { httpHandler } from '@shared/application/http/http-handler';
 
 export const breedGet = controller(async req => {
-  const breedId = new URL(req.url).searchParams.get('id');
+  const breedId = req.url.split('/').at(-1);
 
   if (!breedId) {
     return httpHandler.invalidParams('Missing breed id');

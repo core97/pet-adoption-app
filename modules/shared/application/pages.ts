@@ -1,8 +1,9 @@
 export const PAGES = {
   HOME: '/',
-  PET_ADS: '/pet-ads',
+  PET_ADS_LIST: '/pet-ads',
   PET_AD_CREATION: '/pet-ads/creation',
-  PROFILE: '/profile',
+  PET_AD_DETAIL: '/pet-ads/detail',
+  // PROFILE: '/profile',
   SIGN_IN: '/sign-in',
   USER_PET_ADS_LIST: '/profile/pet-ads',
 };

@@ -14,7 +14,12 @@ const PetAdsListUser = async () => {
 
   const petAds = await petAdsListFinderByUser({ userId: session.user.id });
 
-  return <PetAdsList petAds={petAds.results} />;
+  return (
+    <PetAdsList
+      petAds={petAds.results}
+      redirectOnClick={PAGES.USER_PET_ADS_LIST}
+    />
+  );
 };
 
 export default PetAdsListUser;

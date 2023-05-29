@@ -1,4 +1,5 @@
-/* eslint-disable react/no-array-index-key */
+'use client';
+
 import { Children, isValidElement, useRef } from 'react';
 import { Box, VStack, HStack, ScaleFade } from '@chakra-ui/react';
 import { FormStepIndicator } from './FormStepIndicator';
