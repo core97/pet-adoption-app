@@ -63,7 +63,10 @@ export const controller = (
       logger.error(error);
 
       if (error instanceof AppError) {
-        return httpHandler.jsonResponse(ERROR_CODE_TO_HTTP_STATUS[error.code]);
+        return httpHandler.jsonResponse(
+          ERROR_CODE_TO_HTTP_STATUS[error.httpCode],
+          { businessCode: error.businessCode, httpCode: error.httpCode }
+        );
       }
 
       return httpHandler.fail();

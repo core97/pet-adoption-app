@@ -2,9 +2,15 @@ import { NextApiResponse } from 'next';
 import { HttpStatus } from '@shared/application/http/http-status';
 
 export const nextApiHttpHandler = {
-  jsonResponse(res: NextApiResponse, code: HttpStatus, message?: string) {
+  jsonResponse(
+    res: NextApiResponse,
+    code: HttpStatus,
+    message?: string | Record<string, unknown>
+  ) {
     if (message) {
-      return res.status(code).json({ message });
+      return res
+        .status(code)
+        .json(typeof message === 'string' ? { message } : message);
     }
 
     return res.status(code).end();

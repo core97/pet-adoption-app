@@ -1,6 +1,13 @@
 'use client';
 
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Container,
+} from '@chakra-ui/react';
 import {
   PetAdForm,
   PetAdSubmit,
@@ -36,38 +43,40 @@ export const PetAdUser = ({ options, petAd }: PetAdUserProps) => {
   );
 
   return (
-    <Tabs>
-      <TabList>
-        <Tab>Anuncio</Tab>
-        <Tab>Dirección</Tab>
-      </TabList>
+    <Container maxW="5xl">
+      <Tabs>
+        <TabList>
+          <Tab>Anuncio</Tab>
+          <Tab>Dirección</Tab>
+        </TabList>
 
-      <TabPanels>
-        <TabPanel>
-          <PetAdForm
-            onSubmit={handleSubmitPetAdForm.execute}
-            submitButtonLabel="Actualizar anuncio"
-            status={handleSubmitPetAdForm.status}
-            options={{ breeds: options.breeds }}
-            petType={petAd.petType}
-            defaultValue={petAd}
-          />
-        </TabPanel>
-        <TabPanel>
-          <SelectAddressForm
-            onSubmit={handleSubmitAddressForm.execute}
-            submitButtonLabel="Actualizar dirección"
-            defaultValue={petAd.address}
-            status={handleSubmitAddressForm.status}
-            addresses={[
-              petAd.address,
-              ...options.addresses.filter(
-                ({ placeId }) => placeId !== petAd.address.placeId
-              ),
-            ]}
-          />
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
+        <TabPanels>
+          <TabPanel>
+            <PetAdForm
+              onSubmit={handleSubmitPetAdForm.execute}
+              submitButtonLabel="Actualizar anuncio"
+              status={handleSubmitPetAdForm.status}
+              options={{ breeds: options.breeds }}
+              petType={petAd.petType}
+              defaultValue={petAd}
+            />
+          </TabPanel>
+          <TabPanel>
+            <SelectAddressForm
+              onSubmit={handleSubmitAddressForm.execute}
+              submitButtonLabel="Actualizar dirección"
+              defaultValue={petAd.address}
+              status={handleSubmitAddressForm.status}
+              addresses={[
+                petAd.address,
+                ...options.addresses.filter(
+                  ({ placeId }) => placeId !== petAd.address.placeId
+                ),
+              ]}
+            />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Container>
   );
 };

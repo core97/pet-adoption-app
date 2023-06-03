@@ -2,12 +2,15 @@ import { NextResponse } from 'next/server';
 import { HttpStatus } from '@/modules/shared/application/http/http-status';
 
 export const httpHandler = {
-  jsonResponse(code: HttpStatus, message?: string) {
+  jsonResponse(code: HttpStatus, message?: string | Record<string, unknown>) {
     if (message) {
-      return new NextResponse(JSON.stringify({ message }), {
-        status: code,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new NextResponse(
+        JSON.stringify(typeof message === 'string' ? { message } : message),
+        {
+          status: code,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
 
     return new NextResponse(null, { status: code });

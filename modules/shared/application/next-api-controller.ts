@@ -59,7 +59,8 @@ export const nextApiController = (
       if (error instanceof AppError) {
         return nextApiHttpHandler.jsonResponse(
           res,
-          ERROR_CODE_TO_HTTP_STATUS[error.code]
+          ERROR_CODE_TO_HTTP_STATUS[error.httpCode],
+          { businessCode: error.businessCode, httpCode: error.httpCode }
         );
       }
 

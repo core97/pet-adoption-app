@@ -1,5 +1,24 @@
 type DateFormats = 'yyyy-mm-dd';
 
+export const canParseToJSON = (str: string) => {
+  let isValid = false;
+
+  try {
+    JSON.parse(str);
+    isValid = true;
+  } catch (error) {
+    if (error instanceof Error) {
+      error.message = `Cannot be parsed to JSON: ${str}`;
+    }
+
+    console.warn(error);
+
+    isValid = false;
+  }
+
+  return isValid;
+};
+
 export const formatDateToString = (
   date: number | Date | string,
   format: DateFormats

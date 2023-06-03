@@ -1,10 +1,17 @@
 import { HttpErrorCode } from '@shared/application/http/http-errors';
 
 export class AppError extends Error {
-  public readonly code: HttpErrorCode;
+  public readonly httpCode: HttpErrorCode;
 
-  constructor(message: string, code: HttpErrorCode) {
+  public readonly businessCode: string;
+
+  constructor(
+    message: string,
+    httpCode: HttpErrorCode,
+    businessCode?: string
+  ) {
     super(message);
-    this.code = code;
+    this.httpCode = httpCode;
+    this.businessCode = businessCode || httpCode;
   }
 }

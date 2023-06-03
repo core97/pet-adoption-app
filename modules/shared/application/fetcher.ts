@@ -1,3 +1,6 @@
+import { AppError } from '@shared/application/errors/app-error';
+import { canParseToJSON } from '@shared/application/string-utils';
+
 export type FetchCacheConfig<T = void> = {
   data: T;
   cacheConfig?: Pick<RequestInit, 'cache' | 'next'>;
@@ -34,6 +37,11 @@ export const fetcher = async <T = void>(
     const errorMsg = `An error occurred (${status}) while fetching to "${
       init?.method || 'GET'
     } ${url}". ${errorFromRequest}`;
+
+    if (canParseToJSON(errorFromRequest)) {
+      const error = JSON.parse(errorFromRequest);
+      throw new AppError(errorMsg, error.httpCode, error.businessCode);
+    }
 
     throw new Error(errorMsg);
   }
