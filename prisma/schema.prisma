@@ -53,15 +53,16 @@ model PetAd {
 }
 
 model PetAdRequest {
-  id        String        @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  user      User          @relation(fields: [userId], references: [id])
-  userId    String        @db.ObjectId
-  petAd     PetAd         @relation(fields: [petAdId], references: [id])
-  petAdId   String        @db.ObjectId
-  status    RequestStatus @default(PENDING)
-  visits    Visit[]
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  user          User           @relation(fields: [userId], references: [id])
+  userId        String         @db.ObjectId
+  petAd         PetAd          @relation(fields: [petAdId], references: [id])
+  petAdId       String         @db.ObjectId
+  status        RequestStatus  @default(PENDING)
+  adoptionSteps AdoptionStep[]
+  visits        Visit[]
 }
 
 model Session {
@@ -126,6 +127,12 @@ type Address {
   streetNumber String?
 }
 
+type AdoptionStep {
+  step      AdoptionStepType
+  status    RequestStatus    @default(PENDING)
+  updatedAt DateTime
+}
+
 type Coordinates {
   lat Float
   lng Float
@@ -144,6 +151,11 @@ type Preadoption {
 type ProviderAccount {
   providerAccountId String
   provider          String
+}
+
+enum AdoptionStepType {
+  PREADOPTION_FORM
+  MEETING
 }
 
 enum CountryIso {

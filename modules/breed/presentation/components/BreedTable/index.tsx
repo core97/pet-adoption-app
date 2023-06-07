@@ -28,7 +28,11 @@ export const BreedTable = () => {
         isLoading={isLoading}
         onClickRow={({ id }) => router.push(`${DASHBOARD_PAGES.BREEDS}/${id}`)}
         total={data?.total}
-        columns={['id', 'name', 'petType']}
+        columns={{
+          id: { name: 'ID' },
+          name: { name: 'Nombre' },
+          petType: { name: 'Tipo mascota' },
+        }}
         rows={(data?.results || []).map(breed => ({
           id: breed.id,
           name: breed.name,

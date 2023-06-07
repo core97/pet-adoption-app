@@ -1,4 +1,4 @@
-import { PetAdRequest } from '@pet-ad-request/model';
+import { PetAdRequest, ADOPTION_STEPS_TYPES } from '@pet-ad-request/model';
 import { PetAdRequestErrorsCode } from '@pet-ad-request/application/errors-code';
 import prisma from '@shared/application/prisma';
 import { ConflictError } from '@shared/application/errors/conflict.error';
@@ -39,14 +39,37 @@ export const validatePetAdRequest = async (
         );
       }
 
-      if (!user.preadoption) {
+      /* if (!user.preadoption) {
         throw new ConflictError(
           `User "${petAdRequest.userId}" has not completed the pre-adoption form.`,
           PetAdRequestErrorsCode.MISSING_PREADOPTION_FORM_IN_USER
         );
+      } */
+    }
+  };
+
+  const validateAdoptionSteps = () => {
+    if (petAdRequest.adoptionSteps) {
+      if (
+        petAdRequest.adoptionSteps.length !==
+        Object.values(ADOPTION_STEPS_TYPES).length
+      ) {
+        throw new ConflictError(
+          'Pet ad request has more adoption steps than expected.'
+        );
+      }
+
+      const statusesNoDuplicates = [
+        ...new Set(petAdRequest.adoptionSteps.map(({ step }) => step)),
+      ];
+
+      if (petAdRequest.adoptionSteps.length !== statusesNoDuplicates.length) {
+        throw new ConflictError('There are duplicate adoption steps.');
       }
     }
   };
+
+  validateAdoptionSteps();
 
   await Promise.all([validateWithPetAd(), validateWithUser()]);
 };

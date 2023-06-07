@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es5",
+    "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -30,6 +30,7 @@
       "@pet-ad-request/*": ["./modules/pet-ad-request/*"],
       "@shared/*": ["./modules/shared/*"],
       "@user/*": ["./modules/user/*"],
+      "@visit/*": ["./modules/visit/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

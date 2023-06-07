@@ -13,11 +13,11 @@
   flex-direction: column;
 }
 
-.content-wrapper {
-  margin-left: 25%;
-}
-
 @media screen and (min-width: 1024px) {
+  .content-wrapper {
+    margin-left: 25%;
+  }
+
   .navigation {
     display: block;
   }

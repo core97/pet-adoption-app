@@ -1,3 +1,7 @@
+'use client';
+
+import { signIn } from 'next-auth/react';
+
 const Home = () => (
   <main
     style={{
@@ -7,7 +11,9 @@ const Home = () => (
       height: '70vh',
     }}
   >
-    <h1>Hello world</h1>
+    <button type="button" onClick={() => signIn()}>
+      Sign In
+    </button>
   </main>
 );
 

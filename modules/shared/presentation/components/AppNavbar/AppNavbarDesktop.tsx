@@ -11,6 +11,6 @@ export const AppNavbarDesktop = () => (
     <Link href={`${PAGES.PET_ADS_LIST}/${PET_TYPES.CAT.toLowerCase()}`}>
       Gatos
     </Link>
-    <Link href={PAGES.USER_PET_ADS_LIST}>Mi cuenta</Link>
+    <Link href={PAGES.USER_DETAIL}>Mi cuenta</Link>
   </HStack>
 );

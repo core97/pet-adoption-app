@@ -95,15 +95,15 @@ export const Table = <T extends Record<string, RowType>>({
       <TableChakra mt={4}>
         <Thead>
           <Tr>
-            {columns.map(column => (
+            {Object.entries(columns).map(([key, value]) => (
               <Th
-                key={column.toString()}
-                onClick={() => handleClickColumn(column)}
+                key={key}
+                onClick={() => handleClickColumn(key)}
                 _hover={{ cursor: 'pointer' }}
               >
-                {`${
-                  sorting?.column === column ? sorting.icon : ' '
-                } ${column.toString()}`}
+                {`${sorting?.column === key ? sorting.icon : ' '} ${
+                  value.name
+                }`}
               </Th>
             ))}
           </Tr>
@@ -116,8 +116,8 @@ export const Table = <T extends Record<string, RowType>>({
               transition="background 0.2s ease-out"
               _hover={{ cursor: 'pointer', backgroundColor: '#edf2f7' }}
             >
-              {columns.map(column => (
-                <Td key={column.toString()}>{row[column].toString()}</Td>
+              {Object.keys(columns).map(key => (
+                <Td key={key}>{row[key].toString()}</Td>
               ))}
             </Tr>
           ))}

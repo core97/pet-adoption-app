@@ -1,6 +1,6 @@
 export interface TableProps<T> {
   rows: T[];
-  columns: (keyof T)[];
+  columns: Record<keyof T, { name: string }>;
   enableGlobalFilter?: boolean;
   isLoading?: boolean;
   onClickRow?: (row: T) => void;

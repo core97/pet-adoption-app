@@ -6,30 +6,46 @@ import prisma from '@shared/application/prisma';
 import { ConflictError } from '@shared/application/errors/conflict.error';
 
 export interface PetAdRequestCreator {
-  (params: EntityCreation<PetAdRequest>): Promise<PetAdRequest>;
+  (
+    params: Omit<EntityCreation<PetAdRequest>, 'adoptionSteps'>
+  ): Promise<PetAdRequest>;
 }
 
 export const petAdRequestCreator: PetAdRequestCreator = async petAdRequest => {
   try {
-    await validatePetAdRequest(petAdRequest);
+    const petAdRequestToCreate: EntityCreation<PetAdRequest> = {
+      ...petAdRequest,
+      adoptionSteps: [
+        { status: 'PENDING', step: 'MEETING', updatedAt: new Date() },
+        { status: 'PENDING', step: 'PREADOPTION_FORM', updatedAt: new Date() },
+      ],
+    };
 
-    if (petAdRequest.status && petAdRequest.status !== 'PENDING') {
+    await validatePetAdRequest(petAdRequestToCreate);
+
+    if (
+      petAdRequestToCreate.status &&
+      petAdRequestToCreate.status !== 'PENDING'
+    ) {
       throw new ConflictError('Invalid status');
     }
 
     const alreadyPetAdRequestCreated = await prisma.petAdRequest.findFirst({
-      where: { petAdId: petAdRequest.petAdId, userId: petAdRequest.userId },
+      where: {
+        petAdId: petAdRequestToCreate.petAdId,
+        userId: petAdRequestToCreate.userId,
+      },
     });
 
     if (alreadyPetAdRequestCreated) {
       throw new ConflictError(
-        `User "${petAdRequest.userId}" has already created a request for the "${petAdRequest.petAdId}" pet ad`,
+        `User "${petAdRequestToCreate.userId}" has already created a request for the "${petAdRequestToCreate.petAdId}" pet ad`,
         PetAdRequestErrorsCode.ALREADY_CREATED_REQUEST_WITH_SAME_AD
       );
     }
 
     const petAdRequestCreated = await prisma.petAdRequest.create({
-      data: petAdRequest,
+      data: petAdRequestToCreate,
     });
 
     return petAdRequestCreated;

@@ -1,6 +1,5 @@
 'use client';
 
-import { Box } from '@chakra-ui/react';
 import { SidebarProps } from './Sidebar.interface';
 import styles from './Sidebar.module.css';
 
@@ -10,7 +9,7 @@ export const Sidebar = ({ children, navigation, header }: SidebarProps) => (
     <section className={styles['content-wrapper']}>
       {!!header && header}
       <main className={styles.main}>
-        <Box py={6} px={10}>{children}</Box>
+        {children}
       </main>
     </section>
   </aside>
