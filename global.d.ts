@@ -13,11 +13,12 @@ declare global {
       CLOUDINARY_API_KEY: string;
       CLOUDINARY_API_SECRET: string;
       DATABASE_URL: string;
+      GOOGLE_CLIENT_ID: string;
+      GOOGLE_CLIENT_SECRET: string;
       NEXTAUTH_SECRET: string;
       NEXTAUTH_URL: string;
       NEXT_PUBLIC_URL: string;
-      GOOGLE_CLIENT_ID: string;
-      GOOGLE_CLIENT_SECRET: string;
+      TYPEFORM_SECRET: string;
     }
   }
 
