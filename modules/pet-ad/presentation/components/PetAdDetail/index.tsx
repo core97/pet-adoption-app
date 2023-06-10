@@ -14,10 +14,13 @@ import { useAsync } from '@hooks/useAsync';
 import { SendPetAdRequestModal } from '@pet-ad-request/presentation/components/SendPetAdRequestModal';
 import { createPetAdRequest } from '@pet-ad-request/presentation/pet-ad-request-fetcher';
 import { PetAdRequestErrorsCode } from '@pet-ad-request/application/errors-code';
+import { upsertUserPreadoptionForm } from '@user/presentation/user-service';
 import { AppError } from '@shared/application/errors/app-error';
 import { HttpErrorCode } from '@shared/application/http/http-errors';
-
-import { PetAdDetailProps } from './PetAdDetail.interface';
+import {
+  PetAdDetailProps,
+  PreadoptionFormSubmit,
+} from './PetAdDetail.interface';
 
 export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
   const [errorReason, setErrorReason] = useState<
@@ -78,6 +81,22 @@ export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
     }
   });
 
+  const handleOnSubmitPreadoptionForm = useAsync(
+    async (data: any) => {
+      const submitData = data as PreadoptionFormSubmit;
+
+      await upsertUserPreadoptionForm({
+        formId: submitData.formId,
+        responseId: submitData.responseId,
+      });
+    },
+    {
+      onSuccess: {
+        toast: { title: 'Ya puedes enviar la solicitud de adopción' },
+      },
+    }
+  );
+
   return (
     <Container maxW="2xl">
       <Heading>{petAd.name}</Heading>
@@ -95,16 +114,8 @@ export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
         buttonProps={{ style: { display: 'none' } } as any}
         autoClose
         open={isOpenForm ? 'load' : undefined}
-        onSubmit={data => {
-          console.log(data);
-
-          toast({
-            status: 'success',
-            title: 'Ya puedes enviar la solicitud de aopción',
-          });
-        }}
+        onSubmit={handleOnSubmitPreadoptionForm.execute}
         onClose={() => {
-          console.log('*** El modal se ha cerrado ***');
           setIsOpenForm(false);
         }}
       >

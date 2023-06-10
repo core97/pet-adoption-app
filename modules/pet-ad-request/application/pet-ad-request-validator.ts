@@ -39,12 +39,12 @@ export const validatePetAdRequest = async (
         );
       }
 
-      /* if (!user.preadoption) {
+      if (!user.preadoptionForm) {
         throw new ConflictError(
-          `User "${petAdRequest.userId}" has not completed the pre-adoption form.`,
+          `User "${petAdRequest.userId}" has not completed the preadoption form.`,
           PetAdRequestErrorsCode.MISSING_PREADOPTION_FORM_IN_USER
         );
-      } */
+      }
     }
   };
 

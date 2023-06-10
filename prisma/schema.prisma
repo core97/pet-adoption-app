@@ -80,9 +80,9 @@ model User {
   email         String         @unique
   petAds        PetAd[]
   addresses     Address[]
-  preadoption   Preadoption?
+  preadoptionForm   PreadoptionForm?
   visits        Visit[]
-  petAdRequest  PetAdRequest[]
+  petAdRequests PetAdRequest[]
   role          Role           @default(USER)
   sessions      Session[]
   accounts      Account[]
@@ -143,7 +143,7 @@ type FileStoraged {
   url      String
 }
 
-type Preadoption {
+type PreadoptionForm {
   formId     String
   responseId String
 }

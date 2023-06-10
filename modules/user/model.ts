@@ -1,8 +1,13 @@
-import { User as UserPrisma } from '@prisma/client';
+import {
+  User as UserPrisma,
+  PreadoptionForm as PreadoptionFormPrisma,
+} from '@prisma/client';
 
 export type User = UserPrisma;
 
 export type UserRole = User['role'];
+
+export type PreadoptionForm = PreadoptionFormPrisma;
 
 export const isValidRole = (role: unknown): role is UserRole =>
   typeof role === 'string' &&
