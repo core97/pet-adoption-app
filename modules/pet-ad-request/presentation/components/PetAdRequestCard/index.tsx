@@ -55,7 +55,7 @@ export const PetAdRequestCard = ({
               </Button>
 
               <Link
-                href={`${PAGES.PREADOPTION_FORM}/${request.petAdId}/${request.userId}`}
+                href={`${PAGES.PREADOPTION_FORM}/${request.id}/${request.petAdId}/${request.userId}`}
               >
                 Ver formulario de preadopción
               </Link>
