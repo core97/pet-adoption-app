@@ -1,5 +1,6 @@
 'use client';
 
+import { Link } from '@chakra-ui/next-js';
 import {
   Box,
   Button,
@@ -9,6 +10,7 @@ import {
   HStack,
   Tag,
 } from '@chakra-ui/react';
+import { PAGES } from '@shared/application/pages';
 import {
   PetAdRequestCardProps,
   colorRequestStatus,
@@ -52,9 +54,11 @@ export const PetAdRequestCard = ({
                 Modificar estado de la solicitud
               </Button>
 
-              <Button type="button" variant="link" size="sm">
+              <Link
+                href={`${PAGES.PREADOPTION_FORM}/${request.petAdId}/${request.userId}`}
+              >
                 Ver formulario de preadopción
-              </Button>
+              </Link>
             </>
           )}
         </HStack>

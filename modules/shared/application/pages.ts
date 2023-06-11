@@ -7,6 +7,7 @@ export const PAGES = {
   USER_PET_ADS_LIST: '/profile/pet-ads',
   USER_DETAIL: '/profile/user',
   ADOPTIONS_REQUESTS_LIST: '/profile/adoptions-requests',
+  PREADOPTION_FORM: '/preadoption-form',
 };
 
 export const DASHBOARD_PAGES = {

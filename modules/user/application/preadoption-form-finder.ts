@@ -33,7 +33,7 @@ export const preadoptionFormFinder = async ({
   }
 
   const user = await prisma.user.findUnique({
-    where: { id: requestFromUser.id },
+    where: { id: requestFromUser.userId },
   });
 
   if (!user?.preadoptionForm) {
