@@ -1,4 +1,4 @@
-import type { PetAdRequest } from '@pet-ad-request/model';
+import type { PetAdRequest, AdoptionStep } from '@pet-ad-request/model';
 import { fetcher } from '@shared/application/fetcher';
 import type { EntityCreation } from '@shared/domain/entity';
 
@@ -12,6 +12,22 @@ export const createPetAdRequest = async (
   const res = await fetcher<PetAdRequest>(BASE_URL, {
     method: 'POST',
     body: JSON.stringify(petAdRequest),
+    cache: 'no-cache',
+  });
+
+  return res;
+};
+
+export const updateAdoptionStepById = async ({
+  adoptionStep,
+  petAdRequestId,
+}: {
+  petAdRequestId: string;
+  adoptionStep: AdoptionStep;
+}) => {
+  const res = await fetcher<PetAdRequest>(`${BASE_URL}/adoption-step`, {
+    method: 'PUT',
+    body: JSON.stringify({ adoptionStep, petAdRequestId }),
     cache: 'no-cache',
   });
 

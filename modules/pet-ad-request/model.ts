@@ -2,6 +2,7 @@ import {
   PetAdRequest as PetAdRequestPrisma,
   AdoptionStepType as AdoptionStepTypePrisma,
   RequestStatus,
+  AdoptionStep as AdoptionStepPrisma,
 } from '@prisma/client';
 
 export type PetAdRequest = PetAdRequestPrisma;
@@ -15,6 +16,8 @@ export const ADOPTION_STEPS_TYPES: Record<AdoptionStepType, AdoptionStepType> =
     MEETING: 'MEETING',
     PREADOPTION_FORM: 'PREADOPTION_FORM',
   };
+
+export type AdoptionStep = AdoptionStepPrisma;
 
 export function sortByStatus<T extends PetAdRequest>(
   array: T[],
