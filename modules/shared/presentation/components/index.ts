@@ -7,6 +7,7 @@ export * from './InputDate';
 export * from './InputImage';
 export * from './InputRadioCard';
 export * from './InputText';
+export * from './InputTime';
 export * from './Table';
 export * from './Select';
 export * from './Sidebar';

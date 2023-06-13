@@ -43,3 +43,14 @@ export const formatDateToString = (
 
   return formattedDate;
 };
+
+export const getTimeFromDate = (date: Date): string => {
+  const hour = date.getHours();
+  const minutes = date.getMinutes();
+
+  const timeFormatted = `${hour.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}`;
+
+  return timeFormatted;
+};
