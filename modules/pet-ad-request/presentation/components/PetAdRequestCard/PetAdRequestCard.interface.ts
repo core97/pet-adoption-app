@@ -3,6 +3,7 @@ import { PetAdRequest } from '@pet-ad-request/model';
 import { AdoptionRequest } from '@/modules/pet-ad-request/types';
 
 export type PetAdRequestCardProps = {
+  onClickCreateVisit: (request: AdoptionRequest) => void;
   request: AdoptionRequest;
   isUserRequest?: boolean;
 };

@@ -59,6 +59,7 @@ export const SelectAddressForm = ({
   return (
     <>
       <Box
+      width="100%"
         alignItems="flex-start"
         as="form"
         onSubmit={handleSubmit(handleSubmitForm)}
