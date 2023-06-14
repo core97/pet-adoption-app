@@ -4,7 +4,10 @@ import { EntityCreation } from '@shared/domain/entity';
 import { FormProps } from '@shared/presentation/types/form-type';
 import { PetType } from '@shared/domain/pet-type';
 
-export type PetAdFormFields = Pick<PetAd, 'breedIds' | 'dateBirth' | 'name'> & {
+export type PetAdFormFields = Pick<
+  PetAd,
+  'breedIds' | 'dateBirth' | 'name' | 'gender'
+> & {
   images: (File | string)[];
 };
 

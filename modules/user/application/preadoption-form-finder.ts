@@ -20,7 +20,7 @@ export const preadoptionFormFinder = async ({
     );
   }
 
-  const petAdRequests = await prisma.petAdRequest.findMany({
+  const petAdRequests = await prisma.adoptionRequest.findMany({
     where: { petAdId },
   });
 

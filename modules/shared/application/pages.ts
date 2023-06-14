@@ -6,7 +6,7 @@ export const PAGES = {
   SIGN_IN: '/sign-in',
   USER_PET_ADS_LIST: '/profile/pet-ads',
   USER_DETAIL: '/profile/user',
-  ADOPTIONS_REQUESTS_LIST: '/profile/adoptions-requests',
+  ADOPTION_REQUESTS_LIST: '/profile/adoption-requests',
   PREADOPTION_FORM: '/preadoption-form',
 };
 

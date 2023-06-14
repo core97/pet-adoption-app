@@ -22,12 +22,12 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@adoption-request/*": ["./modules/adoption-request/*"],
       "@breed/*": ["./modules/breed/*"],
       "@components": ["./modules/shared/presentation/components"],
       "@components/*": ["./modules/shared/presentation/components/*"],
       "@hooks/*": ["./modules/shared/presentation/hooks/*"],
       "@pet-ad/*": ["./modules/pet-ad/*"],
-      "@pet-ad-request/*": ["./modules/pet-ad-request/*"],
       "@shared/*": ["./modules/shared/*"],
       "@user/*": ["./modules/user/*"],
     }

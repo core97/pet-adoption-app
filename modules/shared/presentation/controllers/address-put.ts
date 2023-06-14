@@ -1,7 +1,7 @@
 import { Address } from '@shared/domain/address';
 import { controller } from '@shared/application/controller';
 import { httpHandler } from '@shared/application/http/http-handler';
-import { addressValidator } from '@/modules/shared/application/address-validator';
+import { addressValidator } from '@shared/application/address-validator';
 
 export const addressPut = controller(
   async req => {

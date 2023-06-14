@@ -1,8 +1,8 @@
 import type { PetAd } from '@pet-ad/model';
+import { PetAdDetailDto } from '@pet-ad/dto';
 import { fetcher, FetchCacheConfig } from '@shared/application/fetcher';
 import type { EntityCreation } from '@shared/domain/entity';
 import type { PaginationResult } from '@shared/domain/pagination';
-import type { Address } from '@shared/domain/address';
 import type { PetAdUpdaterById } from '@pet-ad/application/pet-ad-updater-by-id';
 import type { PetAdsListFinderByCountry } from '@pet-ad/application/pet-ad-list-finder-by-country';
 
@@ -85,9 +85,7 @@ export const getPetAdById = async ({
 }: FetchCacheConfig<Pick<PetAd, 'id'>>) => {
   const cacheTag = PET_AD_CACHE_TAGS.DETAIL.replace(':id', id);
 
-  const res = await fetcher<
-    Omit<PetAd, 'address'> & { address: Pick<Address, 'city' | 'country'> }
-  >(`${BASE_URL}/${id}`, {
+  const res = await fetcher<PetAdDetailDto>(`${BASE_URL}/${id}`, {
     ...cacheConfig,
     method: 'GET',
     next: { ...cacheConfig?.next, tags: [cacheTag] },

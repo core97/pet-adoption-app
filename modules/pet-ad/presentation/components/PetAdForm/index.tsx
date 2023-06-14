@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form';
-import { VStack, Button } from '@chakra-ui/react';
+import { VStack, Button, useToast } from '@chakra-ui/react';
 import { InputDate, InputImage, InputText, Select } from '@components';
 import { useAsync } from '@hooks/useAsync';
+import { GENDER } from '@pet-ad/model';
 import { FileStoraged } from '@shared/domain/file-storaged';
 import { uploadFiles } from '@shared/presentation/services/storage-service';
 import { PetAdFormFields, PetAdFormProps } from './PetAdForm.interface';
@@ -19,9 +20,19 @@ export const PetAdForm = ({
   const { register, formState, handleSubmit, control } =
     useForm<PetAdFormFields>();
 
+  const toast = useToast();
+
   const handleSubmitForm = useAsync(async (data: PetAdFormFields) => {
     const filesToUpload = data.images.filter(item => typeof item !== 'string');
     let filesStoraged: FileStoraged[] = [];
+
+    if (data.breedIds.length > 2) {
+      toast({
+        status: 'error',
+        title: 'No puedes seleccionar más de dos razas.',
+      });
+      return;
+    }
 
     if (filesToUpload.length) {
       filesStoraged = await uploadFiles(
@@ -38,6 +49,7 @@ export const PetAdForm = ({
       breedIds: data.breedIds,
       dateBirth: new Date(data.dateBirth),
       petType,
+      gender: data.gender,
     });
   });
 
@@ -75,6 +87,17 @@ export const PetAdForm = ({
         options={options.breeds.map(breed => ({
           label: breed.name,
           value: breed.id,
+        }))}
+        rules={{ required: true }}
+        defaultValue={defaultValue?.breedIds}
+      />
+      <Select
+        label="Género"
+        control={control}
+        name="gender"
+        options={Object.values(GENDER).map(gender => ({
+          label: gender,
+          value: gender,
         }))}
         rules={{ required: true }}
         defaultValue={defaultValue?.breedIds}

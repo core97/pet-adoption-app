@@ -6,14 +6,15 @@ import {
   Container,
   Button,
   Heading,
+  Text,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import { Icon } from '@components/Icon';
 import { useAsync } from '@hooks/useAsync';
-import { SendPetAdRequestModal } from '@pet-ad-request/presentation/components/SendPetAdRequestModal';
-import { createPetAdRequest } from '@pet-ad-request/presentation/pet-ad-request-fetcher';
-import { PetAdRequestErrorsCode } from '@pet-ad-request/application/errors-code';
+import { SendAdoptionRequestModal } from '@adoption-request/presentation/components/SendAdoptionRequestModal';
+import { createAdoptionRequest } from '@adoption-request/presentation/adoption-request-fetcher';
+import { AdoptionRequestErrorsCode } from '@adoption-request/application/adoption-request-errors-code';
 import { upsertUserPreadoptionForm } from '@user/presentation/user-service';
 import { AppError } from '@shared/application/errors/app-error';
 import { HttpErrorCode } from '@shared/application/http/http-errors';
@@ -24,7 +25,7 @@ import {
 
 export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
   const [errorReason, setErrorReason] = useState<
-    HttpErrorCode | PetAdRequestErrorsCode
+    HttpErrorCode | AdoptionRequestErrorsCode
   >();
 
   const [isOpenForm, setIsOpenForm] = useState(false);
@@ -37,7 +38,7 @@ export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
     try {
       setErrorReason(undefined);
 
-      await createPetAdRequest({
+      await createAdoptionRequest({
         petAdId: petAd.id,
         status: 'PENDING',
       });
@@ -45,9 +46,9 @@ export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
       modalHandler.onOpen();
     } catch (error) {
       const validErrors = [
-        PetAdRequestErrorsCode.ALREADY_CREATED_REQUEST_WITH_SAME_AD,
-        PetAdRequestErrorsCode.MISSING_PREADOPTION_FORM_IN_USER,
-        PetAdRequestErrorsCode.REQUEST_WITH_SAME_CREATION_USER,
+        AdoptionRequestErrorsCode.ALREADY_CREATED_REQUEST_WITH_SAME_AD,
+        AdoptionRequestErrorsCode.MISSING_PREADOPTION_FORM_IN_USER,
+        AdoptionRequestErrorsCode.REQUEST_WITH_SAME_CREATION_USER,
         HttpErrorCode.UNAUTHORIZATED,
       ] as string[];
 
@@ -59,12 +60,12 @@ export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
       }
 
       setErrorReason(
-        error.businessCode as HttpErrorCode | PetAdRequestErrorsCode
+        error.businessCode as HttpErrorCode | AdoptionRequestErrorsCode
       );
 
       if (
         error.businessCode ===
-        PetAdRequestErrorsCode.MISSING_PREADOPTION_FORM_IN_USER
+        AdoptionRequestErrorsCode.MISSING_PREADOPTION_FORM_IN_USER
       ) {
         toast({
           isClosable: true,
@@ -100,6 +101,7 @@ export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
   return (
     <Container maxW="2xl">
       <Heading>{petAd.name}</Heading>
+      <Text>{petAd.user.email}</Text>
       <Button
         type="button"
         onClick={handleClickSendAdoptionRequest.execute}
@@ -122,7 +124,7 @@ export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
         Formulario de preadopción
       </PopupButton>
 
-      <SendPetAdRequestModal
+      <SendAdoptionRequestModal
         isOpen={modalHandler.isOpen}
         onClose={modalHandler.onClose}
         error={errorReason}

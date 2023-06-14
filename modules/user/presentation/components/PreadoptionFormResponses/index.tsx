@@ -17,8 +17,9 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useAsync } from '@hooks/useAsync';
-import { PetAdRequestStatus } from '@pet-ad-request/model';
-import { updateAdoptionStepById } from '@pet-ad-request/presentation/pet-ad-request-fetcher';
+import { PetAdRequestStatus } from '@adoption-request/model';
+import { updateAdoptionStepById } from '@adoption-request/presentation/adoption-request-fetcher';
+import { PAGES } from '@shared/application/pages';
 import { PreadoptionFormResponsesProps } from './PreadoptionFormresponses.interface';
 
 export const PreadoptionFormResponses = ({
@@ -51,6 +52,7 @@ export const PreadoptionFormResponses = ({
           title:
             'El estado de formulario de preadopción se ha actualizado con éxito',
         },
+        redirect: PAGES.ADOPTION_REQUESTS_LIST,
       },
     }
   );
@@ -74,22 +76,25 @@ export const PreadoptionFormResponses = ({
       <Modal isOpen={modalHandler.isOpen} onClose={modalHandler.onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Validación del formulario</ModalHeader>
+          <ModalHeader>Validación del formulario 🧐❓</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack>
+            <VStack spacing={3}>
               <Text>
                 Tras la revisión del formulario puedes dar como válidas sus
-                respuestas para así seguir avanzándondo con el proceso de
-                adopción del futuro dueño. En caso de lo contrario puedes rechazar el
-                formulario dando por hecho que no es el candidato correcto.
+                respuestas para avanzar con el proceso de adopción del futuro
+                dueño.
+              </Text>
+              <Text>
+                En caso de lo contrario puedes rechazar el formulario dando por
+                hecho que no es el dueño apropiado.
               </Text>
             </VStack>
           </ModalBody>
 
           <ModalFooter>
             <Button
-            variant="ghost"
+              variant="ghost"
               colorScheme="red"
               mr={3}
               onClick={() => handleClickValidation.execute('REJECTED')}
@@ -98,7 +103,6 @@ export const PreadoptionFormResponses = ({
               Rechazar
             </Button>
             <Button
-              
               colorScheme="teal"
               onClick={() => handleClickValidation.execute('ACCEPTED')}
               isLoading={handleClickValidation.status === 'loading'}

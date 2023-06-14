@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { HttpStatus } from '@/modules/shared/application/http/http-status';
+import { HttpStatus } from '@shared/application/http/http-status';
 
 export const httpHandler = {
   jsonResponse(code: HttpStatus, message?: string | Record<string, unknown>) {
