@@ -1,6 +1,6 @@
-import { AdoptionRequest } from '@/modules/pet-ad-request/types';
+import { AdoptionRequestDto } from '@pet-ad-request/types';
 
 export type PetAdsRequestsTabsProps = {
-  requestsFromMe: AdoptionRequest[];
-  requestsFromPetAds: AdoptionRequest[];
+  requestsFromMe: AdoptionRequestDto[];
+  requestsFromPetAds: AdoptionRequestDto[];
 };

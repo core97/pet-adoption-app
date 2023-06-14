@@ -1,10 +1,10 @@
 import { sortByStatus } from '@pet-ad-request/model';
-import { AdoptionRequest } from '@pet-ad-request/types';
+import { AdoptionRequestDto } from '@pet-ad-request/types';
 import { PaginationResult } from '@shared/domain/pagination';
 import prisma from '@shared/application/prisma';
 
 export interface PetAdsRequestsFinderByUserPetAds {
-  (params: { userId: string }): Promise<PaginationResult<AdoptionRequest>>;
+  (params: { userId: string }): Promise<PaginationResult<AdoptionRequestDto>>;
 }
 
 export const petAdsRequestsFinderByUserPetAds: PetAdsRequestsFinderByUserPetAds =

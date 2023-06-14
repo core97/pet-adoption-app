@@ -1,9 +1,9 @@
 import { ThemingProps } from '@chakra-ui/react';
 import { PetAdRequest } from '@pet-ad-request/model';
-import { AdoptionRequest } from '@/modules/pet-ad-request/types';
+import { AdoptionRequestDto } from '@/modules/pet-ad-request/types';
 
 export type PetAdRequestCardProps = {
-  request: AdoptionRequest;
+  request: AdoptionRequestDto;
   isUserRequest?: boolean;
 };
 
