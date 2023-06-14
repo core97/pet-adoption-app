@@ -24,7 +24,6 @@ export const PET_AD_REQUEST_STATUSES: Record<
 
 export const ADOPTION_STEPS_TYPES: Record<AdoptionStepType, AdoptionStepType> =
   {
-    MEETING: 'MEETING',
     PREADOPTION_FORM: 'PREADOPTION_FORM',
   };
 

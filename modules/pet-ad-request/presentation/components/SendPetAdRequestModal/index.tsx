@@ -31,12 +31,10 @@ export const SendPetAdRequestModal = ({
         {!error && (
           <>
             <Text>
-              En los próximos días el usuario revisará tu solicitud junto con el
-              formulario de preadopción que rellenaste anteriormente. Si cumples
-              con los requisitos, serás notificado y podrás organizar una visita
-              para conocer a tu posible futuro amigo. El usuario también podrá
-              organizar una visita para conocer el futuro hogar y familia de la
-              mascota.
+              En los próximos días el anunciante revisará tu solicitud junto con
+              el formulario de preadopción que rellenaste anteriormente. Si
+              cumples con los requisitos, serás notificado y el anunciante se
+              pondrá en contacto contigo por email o por teléfono.
             </Text>
             <Text mt={4}>Mucha suerte.</Text>
           </>

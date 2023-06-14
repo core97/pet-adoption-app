@@ -17,7 +17,6 @@ import {
 } from './PetAdRequestCard.interface';
 
 export const PetAdRequestCard = ({
-  onClickCreateVisit,
   request,
   isUserRequest,
 }: PetAdRequestCardProps) => (
@@ -39,18 +38,6 @@ export const PetAdRequestCard = ({
         )}
 
         <HStack>
-          {request.adoptionSteps.find(({ step }) => step === 'PREADOPTION_FORM')
-            ?.status === 'ACCEPTED' && (
-            <Button
-              type="button"
-              variant="link"
-              size="sm"
-              onClick={() => onClickCreateVisit(request)}
-            >
-              Crear visita
-            </Button>
-          )}
-
           {!isUserRequest && (
             <>
               <Button type="button" variant="link" size="sm">

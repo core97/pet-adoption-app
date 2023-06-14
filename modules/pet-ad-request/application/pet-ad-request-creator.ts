@@ -16,7 +16,6 @@ export const petAdRequestCreator: PetAdRequestCreator = async petAdRequest => {
     const petAdRequestToCreate: EntityCreation<PetAdRequest> = {
       ...petAdRequest,
       adoptionSteps: [
-        { status: 'PENDING', step: 'MEETING', updatedAt: new Date() },
         { status: 'PENDING', step: 'PREADOPTION_FORM', updatedAt: new Date() },
       ],
     };

@@ -30,7 +30,6 @@
       "@pet-ad-request/*": ["./modules/pet-ad-request/*"],
       "@shared/*": ["./modules/shared/*"],
       "@user/*": ["./modules/user/*"],
-      "@visit/*": ["./modules/visit/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
