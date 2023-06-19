@@ -37,20 +37,21 @@ model Breed {
 }
 
 model PetAd {
-  id        String            @id @default(auto()) @map("_id") @db.ObjectId
-  address   Address
-  breeds    Breed[]           @relation(fields: [breedIds], references: [id])
-  breedIds  String[]          @db.ObjectId
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  dateBirth DateTime
-  images    FileStoraged[]
-  name      String
-  gender    Gender
-  petType   PetType
-  user      User              @relation(fields: [userId], references: [id])
-  userId    String            @db.ObjectId
-  requests  AdoptionRequest[]
+  id             String            @id @default(auto()) @map("_id") @db.ObjectId
+  address        Address
+  breeds         Breed[]           @relation(fields: [breedIds], references: [id])
+  breedIds       String[]          @db.ObjectId
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  dateBirth      DateTime
+  images         FileStoraged[]
+  adoptionStatus AdoptionStatus    @default(IN_SEARCH)
+  name           String
+  gender         Gender
+  petType        PetType
+  user           User              @relation(fields: [userId], references: [id])
+  userId         String            @db.ObjectId
+  requests       AdoptionRequest[]
 }
 
 model AdoptionRequest {
@@ -137,6 +138,11 @@ type PreadoptionForm {
 type ProviderAccount {
   providerAccountId String
   provider          String
+}
+
+enum AdoptionStatus {
+  IN_SEARCH
+  ADOPTED
 }
 
 enum AdoptionStepType {
