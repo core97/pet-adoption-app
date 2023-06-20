@@ -11,7 +11,7 @@ export interface AdoptionStatusUpdaterById {
   }): Promise<PetAdRequest>;
 }
 
-export const adoptionStepUpdaterById: AdoptionStatusUpdaterById = async ({
+export const adoptionStatusUpdaterById: AdoptionStatusUpdaterById = async ({
   data,
   searchParam,
 }) => {
