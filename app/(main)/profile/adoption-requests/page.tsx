@@ -2,7 +2,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { AdoptionRequestsTabs } from '@adoption-request/presentation/components/AdoptionRequestsTabs';
 import { adoptionRequestsFinderByUser } from '@adoption-request/application/adoption-requests-finder-by-user';
-import { adoptionRequestsFinderByUserPetAds } from '@adoption-request/application/adoption-requests-finder-by-user-pet-ads';
+import { petAdsListFinderByUser } from '@pet-ad/application/pet-ads-list-finder-by-user';
 import { getSession } from '@shared/presentation/services/auth-service';
 import { PAGES } from '@shared/application/pages';
 
@@ -13,15 +13,15 @@ const AdoptionsRequests = async () => {
     redirect(PAGES.SIGN_IN);
   }
 
-  const [requestsFromMe, requestsFromPetAds] = await Promise.all([
+  const [requestsFromMe, petAds] = await Promise.all([
     adoptionRequestsFinderByUser({ userId: session.user.id }),
-    adoptionRequestsFinderByUserPetAds({ userId: session.user.id }),
+    petAdsListFinderByUser({ userId: session.user.id }),
   ]);
 
   return (
     <AdoptionRequestsTabs
       requestsFromMe={requestsFromMe.results}
-      requestsFromPetAds={requestsFromPetAds.results}
+      petAds={petAds.results}
     />
   );
 };

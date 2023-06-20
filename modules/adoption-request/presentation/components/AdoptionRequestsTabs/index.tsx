@@ -1,5 +1,6 @@
 'use client';
 
+import { Link } from '@chakra-ui/next-js';
 import {
   Tabs,
   TabList,
@@ -9,11 +10,12 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { AdoptionRequestsList } from '@adoption-request/presentation/components/AdoptionRequestsList';
+import { PAGES } from '@shared/application/pages';
 import { AdoptionRequestsTabsProps } from './AdoptionRequestsTabs.interface';
 
 export const AdoptionRequestsTabs = ({
   requestsFromMe,
-  requestsFromPetAds,
+  petAds,
 }: AdoptionRequestsTabsProps) => (
   <Tabs>
     <TabList>
@@ -30,14 +32,14 @@ export const AdoptionRequestsTabs = ({
         )}
       </TabPanel>
       <TabPanel>
-        {requestsFromPetAds.length ? (
-          <AdoptionRequestsList requests={requestsFromPetAds} />
-        ) : (
-          <Text>
-            Aún no te han hecho ninguna solicitud sobre los anuncios que has
-            publicado
-          </Text>
-        )}
+        {petAds.map(petAd => (
+          <Link
+            key={petAd.id}
+            href={`${PAGES.ADOPTION_REQUESTS_LIST}/${petAd.id}`}
+          >
+            {petAd.name}
+          </Link>
+        ))}
       </TabPanel>
     </TabPanels>
   </Tabs>

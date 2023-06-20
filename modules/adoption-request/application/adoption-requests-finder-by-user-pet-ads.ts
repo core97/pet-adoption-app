@@ -1,36 +1,40 @@
 import { sortByStatus } from '@adoption-request/model';
 import { AdoptionRequestDto } from '@adoption-request/dto';
 import { PaginationResult } from '@shared/domain/pagination';
+import { ConflictError } from '@shared/application/errors/conflict.error';
 import prisma from '@shared/application/prisma';
 
 export interface AdoptionRequestsFinderByUserPetAds {
-  (params: { userId: string }): Promise<PaginationResult<AdoptionRequestDto>>;
+  (params: { petAdId: string; userId: string }): Promise<
+    PaginationResult<AdoptionRequestDto>
+  >;
 }
 
 export const adoptionRequestsFinderByUserPetAds: AdoptionRequestsFinderByUserPetAds =
-  async ({ userId }) => {
+  async ({ petAdId, userId }) => {
     try {
-      const userPetAds = await prisma.petAd.findMany({
-        where: { userId },
-        select: { id: true },
-      });
-
       const results = await prisma.adoptionRequest.findMany({
-        where: { petAdId: { in: userPetAds.map(({ id }) => id) } },
+        where: { petAdId },
         orderBy: { updatedAt: 'desc' },
         include: {
           user: { select: { name: true } },
-          petAd: { select: { images: true, name: true } },
+          petAd: { select: { images: true, name: true, userId: true } },
         },
       });
 
+      if (results.some(({ petAd }) => petAd.userId !== userId)) {
+        throw new ConflictError(
+          'Adoption request ad does not belong to the user'
+        );
+      }
+
       return {
-        results: sortByStatus(results, ['PENDING', 'ACCEPTED', 'REJECTED']),
+        results: sortByStatus(results, ['ACCEPTED', 'PENDING', 'REJECTED']),
         total: results.length,
       };
     } catch (error) {
       if (error instanceof Error) {
-        error.message = `Failure to find pet ads requests by "${userId}" user pet ads. ${error.message}`;
+        error.message = `Failure to find adoption requests by "${userId}" user pet ads. ${error.message}`;
       }
 
       throw error;
