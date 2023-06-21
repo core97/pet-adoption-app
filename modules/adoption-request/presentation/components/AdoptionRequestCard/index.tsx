@@ -44,9 +44,7 @@ export const AdoptionRequestCard = ({
                 Modificar estado de la solicitud
               </Button>
 
-              <Link
-                href={`${PAGES.PREADOPTION_FORM}/${request.id}/${request.petAdId}/${request.userId}`}
-              >
+              <Link href={`${PAGES.PREADOPTION_FORM}/${request.id}`}>
                 Ver formulario de preadopción
               </Link>
             </>

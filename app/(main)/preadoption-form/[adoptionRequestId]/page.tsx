@@ -8,7 +8,7 @@ import { PAGES } from '@shared/application/pages';
 const PreadoptionFormPreview = async ({
   params,
 }: {
-  params: { petAd: string; user: string };
+  params: { adoptionRequestId: string };
 }) => {
   const session = await getSession(headers().get('cookie') ?? '');
 
@@ -17,8 +17,7 @@ const PreadoptionFormPreview = async ({
   }
 
   const { formResult, lang } = await preadoptionFormFinder({
-    petAdId: params.petAd,
-    preadoptionUserId: params.user,
+    adoptionRequestId: params.adoptionRequestId,
     requestingUserId: session.user.id,
   });
 
