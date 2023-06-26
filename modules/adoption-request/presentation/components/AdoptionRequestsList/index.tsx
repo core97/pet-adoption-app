@@ -1,18 +1,54 @@
 'use client';
 
-import { UnorderedList, ListItem } from '@chakra-ui/react';
+import { useState } from 'react';
+import {
+  UnorderedList,
+  ListItem,
+  Box,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { AdoptionRequestCard } from '@adoption-request/presentation/components/AdoptionRequestCard';
+import { AdoptionRequestStatusModifier } from '@adoption-request/presentation/components/AdoptionRequestStatusModifier';
 import { AdoptionRequestsListProps } from './AdoptionRequestLists.interface';
 
 export const AdoptionRequestsList = ({
   requests,
-  isUserRequest,
-}: AdoptionRequestsListProps) => (
-  <UnorderedList listStyleType="none">
-    {requests.map(request => (
-      <ListItem key={request.id}>
-        <AdoptionRequestCard request={request} isUserRequest={isUserRequest} />
-      </ListItem>
-    ))}
-  </UnorderedList>
-);
+}: AdoptionRequestsListProps) => {
+  const [selectedRequestId, setSelectedRequestId] = useState<string>();
+
+  const modalHandler = useDisclosure();
+
+  if (!requests.length) {
+    return (
+      <Box>
+        <Text>
+          Aún no te han hecho ninguna solicitud de adopción sobre este anuncio
+        </Text>
+      </Box>
+    );
+  }
+
+  return (
+    <>
+      <UnorderedList listStyleType="none">
+        {requests.map(request => (
+          <ListItem key={request.id}>
+            <AdoptionRequestCard
+              request={request}
+              onClickModifyStatus={({ adoptionRequestId }) => {
+                setSelectedRequestId(adoptionRequestId);
+                modalHandler.onOpen();
+              }}
+            />
+          </ListItem>
+        ))}
+      </UnorderedList>
+      <AdoptionRequestStatusModifier
+        isOpen={modalHandler.isOpen}
+        onClose={modalHandler.onClose}
+        adoptionRequestId={selectedRequestId}
+      />
+    </>
+  );
+};

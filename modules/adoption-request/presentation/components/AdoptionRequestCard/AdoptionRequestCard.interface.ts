@@ -4,7 +4,7 @@ import { AdoptionRequestDto } from '@adoption-request/dto';
 
 export type AdoptionRequestCardProps = {
   request: AdoptionRequestDto;
-  isUserRequest?: boolean;
+  onClickModifyStatus: (params: { adoptionRequestId: string }) => void;
 };
 
 export const colorRequestStatus: Record<

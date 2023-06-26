@@ -40,14 +40,14 @@ export const updateAdoptionStepById = async ({
 
 export const updateAdoptionStatusById = async ({
   status,
-  petAdRequestId,
+  adoptionRequestId,
 }: {
-  petAdRequestId: string;
+  adoptionRequestId: string;
   status: PetAdRequestStatus;
 }) => {
   const res = await fetcher<PetAdRequest>(`${BASE_URL}/status`, {
     method: 'PUT',
-    body: JSON.stringify({ status, petAdRequestId }),
+    body: JSON.stringify({ status, adoptionRequestId }),
     cache: 'no-cache',
   });
 

@@ -21,11 +21,7 @@ const AdoptionsRequests = async ({
     petAdId: params.petAdId,
   });
 
-  return requestsFromPetAds.results.length ? (
-    <AdoptionRequestsList requests={requestsFromPetAds.results} />
-  ) : (
-    <p>Aún no te han hecho ninguna solicitud de adopción sobre este anuncio</p>
-  );
+  return <AdoptionRequestsList requests={requestsFromPetAds.results} />;
 };
 
 export default AdoptionsRequests;

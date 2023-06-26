@@ -3,6 +3,6 @@ import { PetAd } from '@pet-ad/model';
 import { User } from '@user/model';
 
 export type AdoptionRequestDto = PetAdRequest & {
-  user: Pick<User, 'name'>;
+  user: Pick<User, 'name' | 'email'>;
   petAd: Pick<PetAd, 'name' | 'images'>;
 };

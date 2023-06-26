@@ -8,8 +8,9 @@ import {
   Tab,
   TabPanel,
   Text,
+  UnorderedList,
+  ListItem,
 } from '@chakra-ui/react';
-import { AdoptionRequestsList } from '@adoption-request/presentation/components/AdoptionRequestsList';
 import { PAGES } from '@shared/application/pages';
 import { AdoptionRequestsTabsProps } from './AdoptionRequestsTabs.interface';
 
@@ -26,7 +27,14 @@ export const AdoptionRequestsTabs = ({
     <TabPanels>
       <TabPanel>
         {requestsFromMe.length ? (
-          <AdoptionRequestsList isUserRequest requests={requestsFromMe} />
+          <UnorderedList listStyleType="none">
+            {requestsFromMe.map(request => (
+              <ListItem key={request.id}>
+                <Text>{request.petAd.name}</Text>
+                <Text>{`Estado: ${request.status}`}</Text>
+              </ListItem>
+            ))}
+          </UnorderedList>
         ) : (
           <Text>Aún no has hecho ninguna solicitud</Text>
         )}

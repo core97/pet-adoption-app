@@ -17,7 +17,7 @@ export const adoptionRequestsFinderByUserPetAds: AdoptionRequestsFinderByUserPet
         where: { petAdId },
         orderBy: { updatedAt: 'desc' },
         include: {
-          user: { select: { name: true } },
+          user: { select: { name: true, email: true } },
           petAd: { select: { images: true, name: true, userId: true } },
         },
       });

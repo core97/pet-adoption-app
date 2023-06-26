@@ -11,7 +11,7 @@ export const adoptionStatusPut = controller(
     }
 
     const adoptionRequest = await adoptionStatusUpdaterById({
-      searchParam: { id: body.petAdRequestId },
+      searchParam: { id: body.adoptionRequestId },
       data: {
         status: body.status,
         updaterUserId: req.context.user.id,

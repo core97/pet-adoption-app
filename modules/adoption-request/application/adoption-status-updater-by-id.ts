@@ -74,7 +74,7 @@ export const adoptionStatusUpdaterById: AdoptionStatusUpdaterById = async ({
 
     if (data.status === 'ACCEPTED') {
       await prisma.petAd.update({
-        where: { id: searchParam.id },
+        where: { id: petAd.id },
         data: { adoptionStatus: 'ADOPTED' },
       });
     }
