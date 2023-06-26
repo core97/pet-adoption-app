@@ -26,16 +26,17 @@ export const AdoptionRequestStatusModifier = ({
   isOpen,
   onClose,
   adoptionRequestId,
+  onModifyStatus,
 }: AdoptionRequestStatusModifierProps) => {
   const handleModifyStatus = useAsync(
     async (status: PetAdRequestStatus) => {
-      try {
-        if (!adoptionRequestId) return;
+      if (!adoptionRequestId) return;
 
-        await updateAdoptionStatusById({ status, adoptionRequestId });
-      } finally {
-        onClose();
-      }
+      await updateAdoptionStatusById({ status, adoptionRequestId });
+
+      onClose();
+
+      onModifyStatus?.();
     },
     {
       onSuccess: {

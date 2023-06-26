@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   UnorderedList,
@@ -16,6 +17,8 @@ export const AdoptionRequestsList = ({
   requests,
 }: AdoptionRequestsListProps) => {
   const [selectedRequestId, setSelectedRequestId] = useState<string>();
+
+  const router = useRouter();
 
   const modalHandler = useDisclosure();
 
@@ -48,6 +51,7 @@ export const AdoptionRequestsList = ({
         isOpen={modalHandler.isOpen}
         onClose={modalHandler.onClose}
         adoptionRequestId={selectedRequestId}
+        onModifyStatus={router.refresh}
       />
     </>
   );

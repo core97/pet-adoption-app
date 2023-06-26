@@ -5,6 +5,7 @@ export interface AdoptionRequestStatusModifierProps {
   isOpen: boolean;
   onClose: () => void;
   adoptionRequestId?: string;
+  onModifyStatus?: () => void;
 }
 
 export const DESCRIPTION_BY_STATUS: {
