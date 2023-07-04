@@ -93,3 +93,11 @@ export const getPetAdById = async ({
 
   return res;
 };
+
+export const updatePetAdAsFavourite = async ({ id }: Pick<PetAd, 'id'>) => {
+  const res = await fetcher<PetAdDetailDto>(`${BASE_URL}/favourite/${id}`, {
+    method: 'PUT',
+  });
+
+  return res;
+};

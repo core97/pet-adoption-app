@@ -13,27 +13,40 @@ import {
 import { Icon } from '@components/Icon';
 import { useAsync } from '@hooks/useAsync';
 import { SendAdoptionRequestModal } from '@adoption-request/presentation/components/SendAdoptionRequestModal';
+import { updatePetAdAsFavourite } from '@pet-ad/presentation/pet-ad-fetcher';
 import { createAdoptionRequest } from '@adoption-request/presentation/adoption-request-fetcher';
 import { AdoptionRequestErrorsCode } from '@adoption-request/application/adoption-request-errors-code';
 import { upsertUserPreadoptionForm } from '@user/presentation/user-service';
 import { AppError } from '@shared/application/errors/app-error';
+import { AppClientError } from '@shared/application/errors/app-client-error';
 import { HttpErrorCode } from '@shared/application/http/http-errors';
 import {
   PetAdDetailProps,
   PreadoptionFormSubmit,
 } from './PetAdDetail.interface';
 
-export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
+/**
+ * TODO:
+ * - Hacer pruebas de que marcar como favorito funciona
+ * - Hacer pruebas de que el contador de visitas funciona
+ */
+
+export const PetAdDetail = ({ petAd, userId }: PetAdDetailProps) => {
   const [errorReason, setErrorReason] = useState<
     HttpErrorCode | AdoptionRequestErrorsCode
   >();
 
   const [isOpenForm, setIsOpenForm] = useState(false);
 
+  const [isMarkedAsFavourite, setIsMarkedAsFavourite] = useState(
+    petAd.favouritesUsersId.includes(userId || '')
+  );
+
   const toast = useToast();
 
   const modalHandler = useDisclosure();
 
+  // TODO: Refact this function with a custom hook
   const handleClickSendAdoptionRequest = useAsync(async () => {
     try {
       setErrorReason(undefined);
@@ -82,6 +95,29 @@ export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
     }
   });
 
+  const handleClickSetAsFavourite = useAsync(
+    async () => {
+      if (!userId) {
+        throw new AppClientError(
+          'Para marcar como favorito primero debes iniciar sesión'
+        );
+      }
+
+      await updatePetAdAsFavourite({ id: petAd.id });
+
+      setIsMarkedAsFavourite(prev => !prev);
+    },
+    {
+      onSuccess: {
+        toast: {
+          title: isMarkedAsFavourite
+            ? 'Has eliminado el anuncio de tus favoritos'
+            : 'Has añadido el anuncio a tus favoritos',
+        },
+      },
+    }
+  );
+
   const handleOnSubmitPreadoptionForm = useAsync(
     async (data: any) => {
       const submitData = data as PreadoptionFormSubmit;
@@ -110,6 +146,17 @@ export const PetAdDetail = ({ petAd }: PetAdDetailProps) => {
         isLoading={handleClickSendAdoptionRequest.status === 'loading'}
       >
         Enviar solicitud de adopción
+      </Button>
+      <Button
+        type="button"
+        onClick={handleClickSetAsFavourite.execute}
+        colorScheme="teal"
+        leftIcon={
+          <Icon iconName={isMarkedAsFavourite ? 'heartFill' : 'heartOutline'} />
+        }
+        isLoading={handleClickSetAsFavourite.status === 'loading'}
+      >
+        {isMarkedAsFavourite ? 'Quitar de favoritos' : 'Marcar como favorito'}
       </Button>
       <PopupButton
         id="GgL5zYYK"

@@ -17,6 +17,7 @@ export const controller = (
 ) => ({
   run: async (request: Request) => {
     const logger = createLogger({ method: request.method, url: request.url });
+    const authCookie = request.headers.get('cookie') ?? '';
 
     logger.info('Starting request');
 
@@ -25,18 +26,11 @@ export const controller = (
     };
 
     try {
-      if (options.roles?.length) {
-        const session = await getSession(request.headers.get('cookie') ?? '');
-        const hasRole = options.roles.some(
-          role => role === session?.user?.role
-        );
+      if (options.roles?.length || authCookie) {
+        const session = await getSession(authCookie);
 
         if (!session?.user) {
           return httpHandler.unauthorized('You are not logged in');
-        }
-
-        if (!hasRole) {
-          return httpHandler.forbidden('You have no permissions');
         }
 
         request.context.user = {
@@ -44,6 +38,14 @@ export const controller = (
           id: session.user.id as string,
           role: session.user.role as UserRole,
         };
+
+        const hasRole = (options.roles || []).some(
+          role => role === session?.user?.role
+        );
+
+        if (options.roles?.length && !hasRole) {
+          return httpHandler.forbidden('You have no permissions');
+        }
       }
 
       const res = await callback(request);

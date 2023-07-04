@@ -9,7 +9,10 @@ export const petAdGet = controller(async req => {
     return httpHandler.invalidParams('Missing pet ad id');
   }
 
-  const petAd = await petAdFinderById({ id: petAdId });
+  const petAd = await petAdFinderById({
+    id: petAdId,
+    options: { requestingUser: req.context?.user?.id },
+  });
 
   return httpHandler.ok(petAd);
 });

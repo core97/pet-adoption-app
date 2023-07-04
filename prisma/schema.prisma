@@ -37,21 +37,26 @@ model Breed {
 }
 
 model PetAd {
-  id             String            @id @default(auto()) @map("_id") @db.ObjectId
-  address        Address
-  breeds         Breed[]           @relation(fields: [breedIds], references: [id])
-  breedIds       String[]          @db.ObjectId
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
-  dateBirth      DateTime
-  images         FileStoraged[]
-  adoptionStatus AdoptionStatus    @default(IN_SEARCH)
-  name           String
-  gender         Gender
-  petType        PetType
-  user           User              @relation(fields: [userId], references: [id])
-  userId         String            @db.ObjectId
-  requests       AdoptionRequest[]
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  address           Address
+  breeds            Breed[]           @relation(fields: [breedIds], references: [id])
+  breedIds          String[]          @db.ObjectId
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  dateBirth         DateTime
+  images            FileStoraged[]
+  adoptionStatus    AdoptionStatus    @default(IN_SEARCH)
+  name              String
+  gender            Gender
+  petType           PetType
+  user              User              @relation(fields: [userId], references: [id])
+  userId            String            @db.ObjectId
+  requests          AdoptionRequest[]
+  favouritesUsers   User[]            @relation(name: "favouritesPetAds", fields: [favouritesUsersId], references: [id])
+  favouritesUsersId String[]          @db.ObjectId
+  views             Int               @default(0)
+  viewsByUser       User[]            @relation(name: "viewsByUser", fields: [viewsByUserId], references: [id])
+  viewsByUserId     String[]          @db.ObjectId
 }
 
 model AdoptionRequest {
@@ -64,8 +69,6 @@ model AdoptionRequest {
   petAdId   String         @db.ObjectId
   status    RequestStatus  @default(PENDING)
   steps     AdoptionStep[]
-
-  @@map("PetAdRequest")
 }
 
 model Session {
@@ -77,21 +80,25 @@ model Session {
 }
 
 model User {
-  id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  email           String            @unique
-  petAds          PetAd[]
-  addresses       Address[]
-  petAdRequests   AdoptionRequest[]
-  role            Role              @default(USER)
-  sessions        Session[]
-  accounts        Account[]
-  emailVerified   DateTime?
-  name            String?
-  image           String?
-  password        String?
-  preadoptionForm PreadoptionForm?
+  id                  String            @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  email               String            @unique
+  petAds              PetAd[]
+  addresses           Address[]
+  petAdRequests       AdoptionRequest[]
+  role                Role              @default(USER)
+  sessions            Session[]
+  accounts            Account[]
+  emailVerified       DateTime?
+  name                String?
+  image               String?
+  password            String?
+  preadoptionForm     PreadoptionForm?
+  favouritesPetAds    PetAd[]           @relation(name: "favouritesPetAds", fields: [favouritesPetAdsIds], references: [id])
+  favouritesPetAdsIds String[]          @db.ObjectId
+  petAdsViews         PetAd[]           @relation(name: "viewsByUser", fields: [petAdsIdsViews], references: [id])
+  petAdsIdsViews      String[]          @db.ObjectId
 }
 
 model VerificationToken {

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { AsyncStatus } from '@shared/domain/async-status';
+import { AppClientError } from '@shared/application/errors/app-client-error';
 import { NextAsyncAction } from '@shared/presentation/types/async-types';
 
 export const useAsync = <T = void, P = unknown>(
@@ -60,7 +61,10 @@ export const useAsync = <T = void, P = unknown>(
 
           toast({
             status: 'error',
-            title: options.onError?.toast?.title || 'Ha ocurrido un error',
+            title:
+              err instanceof AppClientError
+                ? err.message
+                : options.onError?.toast?.title || 'Ha ocurrido un error',
           });
 
           if (options.onError?.action) {
