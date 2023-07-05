@@ -25,7 +25,7 @@ const PetAdDetailPage = async ({ params }: { params: { id: string } }) => {
     options: { requestingUser: session?.user?.id },
   });
 
-  return <PetAdDetail petAd={petAd} />;
+  return <PetAdDetail petAd={petAd} userId={session?.user?.id} />;
 };
 
 export default PetAdDetailPage;

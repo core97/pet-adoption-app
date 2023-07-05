@@ -25,6 +25,18 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model AdoptionRequest {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  user      User           @relation(fields: [userId], references: [id])
+  userId    String         @db.ObjectId
+  petAd     PetAd          @relation(fields: [petAdId], references: [id])
+  petAdId   String         @db.ObjectId
+  status    RequestStatus  @default(PENDING)
+  steps     AdoptionStep[]
+}
+
 model Breed {
   id        String         @id @default(auto()) @map("_id") @db.ObjectId
   name      String         @unique
@@ -54,21 +66,20 @@ model PetAd {
   requests          AdoptionRequest[]
   favouritesUsers   User[]            @relation(name: "favouritesPetAds", fields: [favouritesUsersId], references: [id])
   favouritesUsersId String[]          @db.ObjectId
-  views             Int               @default(0)
-  viewsByUser       User[]            @relation(name: "viewsByUser", fields: [viewsByUserId], references: [id])
-  viewsByUserId     String[]          @db.ObjectId
+  views             PetAdViews[]
 }
 
-model AdoptionRequest {
-  id        String         @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  user      User           @relation(fields: [userId], references: [id])
-  userId    String         @db.ObjectId
-  petAd     PetAd          @relation(fields: [petAdId], references: [id])
-  petAdId   String         @db.ObjectId
-  status    RequestStatus  @default(PENDING)
-  steps     AdoptionStep[]
+model PetAdViews {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String   @db.ObjectId
+  petAd        PetAd    @relation(fields: [petAdId], references: [id])
+  petAdId      String   @db.ObjectId
+  viewsCounter Int      @default(0)
+
+  @@unique([userId, petAdId])
 }
 
 model Session {
@@ -85,6 +96,7 @@ model User {
   updatedAt           DateTime          @updatedAt
   email               String            @unique
   petAds              PetAd[]
+  petAdViews          PetAdViews[]
   addresses           Address[]
   petAdRequests       AdoptionRequest[]
   role                Role              @default(USER)
@@ -97,8 +109,6 @@ model User {
   preadoptionForm     PreadoptionForm?
   favouritesPetAds    PetAd[]           @relation(name: "favouritesPetAds", fields: [favouritesPetAdsIds], references: [id])
   favouritesPetAdsIds String[]          @db.ObjectId
-  petAdsViews         PetAd[]           @relation(name: "viewsByUser", fields: [petAdsIdsViews], references: [id])
-  petAdsIdsViews      String[]          @db.ObjectId
 }
 
 model VerificationToken {

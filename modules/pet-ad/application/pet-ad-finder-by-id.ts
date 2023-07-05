@@ -9,7 +9,10 @@ export interface PetAdFinderById {
   ): Promise<PetAdDetailDto>;
 }
 
-export const petAdFinderById: PetAdFinderById = async ({ id, options = {} }) => {
+export const petAdFinderById: PetAdFinderById = async ({
+  id,
+  options = {},
+}) => {
   try {
     const petAd = await prisma.petAd.findUnique({
       where: { id },
@@ -21,22 +24,30 @@ export const petAdFinderById: PetAdFinderById = async ({ id, options = {} }) => 
     }
 
     if (options.requestingUser && options.requestingUser !== petAd.userId) {
-      const updateData: Parameters<typeof prisma.petAd.update>[0]['data'] = {
-        viewsByUserId: { push: options.requestingUser },
-      };
-
-      const hasAlreadyBeenVisited = petAd.viewsByUserId.includes(
-        options.requestingUser
-      );
-
-      if (!hasAlreadyBeenVisited) {
-        updateData.views = { increment: +1 };
-      }
-
-      await prisma.petAd.update({
-        where: { id },
-        data: updateData,
+      const petAdView = await prisma.petAdViews.findFirst({
+        where: {
+          userId: options.requestingUser,
+          petAdId: id,
+        },
       });
+
+      if (!petAdView) {
+        await prisma.petAdViews.create({
+          data: {
+            petAdId: id,
+            userId: options.requestingUser,
+          },
+        });
+      } else {
+        await prisma.petAdViews.update({
+          where: {
+            id: petAdView.id,
+          },
+          data: {
+            viewsCounter: { increment: 1 },
+          },
+        });
+      }
     }
 
     return petAd;
