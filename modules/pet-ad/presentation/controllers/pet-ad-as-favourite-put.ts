@@ -15,7 +15,7 @@ export const petAdAsFavouritePut = controller(
     }
 
     const petAd = await petAdUpdaterAsFavourite({
-      data: { requestingUser: req.context.user.id },
+      data: { requestingUserId: req.context.user.id },
       searchParam: { id: petAdId },
     });
 

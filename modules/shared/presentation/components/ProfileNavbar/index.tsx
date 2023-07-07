@@ -10,5 +10,6 @@ export const ProfileNavbar = () => (
     <Link href={PAGES.USER_PET_ADS_LIST}>Mis anuncios</Link>
     <Link href={PAGES.ADOPTION_REQUESTS_LIST}>Solicitudes de adopción</Link>
     <Link href={PAGES.NOTIFICATIONS}>Notificaciones</Link>
+    <Link href={PAGES.FAVOURITES}>Favoritos</Link>
   </VStack>
 );

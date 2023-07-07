@@ -8,6 +8,7 @@ export const PAGES = {
   USER_DETAIL: '/profile/user',
   ADOPTION_REQUESTS_LIST: '/profile/adoption-requests',
   NOTIFICATIONS: '/profile/notifications',
+  FAVOURITES: '/profile/favourites',
   PREADOPTION_FORM: '/preadoption-form',
 };
 
