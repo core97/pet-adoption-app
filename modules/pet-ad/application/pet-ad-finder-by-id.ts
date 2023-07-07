@@ -36,6 +36,7 @@ export const petAdFinderById: PetAdFinderById = async ({
           data: {
             petAdId: id,
             userId: options.requestingUser,
+            viewsCounter: 1,
           },
         });
       } else {

@@ -27,6 +27,7 @@
       "@components": ["./modules/shared/presentation/components"],
       "@components/*": ["./modules/shared/presentation/components/*"],
       "@hooks/*": ["./modules/shared/presentation/hooks/*"],
+      "@notification/*": ["./modules/notification/*"],
       "@pet-ad/*": ["./modules/pet-ad/*"],
       "@shared/*": ["./modules/shared/*"],
       "@user/*": ["./modules/user/*"],

@@ -7,6 +7,7 @@ export const PAGES = {
   USER_PET_ADS_LIST: '/profile/pet-ads',
   USER_DETAIL: '/profile/user',
   ADOPTION_REQUESTS_LIST: '/profile/adoption-requests',
+  NOTIFICATIONS: '/profile/notifications',
   PREADOPTION_FORM: '/preadoption-form',
 };
 

@@ -1,4 +1,6 @@
 import { PetAdRequest } from '@adoption-request/model';
+import { NOTIFICATION_TYPES } from '@notification/model';
+import { notificationCreator } from '@notification/application/notification-creator';
 import prisma from '@shared/application/prisma';
 import { NotFoundError } from '@shared/application/errors/not-found.error';
 import { ForbiddenError } from '@shared/application/errors/forbidden.error';
@@ -32,6 +34,7 @@ export const adoptionStatusUpdaterById: AdoptionStatusUpdaterById = async ({
 
     const petAd = await prisma.petAd.findUnique({
       where: { id: adoptionRequest.petAdId },
+      include: { requests: { select: { userId: true } } },
     });
 
     if (!petAd) {
@@ -73,11 +76,26 @@ export const adoptionStatusUpdaterById: AdoptionStatusUpdaterById = async ({
     });
 
     if (data.status === 'ACCEPTED') {
-      await prisma.petAd.update({
-        where: { id: petAd.id },
-        data: { adoptionStatus: 'ADOPTED' },
-      });
+      await Promise.all([
+        prisma.petAd.update({
+          where: { id: petAd.id },
+          data: { adoptionStatus: 'ADOPTED' },
+        }),
+        notificationCreator({
+          type: NOTIFICATION_TYPES.ACCEPTED_AS_OWNER,
+          petAdId: petAd.id,
+          userIdToNotify: adoptionRequestUpdated.userId,
+        }),
+        ...petAd.requests.map(({ userId }) =>
+          notificationCreator({
+            type: NOTIFICATION_TYPES.YOUR_FAVOURITE_HAS_ALREADY_BEEN_ADOPTED,
+            petAdId: petAd.id,
+            userIdToNotify: userId,
+          })
+        ),
+      ]);
     }
+
     return adoptionRequestUpdated;
   } catch (error) {
     if (error instanceof Error) {

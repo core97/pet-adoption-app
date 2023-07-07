@@ -48,6 +48,17 @@ model Breed {
   petType   PetType
 }
 
+model Notification {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt      DateTime         @default(now())
+  type           NotificationType
+  description    String
+  hasBeenSeen    Boolean          @default(false)
+  userToNotify   User             @relation(fields: [userIdToNotify], references: [id])
+  userIdToNotify String           @db.ObjectId
+  url            String?
+}
+
 model PetAd {
   id                String            @id @default(auto()) @map("_id") @db.ObjectId
   address           Address
@@ -109,6 +120,7 @@ model User {
   preadoptionForm     PreadoptionForm?
   favouritesPetAds    PetAd[]           @relation(name: "favouritesPetAds", fields: [favouritesPetAdsIds], references: [id])
   favouritesPetAdsIds String[]          @db.ObjectId
+  notifications       Notification[]
 }
 
 model VerificationToken {
@@ -173,6 +185,18 @@ enum CountryIso {
 enum Gender {
   FEMALE
   MALE
+}
+
+enum NotificationType {
+  // Cuando crean una solicitud de anuncio hacia uno de sus anuncios
+  ADOPTION_REQUEST_CREATED
+  // Cuando acepta / rechaza el formulario de preadopción.
+  ACCEPTED_PREADOPTION_FORM
+  DECLINED_PREADOPTION_FORM
+  // Cuando es aceptado como dueño
+  ACCEPTED_AS_OWNER
+  // Cuando un anuncio lo tienes marcado como favorito y ya ha sido adoptado
+  YOUR_FAVOURITE_HAS_ALREADY_BEEN_ADOPTED
 }
 
 enum PetType {
