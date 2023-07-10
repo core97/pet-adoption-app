@@ -5,6 +5,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { isValidRole } from '@user/model';
 import prisma from '@shared/application/prisma';
 import { CustomSession } from '@shared/application/auth';
+import { PAGES } from '@shared/application/pages';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -49,6 +50,9 @@ export const authOptions: NextAuthOptions = {
     },
   },
   debug: process.env.NODE_ENV === 'development',
+  pages: {
+    signIn: PAGES.SIGN_IN,
+  },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
