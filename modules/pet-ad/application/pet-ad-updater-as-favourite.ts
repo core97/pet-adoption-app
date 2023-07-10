@@ -15,13 +15,14 @@ export const petAdUpdaterAsFavourite: PetAdUpdaterAsFavourite = async ({
   searchParam,
 }) => {
   try {
-    const petAd = await prisma.petAd.findUniqueOrThrow({
-      where: { id: searchParam.id },
-    });
-
-    const requestinUser = await prisma.user.findUniqueOrThrow({
-      where: { id: data.requestingUserId },
-    });
+    const [petAd, requestinUser] = await Promise.all([
+      prisma.petAd.findUniqueOrThrow({
+        where: { id: searchParam.id },
+      }),
+      prisma.user.findUniqueOrThrow({
+        where: { id: data.requestingUserId },
+      }),
+    ]);
 
     if (petAd.userId === data.requestingUserId) {
       throw new ConflictError(
