@@ -26,7 +26,7 @@ export const controller = (
     };
 
     try {
-      if (options.roles?.length || authCookie) {
+      if (options.roles?.length) {
         const session = await getSession(authCookie);
 
         if (!session?.user) {

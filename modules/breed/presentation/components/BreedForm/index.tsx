@@ -58,6 +58,7 @@ export const BreedForm = ({
       />
       <InputText
         register={register}
+        label="Nombre de la raza"
         name="name"
         rules={{ required: true }}
         defaultValue={defaultValue?.name}
@@ -65,6 +66,7 @@ export const BreedForm = ({
       />
       <Select
         control={control}
+        label="Tipo de mascota"
         name="petType"
         rules={{ required: true }}
         defaultValue={defaultValue?.petType}

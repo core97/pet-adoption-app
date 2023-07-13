@@ -15,11 +15,15 @@ import {
 } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { Icon } from '@components/Icon';
+import { SearchPreferenceModal } from '@components/SearchPreferenceModal';
 import { AppNavbarDesktop, AppNavbarMobile } from '@components/AppNavbar';
 import styles from './AppHeader.module.css';
+import { AppHeaderProps } from './AppHeader.interface';
 
-export const AppHeader = () => {
+export const AppHeader = ({ countries }: AppHeaderProps) => {
   const navigationDrawerHandler = useDisclosure();
+
+  const searchPreferenceModalHandler = useDisclosure();
 
   return (
     <>
@@ -30,14 +34,30 @@ export const AppHeader = () => {
             <div className={styles['nav-items']}>
               <AppNavbarDesktop />
             </div>
-            <div className={styles['menu-btn']}>
-              <Button type="button" onClick={navigationDrawerHandler.onOpen}>
+            <div>
+              <Button
+                type="button"
+                onClick={searchPreferenceModalHandler.onOpen}
+                variant="ghost"
+              >
+                Preferencias
+              </Button>
+              <Button
+                type="button"
+                onClick={navigationDrawerHandler.onOpen}
+                className={styles['menu-btn']}
+              >
                 <Icon iconName="menu" />
               </Button>
             </div>
           </div>
         </HStack>
       </Container>
+      <SearchPreferenceModal
+        countries={countries}
+        isOpen={searchPreferenceModalHandler.isOpen}
+        onClose={searchPreferenceModalHandler.onClose}
+      />
       <Drawer
         isOpen={navigationDrawerHandler.isOpen}
         placement="right"

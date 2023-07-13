@@ -26,6 +26,7 @@
       "@breed/*": ["./modules/breed/*"],
       "@components": ["./modules/shared/presentation/components"],
       "@components/*": ["./modules/shared/presentation/components/*"],
+      "@country/*": ["./modules/country/*"],
       "@hooks/*": ["./modules/shared/presentation/hooks/*"],
       "@notification/*": ["./modules/notification/*"],
       "@pet-ad/*": ["./modules/pet-ad/*"],

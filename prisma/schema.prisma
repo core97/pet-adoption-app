@@ -48,6 +48,15 @@ model Breed {
   petType   PetType
 }
 
+model Country {
+  id                  String      @id @default(auto()) @map("_id") @db.ObjectId
+  isoCode             String      @unique
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  name                CountryName
+  isAvailableToSearch Boolean
+}
+
 model Notification {
   id             String           @id @default(auto()) @map("_id") @db.ObjectId
   createdAt      DateTime         @default(now())
@@ -121,6 +130,7 @@ model User {
   favouritesPetAds    PetAd[]           @relation(name: "favouritesPetAds", fields: [favouritesPetAdsIds], references: [id])
   favouritesPetAdsIds String[]          @db.ObjectId
   notifications       Notification[]
+  preferences         UserPreferences?
 }
 
 model VerificationToken {
@@ -135,7 +145,7 @@ model VerificationToken {
 type Address {
   city         String
   coordinates  Coordinates
-  country      CountryIso
+  country      String
   placeId      String
   displayName  String
   postalCode   String
@@ -154,6 +164,16 @@ type Coordinates {
   lng Float
 }
 
+// Translation
+type CountryName {
+  de String
+  en String
+  es String
+  fr String
+  it String
+  pt String
+}
+
 type FileStoraged {
   publicId String
   url      String
@@ -169,6 +189,10 @@ type ProviderAccount {
   provider          String
 }
 
+type UserPreferences {
+  searchCountry String
+}
+
 enum AdoptionStatus {
   IN_SEARCH
   ADOPTED
@@ -176,10 +200,6 @@ enum AdoptionStatus {
 
 enum AdoptionStepType {
   PREADOPTION_FORM
-}
-
-enum CountryIso {
-  ES
 }
 
 enum Gender {

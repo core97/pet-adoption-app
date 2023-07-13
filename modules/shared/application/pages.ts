@@ -15,4 +15,5 @@ export const PAGES = {
 export const DASHBOARD_PAGES = {
   HOME: '/dashboard',
   BREEDS: '/dashboard/breeds',
+  COUNTRIES: '/dashboard/countries',
 };

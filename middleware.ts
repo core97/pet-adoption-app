@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
       }
     } catch (error) {
       if (error instanceof Error) {
-        error.message = `An error occurred when handling protected routes in the middleware. ${error.message}`;
+        error.message = `An error occurred when handling ${request.nextUrl.pathname} protected route in the middleware. ${error.message}`;
       }
       console.error(error);
       return redirect(PAGES.SIGN_IN);

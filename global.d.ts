@@ -31,6 +31,7 @@ declare global {
         role: UserRole;
       };
     };
+    params?: Record<string, string>;
   }
 }
 
@@ -44,6 +45,7 @@ declare module 'next' {
         role: UserRole;
       };
     };
+    params?: Record<string, string>;
   }
 }
 

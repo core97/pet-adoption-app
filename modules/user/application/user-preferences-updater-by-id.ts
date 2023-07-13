@@ -1,22 +1,21 @@
-import { Breed } from '@breed/model';
+import { User } from '@user/model';
 import { validateBreed } from '@breed/application/breed-validator';
 import prisma from '@shared/application/prisma';
 import { deleteFile } from '@shared/infra/storage';
 
-export interface BreedUpdaterById {
+export interface UserPreferencesUpdaterById {
   (params: {
-    searchParam: Pick<Breed, 'id'>;
-    data: Partial<Breed>;
-  }): Promise<Breed>;
+    searchParam: Pick<User, 'id'>;
+    data: Partial<User['preferences']>;
+  }): Promise<User>;
 }
 
-export const breedUpdaterById: BreedUpdaterById = async ({
+export const userPreferencesUpdaterById: UserPreferencesUpdaterById = async ({
   data,
   searchParam,
 }) => {
   try {
-    validateBreed(data);
-
+    
     if (data.images?.length) {
       const oldBreed = await prisma.breed.findUnique({
         where: { id: searchParam.id },
@@ -32,7 +31,7 @@ export const breedUpdaterById: BreedUpdaterById = async ({
     return breed;
   } catch (error) {
     if (error instanceof Error) {
-      error.message = `Breed could not be updated by ${searchParam.id} id. ${error.message}`;
+      error.message = `Breed could not be updated by id. ${error.message}`;
     }
 
     throw error;
