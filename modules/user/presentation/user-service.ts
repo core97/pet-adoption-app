@@ -23,9 +23,21 @@ export const deleteUserAddress = async (placeId: Address['placeId']) => {
 export const upsertUserPreadoptionForm = async (
   preadoptionForm: PreadoptionForm
 ) => {
-  const res = await fetcher<Omit<User, 'password'>>(`${BASE_URL}/preadoption-form`, {
+  const res = await fetcher<Omit<User, 'password'>>(
+    `${BASE_URL}/preadoption-form`,
+    {
+      method: 'PUT',
+      body: JSON.stringify(preadoptionForm),
+    }
+  );
+
+  return res;
+};
+
+export const updateUserPreference = async (prefrences: User['preferences']) => {
+  const res = await fetcher<Omit<User, 'password'>>(`${BASE_URL}/preferences`, {
     method: 'PUT',
-    body: JSON.stringify(preadoptionForm),
+    body: JSON.stringify(prefrences),
   });
 
   return res;

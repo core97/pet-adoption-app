@@ -3,7 +3,9 @@ import { VStack, Button } from '@chakra-ui/react';
 import { useAsync } from '@hooks/useAsync';
 import { InputText, Select, Switch } from '@components';
 import { upsertUserAddress } from '@user/presentation/user-service';
+import { getCountriesList } from '@country/presentation/country-fetcher';
 import { COUNTRY_ISO } from '@shared/domain/country-iso';
+import { AppClientError } from '@shared/application/errors/app-client-error';
 import { validateAddress } from '@shared/presentation/services/address-service';
 import { AddressFormProps, AddressFormFields } from './AddressForm.interface';
 
@@ -23,7 +25,20 @@ export const AddressForm = ({
     useForm<AddressFormFields>();
 
   const handleSubmitForm = useAsync(async (data: AddressFormFields) => {
-    const address = await validateAddress(data);
+    const [address, countries] = await Promise.all([
+      validateAddress(data),
+      getCountriesList({ data: {} }),
+    ]);
+
+    const isValidCountry = countries.some(
+      ({ isoCode }) => isoCode === address.country.toLowerCase()
+    );
+
+    if (!isValidCountry) {
+      throw new AppClientError(
+        'Lo sentimos, no ofrecemos nuestros servicios en el país introducido.'
+      );
+    }
 
     if (enableSaveAddress && data.shouldSaveAddress) {
       await upsertUserAddress(address);

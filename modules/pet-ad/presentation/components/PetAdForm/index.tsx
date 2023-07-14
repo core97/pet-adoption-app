@@ -50,6 +50,8 @@ export const PetAdForm = ({
       dateBirth: new Date(data.dateBirth),
       petType,
       gender: data.gender,
+      adoptionStatus: 'IN_SEARCH',
+      favouritesUsersId: [],
     });
   });
 

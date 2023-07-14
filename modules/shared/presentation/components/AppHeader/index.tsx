@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { Icon } from '@components/Icon';
-import { SearchPreferenceModal } from '@components/SearchPreferenceModal';
+import { UserPreferenceDrawer } from '@user/presentation/components/UserPreferenceDrawer';
 import { AppNavbarDesktop, AppNavbarMobile } from '@components/AppNavbar';
 import styles from './AppHeader.module.css';
 import { AppHeaderProps } from './AppHeader.interface';
@@ -53,7 +53,7 @@ export const AppHeader = ({ countries }: AppHeaderProps) => {
           </div>
         </HStack>
       </Container>
-      <SearchPreferenceModal
+      <UserPreferenceDrawer
         countries={countries}
         isOpen={searchPreferenceModalHandler.isOpen}
         onClose={searchPreferenceModalHandler.onClose}

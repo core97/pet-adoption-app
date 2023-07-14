@@ -1,3 +1,3 @@
-import { SearchPreferenceModalProps } from '@components/SearchPreferenceModal/SearchPreferenceModal.interface';
+import { UserPreferenceDrawerProps } from '@user/presentation/components/UserPreferenceDrawer/UserPreferenceDrawer.interface';
 
-export type AppHeaderProps = Pick<SearchPreferenceModalProps, 'countries'>;
+export type AppHeaderProps = Pick<UserPreferenceDrawerProps, 'countries'>;

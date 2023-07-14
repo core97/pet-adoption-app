@@ -1,7 +1,6 @@
 import { User } from '@user/model';
-import { validateBreed } from '@breed/application/breed-validator';
 import prisma from '@shared/application/prisma';
-import { deleteFile } from '@shared/infra/storage';
+import { ConflictError } from '@shared/application/errors/conflict.error';
 
 export interface UserPreferencesUpdaterById {
   (params: {
@@ -15,23 +14,33 @@ export const userPreferencesUpdaterById: UserPreferencesUpdaterById = async ({
   searchParam,
 }) => {
   try {
-    
-    if (data.images?.length) {
-      const oldBreed = await prisma.breed.findUnique({
-        where: { id: searchParam.id },
-        select: { images: true },
+    if (data?.searchCountry) {
+      const country = await prisma.country.findUnique({
+        where: { isoCode: data.searchCountry },
       });
 
-      await Promise.all(
-        (oldBreed?.images || []).map(item => deleteFile(item.publicId))
-      );
+      if (!country) {
+        throw new ConflictError(
+          `Not found country by ${data.searchCountry} iso code`
+        );
+      }
     }
 
-    const breed = await prisma.breed.update({ where: searchParam, data });
-    return breed;
+    const user = await prisma.user.update({
+      where: searchParam,
+      data: {
+        preferences: {
+          ...(data?.searchCountry && {
+            searchCountry: data.searchCountry.toLowerCase(),
+          }),
+        },
+      },
+    });
+
+    return user;
   } catch (error) {
     if (error instanceof Error) {
-      error.message = `Breed could not be updated by id. ${error.message}`;
+      error.message = `User preferences could not be updated by ${searchParam.id} id. ${error.message}`;
     }
 
     throw error;

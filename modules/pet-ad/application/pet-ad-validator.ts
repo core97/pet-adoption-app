@@ -62,4 +62,14 @@ export const validatePetAd = async (petAd: Partial<PetAd>) => {
   ) {
     throw new ConflictError('Pet ad date birth is invalid');
   }
+
+  if (petAd.address) {
+    const country = await prisma.country.findUnique({
+      where: { isoCode: petAd.address.country.toLowerCase() },
+    });
+
+    if (!country) {
+      throw new ConflictError('Country not available to add the pet ad');
+    }
+  }
 };
