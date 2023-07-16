@@ -1,7 +1,6 @@
 import { headers, cookies } from 'next/headers';
 import { Inter } from 'next/font/google';
 import { AppHeader } from '@components/AppHeader';
-import { countryListFinder } from '@country/application/country-list-finder';
 import { User } from '@user/model';
 import { useUserStore } from '@user/presentation/user-store';
 import { UserStoreInitializer } from '@user/presentation/components/UserStoreInitializer';
@@ -18,10 +17,7 @@ export const metadata = {
 };
 
 const AppRootLayout = async ({ children }: { children: React.ReactNode }) => {
-  const [countries, session] = await Promise.all([
-    countryListFinder({ isAvailableToSearch: true }),
-    getSession(headers().get('cookie') ?? ''),
-  ]);
+  const session = await getSession(headers().get('cookie') ?? '');
 
   const searchCountryCookie = cookies().get('searchCountry');
 
@@ -45,7 +41,7 @@ const AppRootLayout = async ({ children }: { children: React.ReactNode }) => {
           {...(user || { preferences: { searchCountry } })}
         />
         <ChakraProvider>
-          <AppHeader countries={countries} />
+          <AppHeader />
           {children}
         </ChakraProvider>
       </body>

@@ -21,21 +21,22 @@ import { InputRadioCard } from '@components/InputRadioCard';
 import { updateUserPreference } from '@user/presentation/user-service';
 import { useUserStore } from '@user/presentation/user-store';
 import {
-  UserPreferenceDrawerProps,
-  UserPreferencesFormFields,
-} from './UserPreferenceDrawer.interface';
+  SelectCountryDrawerProps,
+  SelectCountryFormFields,
+} from './SelectCountryDrawer.interface';
 
-export const UserPreferenceDrawer = ({
+export const SelectCountryDrawer = ({
   countries,
   isOpen,
   onClose,
-}: UserPreferenceDrawerProps) => {
+  onSelectCountry,
+}: SelectCountryDrawerProps) => {
   const { register, handleSubmit, formState } =
-    useForm<UserPreferencesFormFields>();
+    useForm<SelectCountryFormFields>();
 
   const user = useUserStore();
 
-  const onSubmit = useAsync(async (data: UserPreferencesFormFields) => {
+  const onSubmit = useAsync(async (data: SelectCountryFormFields) => {
     const countryCookieName = 'searchCountry';
 
     if (user?.id) {
@@ -54,6 +55,8 @@ export const UserPreferenceDrawer = ({
         searchCountry: data.countryToSearch,
       },
     }));
+
+    onSelectCountry?.(data.countryToSearch);
 
     onClose();
   });

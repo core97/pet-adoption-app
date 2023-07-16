@@ -1,11 +1,12 @@
 import { Country } from '@country/model';
 
-export type UserPreferencesFormFields = {
+export type SelectCountryFormFields = {
   countryToSearch: string;
 };
 
-export interface UserPreferenceDrawerProps {
+export interface SelectCountryDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   countries: Country[];
+  onSelectCountry?: (countryIso: string) => void;
 }

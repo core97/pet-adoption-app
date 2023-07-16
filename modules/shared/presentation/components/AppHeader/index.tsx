@@ -15,15 +15,12 @@ import {
 } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { Icon } from '@components/Icon';
-import { UserPreferenceDrawer } from '@user/presentation/components/UserPreferenceDrawer';
-import { AppNavbarDesktop, AppNavbarMobile } from '@components/AppNavbar';
+import { AppNavbar } from '@components/AppNavbar';
+import { ProfileNavbar } from '@components/ProfileNavbar';
 import styles from './AppHeader.module.css';
-import { AppHeaderProps } from './AppHeader.interface';
 
-export const AppHeader = ({ countries }: AppHeaderProps) => {
+export const AppHeader = () => {
   const navigationDrawerHandler = useDisclosure();
-
-  const searchPreferenceModalHandler = useDisclosure();
 
   return (
     <>
@@ -32,16 +29,9 @@ export const AppHeader = ({ countries }: AppHeaderProps) => {
           <Link href="/">My App</Link>
           <div className={styles['nav-section']}>
             <div className={styles['nav-items']}>
-              <AppNavbarDesktop />
+              <AppNavbar direction="row" />
             </div>
             <div>
-              <Button
-                type="button"
-                onClick={searchPreferenceModalHandler.onOpen}
-                variant="ghost"
-              >
-                Preferencias
-              </Button>
               <Button
                 type="button"
                 onClick={navigationDrawerHandler.onOpen}
@@ -53,11 +43,6 @@ export const AppHeader = ({ countries }: AppHeaderProps) => {
           </div>
         </HStack>
       </Container>
-      <UserPreferenceDrawer
-        countries={countries}
-        isOpen={searchPreferenceModalHandler.isOpen}
-        onClose={searchPreferenceModalHandler.onClose}
-      />
       <Drawer
         isOpen={navigationDrawerHandler.isOpen}
         placement="right"
@@ -69,7 +54,8 @@ export const AppHeader = ({ countries }: AppHeaderProps) => {
           <DrawerHeader>My App</DrawerHeader>
           <DrawerBody>
             <VStack mt={8}>
-              <AppNavbarMobile />
+              <AppNavbar direction="column"  />
+              <ProfileNavbar />
             </VStack>
           </DrawerBody>
         </DrawerContent>

@@ -2,6 +2,7 @@ import { IconBaseProps } from 'react-icons';
 
 export type IconsName =
   | 'close'
+  | 'filter'
   | 'heartFill'
   | 'heartOutline'
   | 'menu'
