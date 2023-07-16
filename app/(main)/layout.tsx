@@ -1,10 +1,12 @@
 import { headers, cookies } from 'next/headers';
 import { Inter } from 'next/font/google';
 import { AppHeader } from '@components/AppHeader';
-import { User } from '@user/model';
 import { useUserStore } from '@user/presentation/user-store';
 import { UserStoreInitializer } from '@user/presentation/components/UserStoreInitializer';
 import { userPrivateFinderByEmail } from '@user/application/user-finder-by-email';
+import { countryListFinder } from '@country/application/country-list-finder';
+import { CountriesStoreInitializer } from '@country/presentation/components/CountriesStoreInitializer';
+import { useCountriesStore } from '@country/presentation/country-store';
 import { ChakraProvider } from '@shared/presentation/chakra-ui/chakra-provider';
 import { getSession } from '@shared/presentation/services/auth-service';
 import '../global.css';
@@ -19,24 +21,22 @@ export const metadata = {
 const AppRootLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getSession(headers().get('cookie') ?? '');
 
-  const searchCountryCookie = cookies().get('searchCountry');
+  const [countries, user] = await Promise.all([
+    countryListFinder({ isAvailableToSearch: true }),
+    session?.user?.email
+      ? userPrivateFinderByEmail(session.user.email)
+      : Promise.resolve(null),
+  ]);
 
-  let user: Omit<User, 'password'> | null = null;
-  let searchCountry = '';
-
-  if (session?.user?.email) {
-    user = await userPrivateFinderByEmail(session.user.email);
-  }
-
-  if (!searchCountry && searchCountryCookie?.value) {
-    searchCountry = searchCountryCookie.value;
-  }
+  const searchCountry = cookies().get('searchCountry')?.value ?? '';
 
   useUserStore.setState(user || { preferences: { searchCountry } });
+  useCountriesStore.setState({ countries });
 
   return (
     <html lang="en">
       <body className={inter.className}>
+        <CountriesStoreInitializer countries={countries} />
         <UserStoreInitializer
           {...(user || { preferences: { searchCountry } })}
         />

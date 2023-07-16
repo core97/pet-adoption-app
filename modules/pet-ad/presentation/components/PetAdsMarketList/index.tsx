@@ -1,16 +1,14 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { Link } from '@chakra-ui/next-js';
 import { Container } from '@chakra-ui/react';
-import { PetAdsMarketListFilters } from '@pet-ad/presentation/components/PetAdsMarketListFilters';
+import { PetAdsList } from '@pet-ad/presentation/components/PetAdsList';
+import { PetAdsListHeader } from '@pet-ad/presentation/components/PetAdsListHeader';
+import { PetAdsFilterFormSubmit } from '@pet-ad/presentation/components/PetAdsFilterDrawer';
+import { PAGES } from '@shared/application/pages';
 import { PetAdsMarketListProps } from './PetAdsMarketList.interface';
 
-export const PetAdsMarketList = ({
-  petAds,
-  redirectOnClick,
-  counries,
-}: PetAdsMarketListProps) => {
+export const PetAdsMarketList = ({ petAds, breeds }: PetAdsMarketListProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -30,19 +28,30 @@ export const PetAdsMarketList = ({
     router.push(url);
   };
 
+  const handleOnSubmitFilters = (filters: PetAdsFilterFormSubmit) => {
+    if (!pathname) return;
+
+    let url = `${pathname}?`;
+
+    if (filters.breed) {
+      url += `&breed=${filters.breed}`;
+    }
+
+    if (filters.gender) {
+      url += `&gender=${filters.gender}`;
+    }
+
+    router.push(url);
+  };
+
   return (
     <Container maxWidth="7xl">
-      <PetAdsMarketListFilters
-        countries={counries}
+      <PetAdsListHeader
+        breeds={breeds}
         onChangeCountry={handleOnChangeCountry}
+        onSubmitFilters={handleOnSubmitFilters}
       />
-      <ul>
-        {petAds.map(petAd => (
-          <li key={petAd.id}>
-            <Link href={`${redirectOnClick}/${petAd.id}`}>{petAd.name}</Link>
-          </li>
-        ))}
-      </ul>
+      <PetAdsList petAds={petAds} redirectOnClick={PAGES.PET_AD_DETAIL} />
     </Container>
   );
 };

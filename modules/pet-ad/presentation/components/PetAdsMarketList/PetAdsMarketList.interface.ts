@@ -1,8 +1,7 @@
-import { Country } from '@country/model';
+import { Breed } from '@breed/model';
 import { PetAd } from '@pet-ad/model';
 
 export type PetAdsMarketListProps = {
-  counries: Country[];
+  breeds: Pick<Breed, 'id' | 'name'>[];
   petAds: PetAd[];
-  redirectOnClick: string;
 };

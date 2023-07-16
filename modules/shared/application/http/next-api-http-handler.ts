@@ -52,6 +52,10 @@ export const nextApiHttpHandler = {
     return this.jsonResponse(res, HttpStatus.UNPROCESSABLE_ENTITY, message);
   },
 
+  notAcceptable(res: NextApiResponse, message?: string) {
+    return this.jsonResponse(res, HttpStatus.NOT_ACCEPTABLE, message);
+  },
+
   contentTooLarge(res: NextApiResponse, message?: string) {
     return this.jsonResponse(res, HttpStatus.CONTENT_TOO_LARGE, message);
   },

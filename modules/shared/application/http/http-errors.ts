@@ -8,6 +8,7 @@ export enum HttpErrorCode {
   NOT_FOUND = 'NOT_FOUND',
   UNAUTHORIZATED = 'UNAUTHORIZATED',
   UNPROCESSABLE_ENTITY = 'UNPROCESSABLE_ENTITY',
+  NOT_ACCEPTABLE = 'NOT_ACCEPTABLE',
 }
 
 export const ERROR_CODE_TO_HTTP_STATUS: Record<HttpErrorCode, HttpStatus> = {
@@ -18,4 +19,5 @@ export const ERROR_CODE_TO_HTTP_STATUS: Record<HttpErrorCode, HttpStatus> = {
   [HttpErrorCode.NOT_FOUND]: HttpStatus.NOT_FOUND,
   [HttpErrorCode.UNAUTHORIZATED]: HttpStatus.UNAUTHORIZATED,
   [HttpErrorCode.UNPROCESSABLE_ENTITY]: HttpStatus.UNPROCESSABLE_ENTITY,
+  [HttpErrorCode.NOT_ACCEPTABLE]: HttpStatus.NOT_ACCEPTABLE,
 };

@@ -5,12 +5,17 @@ import { useParams } from 'next/navigation';
 import { Button, HStack, useDisclosure } from '@chakra-ui/react';
 import { Icon } from '@components/Icon';
 import { SelectCountryDrawer } from '@country/presentation/components/SelectCountryDrawer';
-import { PetAdsMarketListFiltersProps } from './PetAdsMarketListFilters.interface';
+import { useCountriesStore } from '@country/presentation/country-store';
+import { PetAdsFilterDrawer } from '@pet-ad/presentation/components/PetAdsFilterDrawer';
+import { PetAdsListHeaderProps } from './PetAdsListHeader.interface';
 
-export const PetAdsMarketListFilters = ({
-  countries,
+export const PetAdsListHeader = ({
   onChangeCountry,
-}: PetAdsMarketListFiltersProps) => {
+  breeds,
+  onSubmitFilters,
+}: PetAdsListHeaderProps) => {
+  const { countries } = useCountriesStore();
+
   const countryDrawerHandler = useDisclosure();
   const filterDrawerHandler = useDisclosure();
 
@@ -56,6 +61,13 @@ export const PetAdsMarketListFilters = ({
         isOpen={countryDrawerHandler.isOpen}
         onClose={countryDrawerHandler.onClose}
         onSelectCountry={onChangeCountry}
+      />
+      <PetAdsFilterDrawer
+        breeds={breeds}
+        isOpen={filterDrawerHandler.isOpen}
+        onClose={filterDrawerHandler.onClose}
+        onSubmit={onSubmitFilters}
+        submitButtonLabel="Buscar"
       />
     </>
   );

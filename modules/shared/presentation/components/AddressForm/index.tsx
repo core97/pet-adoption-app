@@ -3,8 +3,7 @@ import { VStack, Button } from '@chakra-ui/react';
 import { useAsync } from '@hooks/useAsync';
 import { InputText, Select, Switch } from '@components';
 import { upsertUserAddress } from '@user/presentation/user-service';
-import { getCountriesList } from '@country/presentation/country-fetcher';
-import { COUNTRY_ISO } from '@shared/domain/country-iso';
+import { useCountriesStore } from '@country/presentation/country-store';
 import { AppClientError } from '@shared/application/errors/app-client-error';
 import { validateAddress } from '@shared/presentation/services/address-service';
 import { AddressFormProps, AddressFormFields } from './AddressForm.interface';
@@ -24,11 +23,10 @@ export const AddressForm = ({
   const { register, control, handleSubmit, formState } =
     useForm<AddressFormFields>();
 
+  const { countries } = useCountriesStore();
+
   const handleSubmitForm = useAsync(async (data: AddressFormFields) => {
-    const [address, countries] = await Promise.all([
-      validateAddress(data),
-      getCountriesList({ data: {} }),
-    ]);
+    const address = await validateAddress(data);
 
     const isValidCountry = countries.some(
       ({ isoCode }) => isoCode === address.country.toLowerCase()
@@ -58,11 +56,11 @@ export const AddressForm = ({
         label="País"
         control={control}
         name="country"
-        options={Object.values(COUNTRY_ISO).map(item => ({
-          label: item,
-          value: item,
-        }))}
         defaultValue={defaultValue?.country}
+        options={countries.map(item => ({
+          label: item.name.es,
+          value: item.isoCode,
+        }))}
       />
       <InputText
         label="Ciudad"

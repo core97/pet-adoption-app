@@ -51,6 +51,10 @@ export const httpHandler = {
     return this.jsonResponse(HttpStatus.CONFLICT, message);
   },
 
+  notAcceptable(message?: string) {
+    return this.jsonResponse(HttpStatus.NOT_ACCEPTABLE, message);
+  },
+
   invalidParams(message?: string) {
     return this.jsonResponse(HttpStatus.UNPROCESSABLE_ENTITY, message);
   },

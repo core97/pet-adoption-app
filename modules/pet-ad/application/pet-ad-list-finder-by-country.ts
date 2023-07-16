@@ -1,13 +1,12 @@
 import { PetAd } from '@pet-ad/model';
 import prisma from '@shared/application/prisma';
 import { PaginationResult, PaginationParams } from '@shared/domain/pagination';
-import { CountryIso } from '@shared/domain/country-iso';
 import { SortBy } from '@shared/domain/sort-by';
 
 export interface PetAdsListFinderByCountry {
   (
-    params: Partial<Pick<PetAd, 'breedIds' | 'petType'>> & {
-      country: CountryIso;
+    params: Partial<Pick<PetAd, 'breedIds' | 'petType' | 'gender'>> & {
+      country: string;
       pagination?: PaginationParams;
       sortBy?: Pick<SortBy<PetAd>, 'createdAt' | 'dateBirth'>;
     }
@@ -17,6 +16,7 @@ export interface PetAdsListFinderByCountry {
 export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
   country,
   breedIds,
+  gender,
   pagination,
   petType,
   sortBy,
@@ -26,6 +26,7 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
       address: { is: { country } },
       ...(breedIds?.length && { breedIds: { hasSome: breedIds } }),
       ...(petType && { petType }),
+      ...(gender && { gender }),
     };
 
     const [results, total] = await Promise.all([
