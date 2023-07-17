@@ -17,10 +17,13 @@ import { Link } from '@chakra-ui/next-js';
 import { Icon } from '@components/Icon';
 import { AppNavbar } from '@components/AppNavbar';
 import { ProfileNavbar } from '@components/ProfileNavbar';
+import { LanguageDrawer } from '@components/LanguageDrawer';
 import styles from './AppHeader.module.css';
 
 export const AppHeader = () => {
   const navigationDrawerHandler = useDisclosure();
+
+  const languageDrawerHandler = useDisclosure();
 
   return (
     <>
@@ -34,6 +37,14 @@ export const AppHeader = () => {
             <div>
               <Button
                 type="button"
+                variant="ghost"
+                onClick={languageDrawerHandler.onOpen}
+              >
+                Idioma
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
                 onClick={navigationDrawerHandler.onOpen}
                 className={styles['menu-btn']}
               >
@@ -54,12 +65,16 @@ export const AppHeader = () => {
           <DrawerHeader>My App</DrawerHeader>
           <DrawerBody>
             <VStack mt={8}>
-              <AppNavbar direction="column"  />
+              <AppNavbar direction="column" />
               <ProfileNavbar />
             </VStack>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+      <LanguageDrawer
+        isOpen={languageDrawerHandler.isOpen}
+        onClose={languageDrawerHandler.onClose}
+      />
     </>
   );
 };
