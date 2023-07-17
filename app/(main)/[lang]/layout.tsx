@@ -9,7 +9,7 @@ import { CountriesStoreInitializer } from '@country/presentation/components/Coun
 import { useCountriesStore } from '@country/presentation/country-store';
 import { ChakraProvider } from '@shared/presentation/chakra-ui/chakra-provider';
 import { getSession } from '@shared/presentation/services/auth-service';
-import '../global.css';
+import '../../global.css';
 
 const inter = Inter({ subsets: ['latin'] });
 

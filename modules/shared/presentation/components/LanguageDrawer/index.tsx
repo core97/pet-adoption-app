@@ -28,10 +28,12 @@ export const LanguageDrawer = ({ isOpen, onClose }: LanguageDrawerProps) => {
   const router = useRouter();
   const params = useParams();
 
+  const currentLanguage = Array.isArray(params?.lang)
+    ? params?.lang[0]
+    : params?.lang;
+
   const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const currentLanguage = params?.lang;
 
     if (!currentLanguage) {
       throw new Error('The current url has no language as parameter');
@@ -65,7 +67,10 @@ export const LanguageDrawer = ({ isOpen, onClose }: LanguageDrawerProps) => {
         <DrawerBody>
           <form id="languageForm" onSubmit={handleOnSubmit}>
             <FormLabel as="p">Selecciona un idioma</FormLabel>
-            <RadioGroup name="language" defaultValue="ES">
+            <RadioGroup
+              name="language"
+              defaultValue={currentLanguage?.toUpperCase()}
+            >
               <Stack direction="column">
                 {Object.keys(Language).map(key => (
                   <Radio key={key} value={key} name="language">
