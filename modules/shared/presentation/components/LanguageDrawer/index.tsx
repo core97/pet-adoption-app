@@ -19,11 +19,6 @@ import {
 import { Language } from '@shared/domain/languages';
 import { LanguageDrawerProps } from './LanguageDrawer.interface';
 
-/**
- * @see https://nextjs.org/docs/app/building-your-application/routing/internationalization
- * @see https://dev.to/ajones_codes/the-ultimate-guide-to-internationalization-i18n-in-nextjs-13-ed0
- */
-
 export const LanguageDrawer = ({ isOpen, onClose }: LanguageDrawerProps) => {
   const router = useRouter();
   const params = useParams();
@@ -49,8 +44,10 @@ export const LanguageDrawer = ({ isOpen, onClose }: LanguageDrawerProps) => {
       throw new Error('Selected language not available');
     }
 
+    const regex = new RegExp(`/${currentLanguage}(?=/|$)`);
+
     const urlToRedirect = window.location.href.replace(
-      `/${currentLanguage}/`,
+      regex,
       `/${selectedLanguage.toLowerCase()}/`
     );
 
