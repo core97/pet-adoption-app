@@ -1,8 +1,9 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { VStack, Button } from '@chakra-ui/react';
+import { VStack, Button, SimpleGrid } from '@chakra-ui/react';
 import { InputImage, InputText, Select } from '@components';
+import { Language } from '@shared/domain/languages';
 import { PET_TYPES } from '@shared/domain/pet-type';
 import { FileStoraged } from '@shared/domain/file-storaged';
 import { useAsync } from '@shared/presentation/hooks/useAsync';
@@ -56,14 +57,21 @@ export const BreedForm = ({
         name="images"
         rules={{ required: true }}
       />
-      <InputText
-        register={register}
-        label="Nombre de la raza"
-        name="name"
-        rules={{ required: true }}
-        defaultValue={defaultValue?.name}
-        errors={formState.errors}
-      />
+      <SimpleGrid columns={[1, 2]} spacing={4}>
+        {Object.keys(Language)
+          .map(lang => lang.toLowerCase())
+          .map(lang => (
+            <InputText
+              key={`name.${lang}`}
+              register={register}
+              label={`Nombre en ${lang}`}
+              name={`name.${lang}` as any}
+              rules={{ required: true }}
+              defaultValue={(defaultValue?.name as any)?.[lang]}
+              errors={formState.errors}
+            />
+          ))}
+      </SimpleGrid>
       <Select
         control={control}
         label="Tipo de mascota"

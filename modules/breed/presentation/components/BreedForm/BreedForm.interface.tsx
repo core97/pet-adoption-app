@@ -4,7 +4,7 @@ import { EntityCreation } from '@shared/domain/entity';
 import { FormProps } from '@shared/presentation/types/form-type';
 
 export type BreedFormFields = {
-  name: string;
+  name: Breed['name'];
   images: (File | string)[];
   petType: PetType;
 };

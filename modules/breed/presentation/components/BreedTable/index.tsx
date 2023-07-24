@@ -35,7 +35,7 @@ export const BreedTable = () => {
         }}
         rows={(data?.results || []).map(breed => ({
           id: breed.id,
-          name: breed.name,
+          name: breed.name.es,
           petType: breed.petType,
         }))}
       />

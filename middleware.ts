@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect if there is no locale
-  if (pathnameIsMissingLocale && !pathname.match(/.svg/)) {
+  if (pathnameIsMissingLocale && !pathname.match(/.svg|dashboard/)) {
     const locale = getLocale(request.headers);
 
     // e.g. incoming request is /products
