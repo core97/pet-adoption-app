@@ -18,6 +18,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { Select } from '@components/Select';
 import { InputRadioCard } from '@components/InputRadioCard';
+import { useTranslation } from '@hooks/useTransalation';
 import { Icon } from '@shared/presentation/components';
 import { GENDERS, isValidGender } from '@shared/domain/gender';
 import {
@@ -36,6 +37,8 @@ export const PetAdsFilterDrawer = ({
   status,
 }: PetAdsFilterDrawerProps) => {
   const searchParams = useSearchParams();
+
+  const { lang } = useTranslation();
 
   const queryParams = {
     breed: searchParams?.get('breed'),
@@ -74,7 +77,7 @@ export const PetAdsFilterDrawer = ({
               label="Razas"
               name="breed"
               options={breeds.map(item => ({
-                label: item.name,
+                label: item.name[lang],
                 value: item.id,
               }))}
             />

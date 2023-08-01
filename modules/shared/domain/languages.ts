@@ -1,3 +1,7 @@
+import { Translation as TranslationPrisma } from '@prisma/client';
+
+export type Translation = TranslationPrisma;
+
 export enum Language {
   DE = 'DE',
   EN = 'EN',
@@ -27,3 +31,9 @@ export const validateMultiLanguages = (obj: any) => {
     throw new Error('Translations are invalid');
   }
 };
+
+export const isValidLanguage = (lang: any): lang is keyof Translation =>
+  typeof lang === 'string' &&
+  Object.values(Language).some(
+    item => item.toLowerCase() === lang.toLowerCase()
+  );

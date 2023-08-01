@@ -1,11 +1,19 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import { useCallback } from 'react';
 import { RecursiveObject } from '@shared/domain/utils-type';
 import { useDictionaryStore } from '@shared/presentation/stores/dictionary-store';
+import { Translation, isValidLanguage } from '@shared/domain/languages';
 
-export function useTranslation() {
+export function useTranslation(): {
+  t: (key: string, params?: { [key: string]: string | number }) => string;
+  lang: keyof Translation;
+} {
   const dictionary = useDictionaryStore();
+
+  const urlParams = useParams();
+  const currentLang = urlParams?.lang;
 
   const translateByKey = useCallback(
     (key: string, params?: { [key: string]: string | number }) => {
@@ -32,5 +40,8 @@ export function useTranslation() {
     [dictionary]
   );
 
-  return { t: translateByKey };
+  return {
+    t: translateByKey,
+    lang: isValidLanguage(currentLang) ? currentLang : 'es',
+  };
 }
