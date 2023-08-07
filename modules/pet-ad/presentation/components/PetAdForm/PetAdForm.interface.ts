@@ -6,7 +6,15 @@ import { PetType } from '@shared/domain/pet-type';
 
 export type PetAdFormFields = Pick<
   PetAd,
-  'breedIds' | 'dateBirth' | 'name' | 'gender'
+  | 'breedIds'
+  | 'dateBirth'
+  | 'name'
+  | 'gender'
+  | 'activityLevel'
+  | 'size'
+  | 'sociability'
+  | 'checkpoints'
+  | 'description'
 > & {
   images: (File | string)[];
 };

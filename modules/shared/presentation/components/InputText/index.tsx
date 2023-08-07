@@ -5,6 +5,7 @@ import {
   FormLabel,
   FormControl,
   Input,
+  Text,
 } from '@chakra-ui/react';
 import { InputTextProps } from './InputText.interface';
 
@@ -16,6 +17,7 @@ export const InputText = <TFormValues extends Record<string, unknown>>({
   defaultValue,
   register,
   errors,
+  description,
   ...rest
 }: InputTextProps<TFormValues>) => (
   <FormControl
@@ -23,6 +25,11 @@ export const InputText = <TFormValues extends Record<string, unknown>>({
     isRequired={!!rules?.required}
   >
     {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
+    {description && (
+      <Text fontSize="sm" color="gray.500" mb={2}>
+        {description}
+      </Text>
+    )}
     <Input
       id={name}
       name={name}

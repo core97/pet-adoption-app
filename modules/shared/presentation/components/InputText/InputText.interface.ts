@@ -14,5 +14,6 @@ export type InputTextProps<TFormValues extends FieldValues> =
       | 'defaultChecked'
     > & {
       label?: string;
+      description?: string;
       type?: 'email' | 'number' | 'password' | 'tel' | 'text';
     };

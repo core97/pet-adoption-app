@@ -72,4 +72,18 @@ export const validatePetAd = async (petAd: Partial<PetAd>) => {
       throw new ConflictError('Country not available to add the pet ad');
     }
   }
+
+  if (
+    [petAd.activityLevel, petAd.sociability].some(
+      range =>
+        (typeof range === 'number' && range < 0) ||
+        (typeof range === 'number' && range > 10) ||
+        (typeof range === 'number' && !Number.isInteger(range)) ||
+        typeof range !== 'number'
+    )
+  ) {
+    throw new ConflictError(
+      'Range of activity level or sociability shold be between 0 and 10'
+    );
+  }
 };

@@ -80,7 +80,12 @@ model PetAd {
   adoptionStatus    AdoptionStatus    @default(IN_SEARCH)
   name              String
   gender            Gender
+  checkpoints       PetCheckpoints
   petType           PetType
+  activityLevel     Int
+  sociability       Int
+  size              PetSize
+  description       String
   user              User              @relation(fields: [userId], references: [id])
   userId            String            @db.ObjectId
   requests          AdoptionRequest[]
@@ -178,6 +183,15 @@ type FileStoraged {
   url      String
 }
 
+type PetCheckpoints {
+  isDewormedExternally Boolean
+  isDewormedInternally Boolean
+  hasMicrochip         Boolean
+  isSterilised         Boolean
+  vaccinesUpToDate     Boolean
+  hasAllergy           Boolean
+}
+
 type PreadoptionForm {
   formId     String
   responseId String
@@ -216,6 +230,12 @@ enum NotificationType {
   ACCEPTED_AS_OWNER
   // Cuando un anuncio lo tienes marcado como favorito y ya ha sido adoptado
   YOUR_FAVOURITE_HAS_ALREADY_BEEN_ADOPTED
+}
+
+enum PetSize {
+  SMALL
+  MEDIUM
+  BIG
 }
 
 enum PetType {

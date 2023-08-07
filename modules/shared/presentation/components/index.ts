@@ -9,6 +9,7 @@ export * from './InputRadioCard';
 export * from './InputText';
 export * from './InputTime';
 export * from './Table';
+export * from './Textarea';
 export * from './Select';
 export * from './Sidebar';
 export * from './Switch';

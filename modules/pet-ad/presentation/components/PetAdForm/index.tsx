@@ -1,11 +1,20 @@
 import { useForm } from 'react-hook-form';
-import { VStack, Button, useToast } from '@chakra-ui/react';
-import { InputDate, InputImage, InputText, Select } from '@components';
+import { VStack, Button, useToast, FormLabel } from '@chakra-ui/react';
+import {
+  InputDate,
+  InputImage,
+  InputText,
+  Textarea,
+  Select,
+  Switch,
+} from '@components';
 import { useAsync } from '@hooks/useAsync';
-import { GENDER } from '@pet-ad/model';
+import { useTranslation } from '@hooks/useTransalation';
+import { GENDER, PET_SIZE } from '@pet-ad/model';
 import { FileStoraged } from '@shared/domain/file-storaged';
 import { uploadFiles } from '@shared/presentation/services/storage-service';
 import { PetAdFormFields, PetAdFormProps } from './PetAdForm.interface';
+import { petCheckpoints } from './PetAdForm.contants';
 
 export type { PetAdSubmit, PetAdDefaultValues } from './PetAdForm.interface';
 
@@ -19,6 +28,8 @@ export const PetAdForm = ({
 }: PetAdFormProps) => {
   const { register, formState, handleSubmit, control } =
     useForm<PetAdFormFields>();
+
+  const { lang } = useTranslation();
 
   const toast = useToast();
 
@@ -52,11 +63,16 @@ export const PetAdForm = ({
       gender: data.gender,
       adoptionStatus: 'IN_SEARCH',
       favouritesUsersId: [],
+      size: data.size,
+      activityLevel: Number(data.activityLevel),
+      sociability: Number(data.sociability),
+      checkpoints: data.checkpoints,
+      description: data.description,
     });
   });
 
   return (
-    <VStack as="form" onSubmit={handleSubmit(handleSubmitForm.execute)}>
+    <VStack as="form" onSubmit={handleSubmit(handleSubmitForm.execute)} spacing={6}>
       <InputImage
         limit={4}
         maxImageSize={7}
@@ -87,11 +103,22 @@ export const PetAdForm = ({
         control={control}
         name="breedIds"
         options={options.breeds.map(breed => ({
-          label: breed.name,
+          label: breed.name[lang],
           value: breed.id,
         }))}
         rules={{ required: true }}
         defaultValue={defaultValue?.breedIds}
+      />
+      <Select
+        label="Tamaño"
+        control={control}
+        name="size"
+        options={Object.values(PET_SIZE).map(size => ({
+          label: size,
+          value: size,
+        }))}
+        rules={{ required: true }}
+        defaultValue={defaultValue?.size}
       />
       <Select
         label="Género"
@@ -102,13 +129,68 @@ export const PetAdForm = ({
           value: gender,
         }))}
         rules={{ required: true }}
-        defaultValue={defaultValue?.breedIds}
+        defaultValue={defaultValue?.gender}
       />
+      <InputText
+        label="Nivel de actividad"
+        description="Del 1 al 10 valora cual es su nivel de actividad"
+        register={register}
+        name="activityLevel"
+        type="number"
+        rules={{
+          required: true,
+          pattern: {
+            value: /^[1-9]|10$/,
+            message: 'Por favor introduce un número del 1 al 10',
+          },
+        }}
+        errors={formState.errors}
+        defaultValue={defaultValue?.activityLevel}
+      />
+      <InputText
+        label="Sociabilidad con otros animales"
+        description="Del 1 al 10 valora cual es su sociabilidad"
+        register={register}
+        name="sociability"
+        type="number"
+        rules={{
+          required: true,
+          pattern: {
+            value: /^[1-9]|10$/,
+            message: 'Por favor introduce un número del 1 al 10',
+          },
+        }}
+        errors={formState.errors}
+        defaultValue={defaultValue?.sociability}
+      />
+      <Textarea
+        name="description"
+        label="Descripción"
+        rows={8}
+        register={register}
+        rules={{ required: true }}
+        errors={formState.errors}
+      />
+      <VStack width="100%" alignItems="flex-start">
+        <FormLabel>¿Como me entregan?</FormLabel>
+        {petCheckpoints.map(checkoint => (
+          <Switch
+            key={checkoint.value}
+            labelAsTextStyle
+            label={checkoint.label}
+            name={`checkpoints.${checkoint.value}`}
+            register={register}
+            defaultChecked={defaultValue?.checkpoints[checkoint.value]}
+            errors={formState.errors}
+          />
+        ))}
+      </VStack>
       <Button
         type="submit"
         isLoading={
           handleSubmitForm.status === 'loading' || status === 'loading'
         }
+        width="100%"
       >
         {submitButtonLabel}
       </Button>

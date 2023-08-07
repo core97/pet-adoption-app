@@ -44,7 +44,7 @@ export const PetAdCreationForm = ({
   );
 
   return (
-    <Container maxW="2xl">
+    <Container maxW="3xl" mb={10}>
       <FormStepper activeStep={activeStep} onChangeActiveStep={setActiveStep}>
         <FormStep label="Datos del animal">
           <PetAdForm

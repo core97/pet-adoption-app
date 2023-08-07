@@ -11,7 +11,13 @@ export const petAdCreator: PetAdCreator = async petAd => {
   try {
     await validatePetAd(petAd);
 
-    const petAdCreated = await prisma.petAd.create({ data: petAd });
+    const petAdCreated = await prisma.petAd.create({
+      data: {
+        ...petAd,
+        activityLevel: Number(petAd.activityLevel),
+        sociability: Number(petAd.sociability),
+      },
+    });
 
     return petAdCreated;
   } catch (error) {

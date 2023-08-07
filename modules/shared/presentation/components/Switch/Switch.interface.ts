@@ -6,4 +6,5 @@ export type SwitchProps<TFormValues extends FieldValues> =
     defaultChecked?: boolean;
     description?: string;
     label?: string;
+    labelAsTextStyle?: boolean;
   };

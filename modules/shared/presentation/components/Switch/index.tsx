@@ -18,6 +18,7 @@ export const Switch = <TFormValues extends Record<string, unknown>>({
   defaultChecked,
   description,
   label,
+  labelAsTextStyle,
 }: SwitchProps<TFormValues>) => (
   <NoSSR>
     <FormControl
@@ -34,7 +35,12 @@ export const Switch = <TFormValues extends Record<string, unknown>>({
       />
       <VStack alignItems="flex-start" ml={6}>
         {label && (
-          <FormLabel htmlFor={name} ml={description ? 0 : 4} m={0}>
+          <FormLabel
+            htmlFor={name}
+            ml={description ? 0 : 4}
+            m={0}
+            {...(labelAsTextStyle && { fontWeight: 'normal' })}
+          >
             {label}
           </FormLabel>
         )}
