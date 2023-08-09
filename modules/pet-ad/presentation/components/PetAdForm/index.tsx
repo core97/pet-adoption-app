@@ -10,7 +10,8 @@ import {
 } from '@components';
 import { useAsync } from '@hooks/useAsync';
 import { useTranslation } from '@hooks/useTransalation';
-import { GENDER, PET_SIZE } from '@pet-ad/model';
+import { PET_SIZE } from '@pet-ad/model';
+import { GenderInputRadioCard } from '@pet-ad/presentation/components/GenderInputRadioCard';
 import { FileStoraged } from '@shared/domain/file-storaged';
 import { uploadFiles } from '@shared/presentation/services/storage-service';
 import { PetAdFormFields, PetAdFormProps } from './PetAdForm.interface';
@@ -72,7 +73,12 @@ export const PetAdForm = ({
   });
 
   return (
-    <VStack as="form" onSubmit={handleSubmit(handleSubmitForm.execute)} spacing={6}>
+    <VStack
+      as="form"
+      onSubmit={handleSubmit(handleSubmitForm.execute)}
+      spacing={6}
+      alignItems="flex-start"
+    >
       <InputImage
         limit={4}
         maxImageSize={7}
@@ -120,17 +126,13 @@ export const PetAdForm = ({
         rules={{ required: true }}
         defaultValue={defaultValue?.size}
       />
-      <Select
-        label="Género"
-        control={control}
+      <GenderInputRadioCard
+        register={register}
         name="gender"
-        options={Object.values(GENDER).map(gender => ({
-          label: gender,
-          value: gender,
-        }))}
         rules={{ required: true }}
+        errors={formState.errors}
         defaultValue={defaultValue?.gender}
-      />
+        />
       <InputText
         label="Nivel de actividad"
         description="Del 1 al 10 valora cual es su nivel de actividad"

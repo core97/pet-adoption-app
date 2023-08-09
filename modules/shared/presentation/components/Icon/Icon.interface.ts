@@ -2,9 +2,11 @@ import { IconBaseProps } from 'react-icons';
 
 export type IconsName =
   | 'close'
+  | 'female'
   | 'filter'
   | 'heartFill'
   | 'heartOutline'
+  | 'male'
   | 'menu'
   | 'plus'
   | 'send'

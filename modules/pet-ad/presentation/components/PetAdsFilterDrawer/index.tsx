@@ -3,9 +3,6 @@
 import { useSearchParams } from 'next/navigation';
 import {
   Button,
-  HStack,
-  Text,
-  FormLabel,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -17,10 +14,9 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { Select } from '@components/Select';
-import { InputRadioCard } from '@components/InputRadioCard';
 import { useTranslation } from '@hooks/useTransalation';
-import { Icon } from '@shared/presentation/components';
-import { GENDERS, isValidGender } from '@shared/domain/gender';
+import { GenderInputRadioCard } from '@pet-ad/presentation/components/GenderInputRadioCard';
+import { isValidGender } from '@shared/domain/gender';
 import {
   PetAdsFilterDrawerProps,
   PetAdsFilterFormFields,
@@ -74,34 +70,23 @@ export const PetAdsFilterDrawer = ({
           <VStack spacing={4}>
             <Select
               control={control}
-              label="Razas"
+              label="Raza"
               name="breed"
               options={breeds.map(item => ({
                 label: item.name[lang],
                 value: item.id,
               }))}
             />
-            <VStack width="100%" alignItems="flex-start">
-              <FormLabel as="p">Género</FormLabel>
-              <HStack width="100%">
-                {Object.keys(GENDERS).map(gender => (
-                  <InputRadioCard
-                    id={gender}
-                    key={gender}
-                    register={register}
-                    name="gender"
-                    value={gender}
-                    errors={formState.errors}
-                    width="100%"
-                  >
-                    <HStack width="100%">
-                      <Icon iconName="filter" />
-                      <Text>{gender}</Text>
-                    </HStack>
-                  </InputRadioCard>
-                ))}
-              </HStack>
-            </VStack>
+            <GenderInputRadioCard
+              register={register}
+              name="gender"
+              errors={formState.errors}
+              defaultValue={
+                isValidGender(queryParams.gender)
+                  ? queryParams.gender
+                  : undefined
+              }
+            />
           </VStack>
         </DrawerBody>
 

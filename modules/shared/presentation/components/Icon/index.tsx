@@ -1,14 +1,16 @@
 import { IconType } from 'react-icons';
-import { IoMdMenu, IoMdClose } from 'react-icons/io';
+import { IoMdMenu, IoMdClose, IoMdMale } from 'react-icons/io';
 import { BsPlus, BsFillSendFill, BsHeartFill, BsHeart } from 'react-icons/bs';
-import { BiUpload, BiFilter } from 'react-icons/bi';
+import { BiUpload, BiFilter, BiFemaleSign } from 'react-icons/bi';
 import { IconProps, IconsName } from './Icon.interface';
 
 const icons: Record<IconsName, IconType> = {
   close: IoMdClose,
+  female: BiFemaleSign,
   filter: BiFilter,
   heartFill: BsHeartFill,
   heartOutline: BsHeart,
+  male: IoMdMale,
   menu: IoMdMenu,
   plus: BsPlus,
   send: BsFillSendFill,
