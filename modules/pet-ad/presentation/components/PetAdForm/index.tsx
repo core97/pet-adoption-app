@@ -64,11 +64,11 @@ export const PetAdForm = ({
       gender: data.gender,
       adoptionStatus: 'IN_SEARCH',
       favouritesUsersId: [],
-      size: data.size,
       activityLevel: Number(data.activityLevel),
       sociability: Number(data.sociability),
       checkpoints: data.checkpoints,
       description: data.description,
+      size: data.size,
     });
   });
 
@@ -115,24 +115,26 @@ export const PetAdForm = ({
         rules={{ required: true }}
         defaultValue={defaultValue?.breedIds}
       />
-      <Select
-        label="Tamaño"
-        control={control}
-        name="size"
-        options={Object.values(PET_SIZE).map(size => ({
-          label: size,
-          value: size,
-        }))}
-        rules={{ required: true }}
-        defaultValue={defaultValue?.size}
-      />
+      {petType === 'DOG' && (
+        <Select
+          label="Tamaño"
+          control={control}
+          name="size"
+          options={Object.values(PET_SIZE).map(size => ({
+            label: size,
+            value: size,
+          }))}
+          rules={{ required: true }}
+          defaultValue={defaultValue?.size}
+        />
+      )}
       <GenderInputRadioCard
         register={register}
         name="gender"
         rules={{ required: true }}
         errors={formState.errors}
         defaultValue={defaultValue?.gender}
-        />
+      />
       <InputText
         label="Nivel de actividad"
         description="Del 1 al 10 valora cual es su nivel de actividad"

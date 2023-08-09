@@ -1,5 +1,4 @@
 import { PetAd } from '@pet-ad/model';
-import { isValidPetType } from '@shared/domain/pet-type';
 import prisma from '@shared/application/prisma';
 import { ConflictError } from '@shared/application/errors/conflict.error';
 
@@ -38,21 +37,12 @@ export const validatePetAd = async (petAd: Partial<PetAd>) => {
       where: { id: { in: petAd.breedIds } },
     });
 
-    if (
-      breeds.length > BREEDS_PER_PET_AD.MIN ||
-      breeds.length > BREEDS_PER_PET_AD.MAX
-    ) {
-      throw new ConflictError(`Not found pet ad breeds`);
-    }
-
     const areValidBreeds = breeds.every(({ petType }) =>
-      petAd.petType
-        ? petType === petAd.petType
-        : isValidPetType(petType) && petType === breeds[0].petType
+      petAd.petType ? petType === petAd.petType : petType === breeds[0].petType
     );
 
     if (!areValidBreeds) {
-      throw new ConflictError('Pet ad breeds are invalid');
+      throw new ConflictError("Breeds don't correspond to the type of pet.");
     }
   }
 
@@ -60,7 +50,7 @@ export const validatePetAd = async (petAd: Partial<PetAd>) => {
     petAd.dateBirth &&
     new Date(petAd.dateBirth).getTime() > new Date().getTime()
   ) {
-    throw new ConflictError('Pet ad date birth is invalid');
+    throw new ConflictError('Pet ad date birth should be less than today');
   }
 
   if (petAd.address) {
@@ -84,6 +74,12 @@ export const validatePetAd = async (petAd: Partial<PetAd>) => {
   ) {
     throw new ConflictError(
       'Range of activity level or sociability shold be between 0 and 10'
+    );
+  }
+
+  if (petAd.petType && petAd.petType !== 'DOG' && petAd.size) {
+    throw new ConflictError(
+      'For any pet type diferent than dog, the size does not exist'
     );
   }
 };

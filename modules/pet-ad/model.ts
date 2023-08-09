@@ -16,7 +16,8 @@ export const GENDER: Record<Gender, Gender> = {
 export type PetSize = PetSizePrisma;
 
 export const PET_SIZE: Record<PetSize, PetSize> = {
-  BIG: 'BIG',
-  MEDIUM: 'MEDIUM',
-  SMALL: 'SMALL',
+  S: 'S',
+  M: 'M',
+  L: 'L',
+  XL: 'XL',
 };
