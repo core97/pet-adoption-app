@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useParams } from 'next/navigation';
 import {
   Button,
   Drawer,
@@ -15,8 +15,10 @@ import {
 import { useForm } from 'react-hook-form';
 import { Select } from '@components/Select';
 import { useTranslation } from '@hooks/useTransalation';
+import { PET_SIZE, isValidSize } from '@pet-ad/model';
 import { GenderInputRadioCard } from '@pet-ad/presentation/components/GenderInputRadioCard';
 import { isValidGender } from '@shared/domain/gender';
+import { isValidPetType } from '@shared/domain/pet-type';
 import {
   PetAdsFilterDrawerProps,
   PetAdsFilterFormFields,
@@ -33,13 +35,21 @@ export const PetAdsFilterDrawer = ({
   status,
 }: PetAdsFilterDrawerProps) => {
   const searchParams = useSearchParams();
+  const params = useParams();
 
   const { lang } = useTranslation();
+
+  const urlParams = {
+    petType: params?.petType,
+  };
 
   const queryParams = {
     breed: searchParams?.get('breed'),
     gender: searchParams?.get('gender'),
+    size: searchParams?.get('size'),
   };
+
+  console.log({ queryParams, urlParams });
 
   const { register, handleSubmit, formState, control, reset } =
     useForm<PetAdsFilterFormFields>({
@@ -48,6 +58,7 @@ export const PetAdsFilterDrawer = ({
         gender: isValidGender(queryParams.gender)
           ? queryParams.gender
           : undefined,
+        size: isValidSize(queryParams.size) ? queryParams.size : undefined,
       },
     });
 
@@ -77,6 +88,20 @@ export const PetAdsFilterDrawer = ({
                 value: item.id,
               }))}
             />
+            {typeof urlParams.petType === 'string' &&
+              isValidPetType(urlParams.petType.toUpperCase()) &&
+              urlParams.petType.toUpperCase() === 'DOG' && (
+                <Select
+                  control={control}
+                  label="Tamaño"
+                  name="size"
+                  options={Object.values(PET_SIZE).map(item => ({
+                    label: item,
+                    value: item,
+                  }))}
+                />
+              )}
+
             <GenderInputRadioCard
               register={register}
               name="gender"

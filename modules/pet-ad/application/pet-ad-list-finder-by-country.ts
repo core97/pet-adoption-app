@@ -5,7 +5,7 @@ import { SortBy } from '@shared/domain/sort-by';
 
 export interface PetAdsListFinderByCountry {
   (
-    params: Partial<Pick<PetAd, 'breedIds' | 'petType' | 'gender'>> & {
+    params: Partial<Pick<PetAd, 'breedIds' | 'petType' | 'gender' | 'size'>> & {
       country: string;
       pagination?: PaginationParams;
       sortBy?: Pick<SortBy<PetAd>, 'createdAt' | 'dateBirth'>;
@@ -19,6 +19,7 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
   gender,
   pagination,
   petType,
+  size,
   sortBy,
 }) => {
   try {
@@ -27,6 +28,7 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
       ...(breedIds?.length && { breedIds: { hasSome: breedIds } }),
       ...(petType && { petType }),
       ...(gender && { gender }),
+      ...(size && petType === 'DOG' && { size }),
     };
 
     const [results, total] = await Promise.all([

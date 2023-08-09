@@ -21,3 +21,7 @@ export const PET_SIZE: Record<PetSize, PetSize> = {
   L: 'L',
   XL: 'XL',
 };
+
+export const isValidSize = (size: any): size is PetSize =>
+  typeof size === 'string' &&
+  Object.values(PET_SIZE).some(item => item === size);

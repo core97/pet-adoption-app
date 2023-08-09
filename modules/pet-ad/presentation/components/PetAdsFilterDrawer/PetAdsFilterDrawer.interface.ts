@@ -1,10 +1,12 @@
 import { Breed } from '@breed/model';
+import { PetSize } from '@pet-ad/model';
 import { Gender } from '@shared/domain/gender';
 import { FormProps } from '@shared/presentation/types/form-type';
 
 export type PetAdsFilterFormFields = {
   breed: string;
   gender: Gender;
+  size: PetSize;
 };
 
 export type PetAdsFilterFormSubmit = Partial<PetAdsFilterFormFields>;

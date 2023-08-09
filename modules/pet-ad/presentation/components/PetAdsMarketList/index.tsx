@@ -41,6 +41,10 @@ export const PetAdsMarketList = ({ petAds, breeds }: PetAdsMarketListProps) => {
       url += `&gender=${filters.gender}`;
     }
 
+    if (filters.size) {
+      url += `&size=${filters.size}`;
+    }
+
     router.push(url);
   };
 

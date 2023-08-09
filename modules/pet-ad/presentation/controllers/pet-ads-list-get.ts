@@ -1,4 +1,5 @@
 import { petAdsListFinderByCountry } from '@pet-ad/application/pet-ad-list-finder-by-country';
+import { isValidSize } from '@pet-ad/model';
 import { countryListFinder } from '@country/application/country-list-finder';
 import { controller } from '@shared/application/controller';
 import { httpHandler } from '@shared/application/http/http-handler';
@@ -10,7 +11,7 @@ import { isValidSortOption } from '@shared/domain/sort-by';
 export const petAdsListGet = controller(async req => {
   const { searchParams } = new URL(req.url);
 
-  const [country, petType, limit, page, createdAt, dateBirth, gender] = [
+  const [country, petType, limit, page, createdAt, dateBirth, gender, size] = [
     'country',
     'petType',
     'limit',
@@ -18,6 +19,7 @@ export const petAdsListGet = controller(async req => {
     'createdAt',
     'dateBirth',
     'gender',
+    'size',
   ].map(param => searchParams.get(param));
 
   const [breedIds] = ['breedIds'].map(param => searchParams.getAll(param));
@@ -25,6 +27,14 @@ export const petAdsListGet = controller(async req => {
   const pagination = { page, limit };
 
   const countries = await countryListFinder({ isAvailableToSearch: true });
+
+  if (!petType) {
+    return httpHandler.invalidParams('Missing pet type');
+  }
+
+  if (petType && !isValidPetType(petType)) {
+    return httpHandler.invalidParams('Invalid pet type');
+  }
 
   if (!country) {
     return httpHandler.invalidParams('Missing country');
@@ -34,10 +44,17 @@ export const petAdsListGet = controller(async req => {
     return httpHandler.notAcceptable('Country not available');
   }
 
+  if (petType !== 'DOG' && size) {
+    return httpHandler.notAcceptable(
+      'Size is valid only when pet type is equal than dog'
+    );
+  }
+
   const petAds = await petAdsListFinderByCountry({
     country,
     ...(isValidPetType(petType) && { petType }),
     ...(isValidGender(gender) && { gender }),
+    ...(isValidSize(size) && { size }),
     ...(breedIds.length && { breedIds }),
     ...(isValidSortOption(createdAt) && { sortBy: { createdAt } }),
     ...(isValidSortOption(dateBirth) && { sortBy: { dateBirth } }),
