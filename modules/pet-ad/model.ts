@@ -25,3 +25,21 @@ export const PET_SIZE: Record<PetSize, PetSize> = {
 export const isValidSize = (size: any): size is PetSize =>
   typeof size === 'string' &&
   Object.values(PET_SIZE).some(item => item === size);
+
+export enum ActivityLevelLabel {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH',
+}
+
+export const isValidActivityLevelLabel = (
+  activityLevel: any
+): activityLevel is ActivityLevelLabel =>
+  typeof activityLevel === 'string' &&
+  Object.values(ActivityLevelLabel).some(item => item === activityLevel);
+
+export const ACTIVITY_LEVEL_RANGE = {
+  [ActivityLevelLabel.LOW]: { min: 1, max: 3 },
+  [ActivityLevelLabel.MEDIUM]: { min: 4, max: 7 },
+  [ActivityLevelLabel.HIGH]: { min: 8, max: 10 },
+};

@@ -42,7 +42,16 @@ export const updatePetAdById = async ({
 };
 
 export const getPetAdsListByCountry = async ({
-  data: { country, breedIds, gender, pagination, petType, sortBy },
+  data: {
+    country,
+    breedIds,
+    gender,
+    pagination,
+    petType,
+    activityLevelLabel,
+    size,
+    sortBy,
+  },
   cacheConfig,
 }: FetchCacheConfig<Parameters<PetAdsListFinderByCountry>[0]>) => {
   let url = `${BASE_URL}?country=${country.toUpperCase()}`;
@@ -59,6 +68,14 @@ export const getPetAdsListByCountry = async ({
 
   if (gender) {
     url += `&gender=${gender}`;
+  }
+
+  if (activityLevelLabel) {
+    url += `&activityLevel=${activityLevelLabel}`;
+  }
+
+  if (size) {
+    url += `&size=${size}`;
   }
 
   if (pagination) {

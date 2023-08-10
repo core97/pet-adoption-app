@@ -15,7 +15,12 @@ import {
 import { useForm } from 'react-hook-form';
 import { Select } from '@components/Select';
 import { useTranslation } from '@hooks/useTransalation';
-import { PET_SIZE, isValidSize } from '@pet-ad/model';
+import {
+  PET_SIZE,
+  ActivityLevelLabel,
+  isValidSize,
+  isValidActivityLevelLabel,
+} from '@pet-ad/model';
 import { GenderInputRadioCard } from '@pet-ad/presentation/components/GenderInputRadioCard';
 import { isValidGender } from '@shared/domain/gender';
 import { isValidPetType } from '@shared/domain/pet-type';
@@ -44,16 +49,18 @@ export const PetAdsFilterDrawer = ({
   };
 
   const queryParams = {
+    activityLevel: searchParams?.get('activityLevel'),
     breed: searchParams?.get('breed'),
     gender: searchParams?.get('gender'),
     size: searchParams?.get('size'),
   };
 
-  console.log({ queryParams, urlParams });
-
   const { register, handleSubmit, formState, control, reset } =
     useForm<PetAdsFilterFormFields>({
       defaultValues: {
+        activityLevel: isValidActivityLevelLabel(queryParams.activityLevel)
+          ? queryParams.activityLevel
+          : undefined,
         breed: queryParams.breed || undefined,
         gender: isValidGender(queryParams.gender)
           ? queryParams.gender
@@ -86,6 +93,15 @@ export const PetAdsFilterDrawer = ({
               options={breeds.map(item => ({
                 label: item.name[lang],
                 value: item.id,
+              }))}
+            />
+            <Select
+              control={control}
+              label="Nivel de actividad"
+              name="activityLevel"
+              options={Object.values(ActivityLevelLabel).map(activityLevel => ({
+                label: activityLevel,
+                value: activityLevel,
               }))}
             />
             {typeof urlParams.petType === 'string' &&

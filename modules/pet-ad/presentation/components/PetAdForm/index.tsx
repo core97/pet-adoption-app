@@ -144,7 +144,7 @@ export const PetAdForm = ({
         rules={{
           required: true,
           pattern: {
-            value: /^[1-9]|10$/,
+            value: /^(10|[1-9])$/,
             message: 'Por favor introduce un número del 1 al 10',
           },
         }}
@@ -160,7 +160,7 @@ export const PetAdForm = ({
         rules={{
           required: true,
           pattern: {
-            value: /^[1-9]|10$/,
+            value: /^(10|[1-9])$/,
             message: 'Por favor introduce un número del 1 al 10',
           },
         }}

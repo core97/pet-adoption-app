@@ -45,6 +45,10 @@ export const PetAdsMarketList = ({ petAds, breeds }: PetAdsMarketListProps) => {
       url += `&size=${filters.size}`;
     }
 
+    if (filters.activityLevel) {
+      url += `&activityLevel=${filters.activityLevel}`;
+    }
+
     router.push(url);
   };
 

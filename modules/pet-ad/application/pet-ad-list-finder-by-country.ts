@@ -1,4 +1,5 @@
-import { PetAd } from '@pet-ad/model';
+import { Prisma } from '@prisma/client';
+import { PetAd, ActivityLevelLabel, ACTIVITY_LEVEL_RANGE } from '@pet-ad/model';
 import prisma from '@shared/application/prisma';
 import { PaginationResult, PaginationParams } from '@shared/domain/pagination';
 import { SortBy } from '@shared/domain/sort-by';
@@ -7,6 +8,7 @@ export interface PetAdsListFinderByCountry {
   (
     params: Partial<Pick<PetAd, 'breedIds' | 'petType' | 'gender' | 'size'>> & {
       country: string;
+      activityLevelLabel?: ActivityLevelLabel;
       pagination?: PaginationParams;
       sortBy?: Pick<SortBy<PetAd>, 'createdAt' | 'dateBirth'>;
     }
@@ -20,15 +22,23 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
   pagination,
   petType,
   size,
+  activityLevelLabel,
   sortBy,
 }) => {
   try {
-    const whereFilter = {
+    const activityLevel = activityLevelLabel
+      ? ACTIVITY_LEVEL_RANGE[activityLevelLabel]
+      : null;
+
+    const whereFilter: Prisma.PetAdWhereInput = {
       address: { is: { country } },
       ...(breedIds?.length && { breedIds: { hasSome: breedIds } }),
       ...(petType && { petType }),
       ...(gender && { gender }),
       ...(size && petType === 'DOG' && { size }),
+      ...(activityLevel && {
+        activityLevel: { gte: activityLevel.min, lte: activityLevel.max },
+      }),
     };
 
     const [results, total] = await Promise.all([

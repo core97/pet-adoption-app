@@ -1,5 +1,5 @@
 import { petAdsListFinderByCountry } from '@pet-ad/application/pet-ad-list-finder-by-country';
-import { isValidSize } from '@pet-ad/model';
+import { isValidSize, isValidActivityLevelLabel } from '@pet-ad/model';
 import { countryListFinder } from '@country/application/country-list-finder';
 import { controller } from '@shared/application/controller';
 import { httpHandler } from '@shared/application/http/http-handler';
@@ -11,7 +11,17 @@ import { isValidSortOption } from '@shared/domain/sort-by';
 export const petAdsListGet = controller(async req => {
   const { searchParams } = new URL(req.url);
 
-  const [country, petType, limit, page, createdAt, dateBirth, gender, size] = [
+  const [
+    country,
+    petType,
+    limit,
+    page,
+    createdAt,
+    dateBirth,
+    gender,
+    size,
+    activityLevelLabel,
+  ] = [
     'country',
     'petType',
     'limit',
@@ -20,6 +30,7 @@ export const petAdsListGet = controller(async req => {
     'dateBirth',
     'gender',
     'size',
+    'activityLevel',
   ].map(param => searchParams.get(param));
 
   const [breedIds] = ['breedIds'].map(param => searchParams.getAll(param));
@@ -52,12 +63,15 @@ export const petAdsListGet = controller(async req => {
 
   const petAds = await petAdsListFinderByCountry({
     country,
+    ...(breedIds.length && { breedIds }),
     ...(isValidPetType(petType) && { petType }),
     ...(isValidGender(gender) && { gender }),
     ...(isValidSize(size) && { size }),
-    ...(breedIds.length && { breedIds }),
     ...(isValidSortOption(createdAt) && { sortBy: { createdAt } }),
     ...(isValidSortOption(dateBirth) && { sortBy: { dateBirth } }),
+    ...(isValidActivityLevelLabel(activityLevelLabel) && {
+      activityLevelLabel,
+    }),
     ...(isVaidPaginationQueryParams(pagination) && {
       skip: +pagination.limit * +pagination.page,
       take: +pagination.limit,
