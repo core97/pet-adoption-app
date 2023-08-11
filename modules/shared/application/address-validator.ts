@@ -77,6 +77,7 @@ export const addressValidator = async ({
     displayName,
     postalCode,
     streetName,
+    geoJSON: { type: 'Point', coordinates: [lng, lat] },
     ...(streetNumber && { streetNumber }),
   };
 };

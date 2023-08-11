@@ -1,4 +1,4 @@
-type SortOption = 'asc' | 'desc';
+export type SortOption = 'asc' | 'desc';
 
 export type SortBy<T extends Record<string, any>> = {
   [key in keyof T]?: SortOption;

@@ -151,6 +151,7 @@ type Address {
   city         String
   coordinates  Coordinates
   country      String
+  geoJSON      GeoJSON
   placeId      String
   displayName  String
   postalCode   String
@@ -169,18 +170,14 @@ type Coordinates {
   lng Float
 }
 
-type Translation {
-  de String
-  en String
-  es String
-  fr String
-  it String
-  pt String
-}
-
 type FileStoraged {
   publicId String
   url      String
+}
+
+type GeoJSON {
+  type        String
+  coordinates Float[] // [lng, lat]
 }
 
 type PetCheckpoints {
@@ -200,6 +197,15 @@ type PreadoptionForm {
 type ProviderAccount {
   providerAccountId String
   provider          String
+}
+
+type Translation {
+  de String
+  en String
+  es String
+  fr String
+  it String
+  pt String
 }
 
 type UserPreferences {
