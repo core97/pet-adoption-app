@@ -1,3 +1,8 @@
+:root {
+  --teal-500: #319795;
+  --gray-300: #CBD5E0;
+}
+
 html,
 body {
   padding: 0;
