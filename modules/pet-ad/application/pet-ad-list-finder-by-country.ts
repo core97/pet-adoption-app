@@ -1,6 +1,7 @@
 import { PetAd, ActivityLevelLabel, ACTIVITY_LEVEL_RANGE } from '@pet-ad/model';
 // TODO: mover este tipo de aquí
 import { SortByOptions } from '@pet-ad/presentation/components/PetAdsFilterDrawer/PetAdsFilterDrawer.interface';
+import { Breed } from '@breed/model';
 import prisma from '@shared/application/prisma';
 import { PaginationResult, PaginationParams } from '@shared/domain/pagination';
 import { UnprocessableEntityError } from '@shared/application/errors/unprocessable-entity.error';
@@ -15,7 +16,7 @@ export interface PetAdsListFinderByCountry {
       pagination?: PaginationParams;
       sortBy?: SortByOptions;
     }
-  ): Promise<PaginationResult<PetAd>>;
+  ): Promise<PaginationResult<PetAd & { breeds: Pick<Breed, 'name'>[] }>>;
 }
 
 export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
@@ -92,14 +93,26 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
             metadata: [{ $count: 'total' }],
           },
         },
+        {
+          $project: {
+            results: '$data',
+            metadata: { $arrayElemAt: ['$metadata', 0] },
+          },
+        },
       ],
     });
 
-    const [aggregationResultAsAny] = aggregationResult as unknown as any[];
-    const results = aggregationResultAsAny.data;
-    const total = aggregationResultAsAny.metadata[0]?.total || 0;
+    const [data] = aggregationResult as unknown as Array<{
+      results: Record<string, any>[];
+      metadata: { total: number };
+    }>;
 
-    return { results, total };
+    const results = await prisma.petAd.findMany({
+      where: { id: { in: data.results.map(({ _id }) => _id.$oid.toString()) } },
+      include: { breeds: { select: { name: true } } },
+    });
+
+    return { results, total: data.metadata?.total || 0 };
   } catch (error) {
     if (error instanceof Error) {
       error.message = `The list of pet ads by country could not be obtained. ${error.message}`;
