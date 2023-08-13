@@ -17,6 +17,8 @@ const icons: Record<IconsName, IconType> = {
   upload: BiUpload,
 };
 
+export type { IconsName } from './Icon.interface'
+
 export const Icon = (props: IconProps) => {
   const { iconName, ...rest } = props;
   const ComponentWithIcon = icons[iconName];
