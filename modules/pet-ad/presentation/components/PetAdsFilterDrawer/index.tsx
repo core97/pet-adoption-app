@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useSearchParams, useParams } from 'next/navigation';
 import {
   Button,
@@ -11,6 +12,8 @@ import {
   DrawerContent,
   DrawerCloseButton,
   VStack,
+  Heading,
+  Text,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { Select } from '@components/Select';
@@ -22,11 +25,16 @@ import {
   isValidActivityLevelLabel,
 } from '@pet-ad/model';
 import { GenderInputRadioCard } from '@pet-ad/presentation/components/GenderInputRadioCard';
+import { InputRadio } from '@components/InputRadio';
+import { useGetPosition } from '@hooks/useGetPosition';
+import { Coordinates } from '@shared/domain/coordinates';
 import { isValidGender } from '@shared/domain/gender';
 import { isValidPetType } from '@shared/domain/pet-type';
+import { isValidSorTypeOptions } from './PetAdsFilterDrawer.utils';
 import {
   PetAdsFilterDrawerProps,
   PetAdsFilterFormFields,
+  SortByOptions,
 } from './PetAdsFilterDrawer.interface';
 
 export type { PetAdsFilterFormSubmit } from './PetAdsFilterDrawer.interface';
@@ -39,6 +47,8 @@ export const PetAdsFilterDrawer = ({
   submitButtonLabel,
   status,
 }: PetAdsFilterDrawerProps) => {
+  const [coordinates, setCoodinates] = useState<Coordinates>();
+
   const searchParams = useSearchParams();
   const params = useParams();
 
@@ -53,9 +63,10 @@ export const PetAdsFilterDrawer = ({
     breed: searchParams?.get('breed'),
     gender: searchParams?.get('gender'),
     size: searchParams?.get('size'),
+    sortBy: searchParams?.get('sortBy'),
   };
 
-  const { register, handleSubmit, formState, control, reset } =
+  const { register, handleSubmit, formState, control, reset, watch, setValue } =
     useForm<PetAdsFilterFormFields>({
       defaultValues: {
         activityLevel: isValidActivityLevelLabel(queryParams.activityLevel)
@@ -66,20 +77,39 @@ export const PetAdsFilterDrawer = ({
           ? queryParams.gender
           : undefined,
         size: isValidSize(queryParams.size) ? queryParams.size : undefined,
+        sortBy: isValidSorTypeOptions(queryParams.sortBy)
+          ? queryParams.sortBy
+          : SortByOptions.RELEVANCE,
       },
     });
 
+  const getPosition = useGetPosition({
+    deniedPemissionCallback: () => setValue('sortBy', SortByOptions.RELEVANCE),
+  });
+
+  const sortByOptionValue = watch('sortBy');
+
   const onSubmitForm = (data: PetAdsFilterFormFields) => {
-    onSubmit(data);
+    onSubmit({ ...data, ...(coordinates && { coordinates }) });
     onClose();
   };
+
+  useEffect(() => {
+    if (sortByOptionValue === SortByOptions.DISTANCE) {
+      getPosition(({ coords }) => {
+        setCoodinates({ lat: coords.latitude, lng: coords.longitude });
+      });
+    } else {
+      setCoodinates(undefined);
+    }
+  }, [getPosition, setValue, sortByOptionValue]);
 
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Filtros de búsqueda</DrawerHeader>
+        <DrawerHeader fontWeight={700}>Filtros de búsqueda</DrawerHeader>
         <DrawerBody
           as="form"
           id="petAdFiltersForm"
@@ -128,6 +158,25 @@ export const PetAdsFilterDrawer = ({
                   : undefined
               }
             />
+          </VStack>
+          <VStack mt={8} alignItems="flex-start">
+            <Heading fontWeight={700} fontSize="xl">
+              Ordernar por
+            </Heading>
+            <div>
+              {Object.values(SortByOptions).map(sortByType => (
+                <InputRadio
+                  mt={4}
+                  key={sortByType}
+                  id={sortByType}
+                  register={register}
+                  name="sortBy"
+                  value={sortByType}
+                >
+                  <Text>{sortByType}</Text>
+                </InputRadio>
+              ))}
+            </div>
           </VStack>
         </DrawerBody>
 

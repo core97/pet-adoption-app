@@ -1,12 +1,13 @@
 import { petAdsListFinderByCountry } from '@pet-ad/application/pet-ad-list-finder-by-country';
 import { isValidSize, isValidActivityLevelLabel } from '@pet-ad/model';
+// TODO: mover este tipo de aquí
+import { isValidSorTypeOptions } from '@pet-ad/presentation/components/PetAdsFilterDrawer/PetAdsFilterDrawer.utils';
 import { countryListFinder } from '@country/application/country-list-finder';
 import { controller } from '@shared/application/controller';
 import { httpHandler } from '@shared/application/http/http-handler';
 import { isValidPetType } from '@shared/domain/pet-type';
 import { isValidGender } from '@shared/domain/gender';
 import { isVaidPaginationQueryParams } from '@shared/domain/pagination';
-import { isValidSortOption } from '@shared/domain/sort-by';
 
 export const petAdsListGet = controller(async req => {
   const { searchParams } = new URL(req.url);
@@ -16,21 +17,23 @@ export const petAdsListGet = controller(async req => {
     petType,
     limit,
     page,
-    createdAt,
-    dateBirth,
     gender,
     size,
     activityLevelLabel,
+    sortBy,
+    lat,
+    lng,
   ] = [
     'country',
     'petType',
     'limit',
     'page',
-    'createdAt',
-    'dateBirth',
     'gender',
     'size',
     'activityLevel',
+    'sortBy',
+    'lat',
+    'lng',
   ].map(param => searchParams.get(param));
 
   const [breedIds] = ['breedIds'].map(param => searchParams.getAll(param));
@@ -67,11 +70,17 @@ export const petAdsListGet = controller(async req => {
     ...(isValidPetType(petType) && { petType }),
     ...(isValidGender(gender) && { gender }),
     ...(isValidSize(size) && { size }),
-    ...(isValidSortOption(createdAt) && { sortBy: { createdAt } }),
-    ...(isValidSortOption(dateBirth) && { sortBy: { dateBirth } }),
     ...(isValidActivityLevelLabel(activityLevelLabel) && {
       activityLevelLabel,
     }),
+    ...(isValidSorTypeOptions(sortBy) && { sortBy }),
+    ...(lat &&
+      lng && {
+        coordinates: {
+          lat: Number(lat),
+          lng: Number(lng),
+        },
+      }),
     ...(isVaidPaginationQueryParams(pagination) && {
       skip: +pagination.limit * +pagination.page,
       take: +pagination.limit,

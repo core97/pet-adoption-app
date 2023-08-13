@@ -46,11 +46,12 @@ export const getPetAdsListByCountry = async ({
     country,
     breedIds,
     gender,
-    pagination,
     petType,
     activityLevelLabel,
     size,
     sortBy,
+    coordinates,
+    pagination,
   },
   cacheConfig,
 }: FetchCacheConfig<Parameters<PetAdsListFinderByCountry>[0]>) => {
@@ -82,10 +83,12 @@ export const getPetAdsListByCountry = async ({
     url += `&page=${pagination.page}&limit=${pagination.limit}`;
   }
 
+  if (coordinates) {
+    url += `&lng=${coordinates.lng}&lat=${coordinates.lat}`;
+  }
+
   if (sortBy) {
-    Object.entries(sortBy).forEach(([key, value]) => {
-      url += `&${key}=${value}`;
-    });
+    url += `&sortBy=${sortBy}`;
   }
 
   const res = await fetcher<PaginationResult<PetAd>>(url, {

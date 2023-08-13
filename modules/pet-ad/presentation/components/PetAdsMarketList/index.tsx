@@ -49,6 +49,14 @@ export const PetAdsMarketList = ({ petAds, breeds }: PetAdsMarketListProps) => {
       url += `&activityLevel=${filters.activityLevel}`;
     }
 
+    if (filters.sortBy) {
+      url += `&sortBy=${filters.sortBy}`;
+    }
+
+    if (filters.coordinates) {
+      url += `&lng=${filters.coordinates.lng}&lat=${filters.coordinates.lat}`;
+    }
+
     router.push(url);
   };
 

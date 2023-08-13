@@ -1,8 +1,10 @@
 import { PetAd, ActivityLevelLabel, ACTIVITY_LEVEL_RANGE } from '@pet-ad/model';
+// TODO: mover este tipo de aquí
+import { SortByOptions } from '@pet-ad/presentation/components/PetAdsFilterDrawer/PetAdsFilterDrawer.interface';
 import prisma from '@shared/application/prisma';
 import { PaginationResult, PaginationParams } from '@shared/domain/pagination';
+import { UnprocessableEntityError } from '@shared/application/errors/unprocessable-entity.error';
 import { Coordinates } from '@shared/domain/coordinates';
-import { SortBy, SortOption } from '@shared/domain/sort-by';
 
 export interface PetAdsListFinderByCountry {
   (
@@ -11,9 +13,7 @@ export interface PetAdsListFinderByCountry {
       activityLevelLabel?: ActivityLevelLabel;
       coordinates?: Coordinates;
       pagination?: PaginationParams;
-      sortBy?: Pick<SortBy<PetAd>, 'createdAt' | 'dateBirth'> & {
-        distance?: SortOption;
-      };
+      sortBy?: SortByOptions;
     }
   ): Promise<PaginationResult<PetAd>>;
 }
@@ -27,36 +27,14 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
   size,
   activityLevelLabel,
   pagination = { limit: 20, page: 0 },
-  sortBy = { createdAt: 'desc', dateBirth: 'desc' },
+  sortBy = SortByOptions.RELEVANCE,
 }) => {
   try {
-    /* const whereFilter: Prisma.PetAdWhereInput = {
-      address: { is: { country } },
-      ...(breedIds?.length && { breedIds: { hasSome: breedIds } }),
-      ...(petType && { petType }),
-      ...(gender && { gender }),
-      ...(size && petType === 'DOG' && { size }),
-      ...(activityLevel && {
-        activityLevel: { gte: activityLevel.min, lte: activityLevel.max },
-      }),
-    }; */
-
-    /* const [results, total] = await Promise.all([
-      prisma.petAd.findMany({
-        where: whereFilter,
-
-        orderBy: {
-          ...(sortBy?.createdAt && { createdAt: sortBy.createdAt }),
-          ...(sortBy?.dateBirth && { dateBirth: sortBy.dateBirth }),
-        },
-
-        ...(pagination && {
-          skip: pagination.limit * pagination.page,
-          take: pagination.limit,
-        }),
-      }),
-      prisma.petAd.count({ where: whereFilter }),
-    ]); */
+    if (sortBy === SortByOptions.DISTANCE && !coordinates) {
+      throw new UnprocessableEntityError(
+        'Coordinates is required to sort by distance'
+      );
+    }
 
     const query = {
       'address.country': country,
@@ -73,9 +51,9 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
         }),
     };
 
-    const a = await prisma.petAd.aggregateRaw({
+    const aggregationResult = await prisma.petAd.aggregateRaw({
       pipeline: [
-        ...(sortBy?.distance && coordinates
+        ...(sortBy === SortByOptions.DISTANCE && coordinates
           ? [
               {
                 $geoNear: {
@@ -100,8 +78,8 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
               },
               {
                 $sort: {
-                  createdAt: sortBy.createdAt === 'asc' ? 1 : -1,
-                  dateBirth: sortBy.dateBirth === 'asc' ? 1 : -1,
+                  createdAt: -1,
+                  dateBirth: 1,
                 },
               },
             ]),
@@ -117,9 +95,11 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
       ],
     });
 
-    console.log(a);
+    const [aggregationResultAsAny] = aggregationResult as unknown as any[];
+    const results = aggregationResultAsAny.data;
+    const total = aggregationResultAsAny.metadata[0]?.total || 0;
 
-    return { results: [], total: 0 };
+    return { results, total };
   } catch (error) {
     if (error instanceof Error) {
       error.message = `The list of pet ads by country could not be obtained. ${error.message}`;
