@@ -1,6 +1,8 @@
 import { IconBaseProps } from 'react-icons';
 
 export type IconsName =
+  | 'chevronLeft'
+  | 'chevronRight'
   | 'close'
   | 'female'
   | 'filter'
