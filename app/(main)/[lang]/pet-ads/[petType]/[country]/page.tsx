@@ -1,13 +1,14 @@
 import { redirect } from 'next/navigation';
 import { getBreedsList } from '@breed/presentation/breed-fetcher';
-import { petAdsListFinderByCountry } from '@pet-ad/application/pet-ad-list-finder-by-country';
+import {
+  petAdsListFinderByCountry,
+  isValidPetAdSorTypeOptions,
+} from '@pet-ad/application/pet-ad-list-finder-by-country';
 import { PetAdsMarketList } from '@pet-ad/presentation/components/PetAdsMarketList';
 import {
   LIMIT_PER_PET_ADS_PAGE,
   PET_ADS_PAGE_SEARCH_PARAM,
 } from '@pet-ad/presentation/components/PetAdsMarketList/PetAdsMarketList.constants';
-// TODO: mover este tipo de aquí
-import { isValidSorTypeOptions } from '@pet-ad/presentation/components/PetAdsFilterDrawer/PetAdsFilterDrawer.utils';
 import { isValidPetType } from '@shared/domain/pet-type';
 import { isValidActivityLevelLabel, isValidSize } from '@pet-ad/model';
 import { isValidGender } from '@shared/domain/gender';
@@ -48,7 +49,7 @@ const PetAdsMarketListByPetType = async ({
       ...(isValidSize(searchParams.size) && {
         size: searchParams.size,
       }),
-      ...(isValidSorTypeOptions(searchParams.sortBy) && {
+      ...(isValidPetAdSorTypeOptions(searchParams.sortBy) && {
         sortBy: searchParams.sortBy,
       }),
       ...(searchParams.lat &&

@@ -1,11 +1,14 @@
 import { PetAd, ActivityLevelLabel, ACTIVITY_LEVEL_RANGE } from '@pet-ad/model';
-// TODO: mover este tipo de aquí
-import { SortByOptions } from '@pet-ad/presentation/components/PetAdsFilterDrawer/PetAdsFilterDrawer.interface';
 import { Breed } from '@breed/model';
 import prisma from '@shared/application/prisma';
 import { PaginationResult, PaginationParams } from '@shared/domain/pagination';
 import { UnprocessableEntityError } from '@shared/application/errors/unprocessable-entity.error';
 import { Coordinates } from '@shared/domain/coordinates';
+
+export enum PetAdSortByOptions {
+  RELEVANCE = 'RELEVANCE',
+  DISTANCE = 'DISTANCE',
+}
 
 export interface PetAdsListFinderByCountry {
   (
@@ -14,10 +17,16 @@ export interface PetAdsListFinderByCountry {
       activityLevelLabel?: ActivityLevelLabel;
       coordinates?: Coordinates;
       pagination?: PaginationParams;
-      sortBy?: SortByOptions;
+      sortBy?: PetAdSortByOptions;
     }
   ): Promise<PaginationResult<PetAd & { breeds: Pick<Breed, 'name'>[] }>>;
 }
+
+export const isValidPetAdSorTypeOptions = (
+  sortByType: any
+): sortByType is PetAdSortByOptions =>
+  typeof sortByType === 'string' &&
+  Object.values(PetAdSortByOptions).some(item => item === sortByType);
 
 export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
   country,
@@ -28,10 +37,10 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
   size,
   activityLevelLabel,
   pagination = { limit: 20, page: 0 },
-  sortBy = SortByOptions.RELEVANCE,
+  sortBy = PetAdSortByOptions.RELEVANCE,
 }) => {
   try {
-    if (sortBy === SortByOptions.DISTANCE && !coordinates) {
+    if (sortBy === PetAdSortByOptions.DISTANCE && !coordinates) {
       throw new UnprocessableEntityError(
         'Coordinates is required to sort by distance'
       );
@@ -54,7 +63,7 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
 
     const aggregationResult = await prisma.petAd.aggregateRaw({
       pipeline: [
-        ...(sortBy === SortByOptions.DISTANCE && coordinates
+        ...(sortBy === PetAdSortByOptions.DISTANCE && coordinates
           ? [
               {
                 $geoNear: {

@@ -24,17 +24,19 @@ import {
   isValidSize,
   isValidActivityLevelLabel,
 } from '@pet-ad/model';
+import {
+  PetAdSortByOptions,
+  isValidPetAdSorTypeOptions,
+} from '@pet-ad/application/pet-ad-list-finder-by-country';
 import { GenderInputRadioCard } from '@pet-ad/presentation/components/GenderInputRadioCard';
 import { InputRadio } from '@components/InputRadio';
 import { useGetPosition } from '@hooks/useGetPosition';
 import { Coordinates } from '@shared/domain/coordinates';
 import { isValidGender } from '@shared/domain/gender';
 import { isValidPetType } from '@shared/domain/pet-type';
-import { isValidSorTypeOptions } from './PetAdsFilterDrawer.utils';
 import {
   PetAdsFilterDrawerProps,
   PetAdsFilterFormFields,
-  SortByOptions,
 } from './PetAdsFilterDrawer.interface';
 
 export type { PetAdsFilterFormSubmit } from './PetAdsFilterDrawer.interface';
@@ -77,14 +79,15 @@ export const PetAdsFilterDrawer = ({
           ? queryParams.gender
           : undefined,
         size: isValidSize(queryParams.size) ? queryParams.size : undefined,
-        sortBy: isValidSorTypeOptions(queryParams.sortBy)
+        sortBy: isValidPetAdSorTypeOptions(queryParams.sortBy)
           ? queryParams.sortBy
-          : SortByOptions.RELEVANCE,
+          : PetAdSortByOptions.RELEVANCE,
       },
     });
 
   const getPosition = useGetPosition({
-    deniedPemissionCallback: () => setValue('sortBy', SortByOptions.RELEVANCE),
+    deniedPemissionCallback: () =>
+      setValue('sortBy', PetAdSortByOptions.RELEVANCE),
   });
 
   const sortByOptionValue = watch('sortBy');
@@ -95,7 +98,7 @@ export const PetAdsFilterDrawer = ({
   };
 
   useEffect(() => {
-    if (sortByOptionValue === SortByOptions.DISTANCE) {
+    if (sortByOptionValue === PetAdSortByOptions.DISTANCE) {
       getPosition(({ coords }) => {
         setCoodinates({ lat: coords.latitude, lng: coords.longitude });
       });
@@ -164,7 +167,7 @@ export const PetAdsFilterDrawer = ({
               Ordernar por
             </Heading>
             <div>
-              {Object.values(SortByOptions).map(sortByType => (
+              {Object.values(PetAdSortByOptions).map(sortByType => (
                 <InputRadio
                   mt={4}
                   key={sortByType}

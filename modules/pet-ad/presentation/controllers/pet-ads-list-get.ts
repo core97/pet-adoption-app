@@ -1,7 +1,8 @@
-import { petAdsListFinderByCountry } from '@pet-ad/application/pet-ad-list-finder-by-country';
+import {
+  petAdsListFinderByCountry,
+  isValidPetAdSorTypeOptions,
+} from '@pet-ad/application/pet-ad-list-finder-by-country';
 import { isValidSize, isValidActivityLevelLabel } from '@pet-ad/model';
-// TODO: mover este tipo de aquí
-import { isValidSorTypeOptions } from '@pet-ad/presentation/components/PetAdsFilterDrawer/PetAdsFilterDrawer.utils';
 import { countryListFinder } from '@country/application/country-list-finder';
 import { controller } from '@shared/application/controller';
 import { httpHandler } from '@shared/application/http/http-handler';
@@ -73,7 +74,7 @@ export const petAdsListGet = controller(async req => {
     ...(isValidActivityLevelLabel(activityLevelLabel) && {
       activityLevelLabel,
     }),
-    ...(isValidSorTypeOptions(sortBy) && { sortBy }),
+    ...(isValidPetAdSorTypeOptions(sortBy) && { sortBy }),
     ...(lat &&
       lng && {
         coordinates: {
