@@ -1,16 +1,28 @@
 'use client';
 
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Container } from '@chakra-ui/react';
 import { PetAdsList } from '@pet-ad/presentation/components/PetAdsList';
 import { PetAdsListHeader } from '@pet-ad/presentation/components/PetAdsListHeader';
 import { PetAdsFilterFormSubmit } from '@pet-ad/presentation/components/PetAdsFilterDrawer';
 import { PAGES } from '@shared/application/pages';
+import { Paginator } from '@components/Paginator';
 import { PetAdsMarketListProps } from './PetAdsMarketList.interface';
+import {
+  LIMIT_PER_PET_ADS_PAGE,
+  PET_ADS_PAGE_SEARCH_PARAM,
+} from './PetAdsMarketList.constants';
 
-export const PetAdsMarketList = ({ petAds, breeds }: PetAdsMarketListProps) => {
+export const PetAdsMarketList = ({
+  petAds,
+  breeds,
+  total,
+}: PetAdsMarketListProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const currentPage = searchParams?.get('page') || 0;
 
   const handleOnChangeCountry = (countryIso: string) => {
     if (!pathname) return;
@@ -68,6 +80,11 @@ export const PetAdsMarketList = ({ petAds, breeds }: PetAdsMarketListProps) => {
         onSubmitFilters={handleOnSubmitFilters}
       />
       <PetAdsList petAds={petAds} redirectOnClick={PAGES.PET_AD_DETAIL} />
+      <Paginator
+        pageSearchParam={PET_ADS_PAGE_SEARCH_PARAM}
+        currentPage={Number(currentPage)}
+        totalPages={Math.ceil(total / LIMIT_PER_PET_ADS_PAGE)}
+      />
     </Container>
   );
 };

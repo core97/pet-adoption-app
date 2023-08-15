@@ -38,7 +38,7 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
     }
 
     const query = {
-      'address.country': country,
+      'address.country': country.toUpperCase(),
       ...(breedIds?.length && { breedIds: { $in: breedIds } }),
       ...(petType && { petType }),
       ...(gender && { gender }),

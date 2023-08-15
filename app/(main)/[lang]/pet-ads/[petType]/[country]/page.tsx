@@ -1,7 +1,11 @@
 import { redirect } from 'next/navigation';
 import { getBreedsList } from '@breed/presentation/breed-fetcher';
-import { getPetAdsListByCountry } from '@pet-ad/presentation/pet-ad-fetcher';
+import { petAdsListFinderByCountry } from '@pet-ad/application/pet-ad-list-finder-by-country';
 import { PetAdsMarketList } from '@pet-ad/presentation/components/PetAdsMarketList';
+import {
+  LIMIT_PER_PET_ADS_PAGE,
+  PET_ADS_PAGE_SEARCH_PARAM,
+} from '@pet-ad/presentation/components/PetAdsMarketList/PetAdsMarketList.constants';
 // TODO: mover este tipo de aquí
 import { isValidSorTypeOptions } from '@pet-ad/presentation/components/PetAdsFilterDrawer/PetAdsFilterDrawer.utils';
 import { isValidPetType } from '@shared/domain/pet-type';
@@ -22,6 +26,7 @@ const PetAdsMarketListByPetType = async ({
     sortBy: string;
     lat: string;
     lng: string;
+    [PET_ADS_PAGE_SEARCH_PARAM]: string;
   };
 }) => {
   const petType = params.petType.toUpperCase();
@@ -31,36 +36,35 @@ const PetAdsMarketListByPetType = async ({
   }
 
   const [petAds, breeds] = await Promise.all([
-    getPetAdsListByCountry({
-      data: {
-        country: params.country,
-        petType,
-        ...(isValidGender(searchParams.gender) && {
-          gender: searchParams.gender,
+    petAdsListFinderByCountry({
+      country: params.country,
+      petType,
+      ...(isValidGender(searchParams.gender) && {
+        gender: searchParams.gender,
+      }),
+      ...(isValidActivityLevelLabel(searchParams.activityLevel) && {
+        activityLevelLabel: searchParams.activityLevel,
+      }),
+      ...(isValidSize(searchParams.size) && {
+        size: searchParams.size,
+      }),
+      ...(isValidSorTypeOptions(searchParams.sortBy) && {
+        sortBy: searchParams.sortBy,
+      }),
+      ...(searchParams.lat &&
+        searchParams.lng && {
+          coordinates: {
+            lat: Number(searchParams.lat),
+            lng: Number(searchParams.lng),
+          },
         }),
-        ...(isValidActivityLevelLabel(searchParams.activityLevel) && {
-          activityLevelLabel: searchParams.activityLevel,
+      ...(searchParams.breed &&
+        typeof searchParams.breed === 'string' && {
+          breedIds: [searchParams.breed],
         }),
-        ...(isValidSize(searchParams.size) && {
-          size: searchParams.size,
-        }),
-        ...(isValidSorTypeOptions(searchParams.sortBy) && {
-          sortBy: searchParams.sortBy,
-        }),
-        ...(searchParams.lat &&
-          searchParams.lng && {
-            coordinates: {
-              lat: Number(searchParams.lat),
-              lng: Number(searchParams.lng),
-            },
-          }),
-        ...(searchParams.breed &&
-          typeof searchParams.breed === 'string' && {
-            breedIds: [searchParams.breed],
-          }),
-      },
-      cacheConfig: {
-        next: { revalidate: 60 * 10 },
+      pagination: {
+        page: Number(searchParams[PET_ADS_PAGE_SEARCH_PARAM] || 0),
+        limit: LIMIT_PER_PET_ADS_PAGE,
       },
     }),
     getBreedsList({
@@ -70,7 +74,13 @@ const PetAdsMarketListByPetType = async ({
     }),
   ]);
 
-  return <PetAdsMarketList breeds={breeds.results} petAds={petAds.results} />;
+  return (
+    <PetAdsMarketList
+      breeds={breeds.results}
+      petAds={petAds.results}
+      total={petAds.total}
+    />
+  );
 };
 
 export default PetAdsMarketListByPetType;
