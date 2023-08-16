@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { PetAd, ActivityLevelLabel, ACTIVITY_LEVEL_RANGE } from '@pet-ad/model';
 import { Breed } from '@breed/model';
 import prisma from '@shared/application/prisma';
@@ -120,6 +121,42 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
       where: { id: { in: data.results.map(({ _id }) => _id.$oid.toString()) } },
       include: { breeds: { select: { name: true } } },
     });
+
+    if (sortBy === PetAdSortByOptions.RELEVANCE) {
+      results.sort((a, b) => {
+        const [aCreatedDate, bCreatedDate] = [a, b].map(item =>
+          dayjs(item.createdAt).startOf('day').toDate()
+        );
+
+        // Ordenar por "createdAt" de forma descendente
+        if (aCreatedDate > bCreatedDate) return -1;
+        if (aCreatedDate < bCreatedDate) return 1;
+
+        const [aDateBirth, bDateBirth] = [a, b].map(item =>
+          dayjs(item.dateBirth).startOf('day').toDate()
+        );
+
+        // Si "createdAt" es igual, ordenar por "dateBirth" de forma ascendente
+        if (aDateBirth > bDateBirth) return 1;
+        if (aDateBirth < bDateBirth) return -1;
+
+        return 0;
+      });
+    } else if (sortBy === PetAdSortByOptions.DISTANCE) {
+      results.sort((a, b) => {
+        const [aDistance, bDistance] = [a, b].map(
+          item =>
+            data.results.find(({ _id }) => _id.$oid.toString() === item.id)
+              ?.distance
+        );
+
+        // Ordenar por "distance" de forma ascendente
+        if (aDistance > bDistance) return 1;
+        if (aDistance < bDistance) return -1;
+
+        return 0;
+      });
+    }
 
     return { results, total: data.metadata?.total || 0 };
   } catch (error) {
