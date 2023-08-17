@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useAsync } from '@hooks/useAsync';
+import { useTranslation } from '@hooks/useTransalation';
 import { InputRadioCard } from '@components/InputRadioCard';
 import { updateUserPreference } from '@user/presentation/user-service';
 import { useUserStore } from '@user/presentation/user-store';
@@ -33,6 +34,8 @@ export const SelectCountryDrawer = ({
 }: SelectCountryDrawerProps) => {
   const { register, handleSubmit, formState } =
     useForm<SelectCountryFormFields>();
+
+  const { t, lang } = useTranslation();
 
   const user = useUserStore();
 
@@ -66,13 +69,13 @@ export const SelectCountryDrawer = ({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Preferencias de búsqueda</DrawerHeader>
+        <DrawerHeader>{t('search_preferences')}</DrawerHeader>
         <DrawerBody
           as="form"
           id="searchPreferenceForm"
           onSubmit={handleSubmit(onSubmit.execute)}
         >
-          <FormLabel as="p">Selecciona el país de búsqueda</FormLabel>
+          <FormLabel as="p">{t('select_search_country')}</FormLabel>
           <SimpleGrid
             templateColumns="repeat(auto-fit, minmax(160px, 1fr))"
             gap={6}
@@ -98,7 +101,7 @@ export const SelectCountryDrawer = ({
                     height={20}
                   />
                   <Text fontSize="sm" whiteSpace="nowrap">
-                    {country.name.es}
+                    {country.name[lang]}
                   </Text>
                 </HStack>
               </InputRadioCard>
@@ -113,7 +116,7 @@ export const SelectCountryDrawer = ({
             form="searchPreferenceForm"
             isLoading={onSubmit.status === 'loading'}
           >
-            Guardar
+            {t('cta.save')}
           </Button>
         </DrawerFooter>
       </DrawerContent>

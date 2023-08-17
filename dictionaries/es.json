@@ -4,7 +4,9 @@
     "save": "Guardar"
   },
   "language": "Idioma",
+  "search_preferences": "Preferencias de búsqueda",
   "select_language": "Selecciona un idioma",
+  "select_search_country": "Selecciona el país de búsqueda",
   "vars": {
     "DE": "Alemán",
     "EN": "Inglés",
