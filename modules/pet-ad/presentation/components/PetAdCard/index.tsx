@@ -3,13 +3,7 @@
 import Image from 'next/image';
 import { Box, VStack, Heading, Tag, Text } from '@chakra-ui/react';
 import { Icon, IconsName } from '@components/Icon';
-import { PetAd } from '@pet-ad/model';
-import { Breed } from '@breed/model';
-
-export type PetAdCardProps = Pick<
-  PetAd,
-  'name' | 'gender' | 'images' | 'petType' | 'address'
-> & { breeds: Pick<Breed, 'name'>[] };
+import { PetAdCardProps } from './PetAdCard.interface';
 
 export const PetAdCard = ({
   name,

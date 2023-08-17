@@ -1,8 +1,8 @@
 import { Breed } from '@breed/model';
-import { PetAd } from '@pet-ad/model';
+import { PetAdCardProps } from '@pet-ad/presentation/components/PetAdCard/PetAdCard.interface';
 
 export type PetAdsMarketListProps = {
   breeds: Pick<Breed, 'id' | 'name'>[];
-  petAds: PetAd[];
+  petAds: PetAdCardProps[];
   total: number;
 };

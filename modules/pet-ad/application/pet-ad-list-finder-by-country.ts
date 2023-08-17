@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { PetAd, ActivityLevelLabel, ACTIVITY_LEVEL_RANGE } from '@pet-ad/model';
 import { Breed } from '@breed/model';
 import prisma from '@shared/application/prisma';
+import { Address } from '@shared/domain/address';
 import { PaginationResult, PaginationParams } from '@shared/domain/pagination';
 import { UnprocessableEntityError } from '@shared/application/errors/unprocessable-entity.error';
 import { Coordinates } from '@shared/domain/coordinates';
@@ -20,7 +21,14 @@ export interface PetAdsListFinderByCountry {
       pagination?: PaginationParams;
       sortBy?: PetAdSortByOptions;
     }
-  ): Promise<PaginationResult<PetAd & { breeds: Pick<Breed, 'name'>[] }>>;
+  ): Promise<
+    PaginationResult<
+      Omit<PetAd, 'address'> & {
+        breeds: Pick<Breed, 'name'>[];
+        address: Pick<Address, 'city' | 'country'>;
+      }
+    >
+  >;
 }
 
 export const isValidPetAdSorTypeOptions = (
@@ -158,7 +166,13 @@ export const petAdsListFinderByCountry: PetAdsListFinderByCountry = async ({
       });
     }
 
-    return { results, total: data.metadata?.total || 0 };
+    return {
+      results: results.map(({ address, ...rest }) => ({
+        ...rest,
+        address: { city: address.city, country: address.country },
+      })),
+      total: data.metadata?.total || 0,
+    };
   } catch (error) {
     if (error instanceof Error) {
       error.message = `The list of pet ads by country could not be obtained. ${error.message}`;

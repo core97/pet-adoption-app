@@ -79,7 +79,7 @@ export const PetAdsMarketList = ({
         onChangeCountry={handleOnChangeCountry}
         onSubmitFilters={handleOnSubmitFilters}
       />
-      <PetAdsList petAds={petAds} redirectOnClick={PAGES.PET_AD_DETAIL} />
+      <PetAdsList my={4} petAds={petAds} redirectOnClick={PAGES.PET_AD_DETAIL} />
       <Paginator
         pageSearchParam={PET_ADS_PAGE_SEARCH_PARAM}
         currentPage={Number(currentPage)}
