@@ -1,7 +1,7 @@
 import { IconType } from 'react-icons';
 import { IoMdMenu, IoMdClose, IoMdMale } from 'react-icons/io';
 import { BsPlus, BsFillSendFill, BsHeartFill, BsHeart } from 'react-icons/bs';
-import { MdLocationPin } from 'react-icons/md';
+import { MdLocationPin, MdLanguage } from 'react-icons/md';
 import {
   BiUpload,
   BiFilter,
@@ -19,6 +19,7 @@ const icons: Record<IconsName, IconType> = {
   filter: BiFilter,
   heartFill: BsHeartFill,
   heartOutline: BsHeart,
+  language: MdLanguage,
   locationPin: MdLocationPin,
   male: IoMdMale,
   menu: IoMdMenu,

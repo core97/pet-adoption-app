@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Box,
   Button,
   Container,
   Drawer,
@@ -30,28 +31,24 @@ export const AppHeader = () => {
       <Container as="header" maxW="container.xl">
         <HStack py={8} justifyContent="space-between">
           <Link href="/">My App</Link>
-          <div className={styles['nav-section']}>
-            <div className={styles['nav-items']}>
-              <AppNavbar direction="row" />
-            </div>
-            <div>
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={languageDrawerHandler.onOpen}
-              >
-                Idioma
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={navigationDrawerHandler.onOpen}
-                className={styles['menu-btn']}
-              >
-                <Icon iconName="menu" />
-              </Button>
-            </div>
-          </div>
+          <Box className={styles['nav-items']}>
+            <AppNavbar direction="row" />
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={languageDrawerHandler.onOpen}
+            >
+              <Icon size={22} iconName="language" />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={navigationDrawerHandler.onOpen}
+              className={styles['menu-btn']}
+            >
+              <Icon iconName="menu" />
+            </Button>
+          </Box>
         </HStack>
       </Container>
       <Drawer

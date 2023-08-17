@@ -8,6 +8,7 @@ export type IconsName =
   | 'filter'
   | 'heartFill'
   | 'heartOutline'
+  | 'language'
   | 'locationPin'
   | 'male'
   | 'menu'

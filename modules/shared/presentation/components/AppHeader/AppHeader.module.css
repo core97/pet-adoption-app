@@ -1,10 +1,7 @@
-.nav-section {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
 .nav-items {
-  display: none;
+  display: flex;
+  align-items: center;
+  column-gap: 0.75rem;
 }
 
 .menu-btn {
@@ -12,14 +9,6 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .nav-section {
-    flex-direction: row;
-  }
-
-  .nav-items {
-    display: block;
-  }
-
   .menu-btn {
     display: none;
   }
