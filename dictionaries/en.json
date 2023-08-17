@@ -1,3 +1,16 @@
 {
-  "name": "Jhon"
+  "name": "Jhon",
+  "cta": {
+    "save": "Save"
+  },
+  "language": "Language",
+  "select_language": "Select a language",
+  "vars": {
+    "DE": "German",
+    "EN": "English",
+    "ES": "Spanish",
+    "FR": "French",
+    "IT": "Italian",
+    "PT": "Portuguese"
+  }
 }

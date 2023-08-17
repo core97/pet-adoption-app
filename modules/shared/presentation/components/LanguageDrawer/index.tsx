@@ -12,14 +12,16 @@ import {
   DrawerContent,
   DrawerCloseButton,
   FormLabel,
-  Radio,
-  RadioGroup,
   Stack,
 } from '@chakra-ui/react';
+import { InputRadio } from '@components/InputRadio';
+import { useTranslation } from '@hooks/useTransalation';
 import { Language } from '@shared/domain/languages';
 import { LanguageDrawerProps } from './LanguageDrawer.interface';
 
 export const LanguageDrawer = ({ isOpen, onClose }: LanguageDrawerProps) => {
+  const { t } = useTranslation();
+
   const router = useRouter();
   const params = useParams();
 
@@ -59,29 +61,31 @@ export const LanguageDrawer = ({ isOpen, onClose }: LanguageDrawerProps) => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Idioma</DrawerHeader>
+        <DrawerHeader>{t('language')}</DrawerHeader>
 
         <DrawerBody>
           <form id="languageForm" onSubmit={handleOnSubmit}>
-            <FormLabel as="p">Selecciona un idioma</FormLabel>
-            <RadioGroup
-              name="language"
-              defaultValue={currentLanguage?.toUpperCase()}
-            >
-              <Stack direction="column">
-                {Object.keys(Language).map(key => (
-                  <Radio key={key} value={key} name="language">
-                    {key}
-                  </Radio>
-                ))}
-              </Stack>
-            </RadioGroup>
+            <FormLabel as="p">{t('select_language')}</FormLabel>
+
+            <Stack direction="column">
+              {Object.keys(Language).map(key => (
+                <InputRadio
+                  key={key}
+                  id={key}
+                  value={key}
+                  name="language"
+                  defaultChecked={key === currentLanguage?.toUpperCase()}
+                >
+                  {t(`vars.${key}`)}
+                </InputRadio>
+              ))}
+            </Stack>
           </form>
         </DrawerBody>
 
         <DrawerFooter>
           <Button type="submit" form="languageForm" colorScheme="teal">
-            Guardar
+            {t('cta.save')}
           </Button>
         </DrawerFooter>
       </DrawerContent>
