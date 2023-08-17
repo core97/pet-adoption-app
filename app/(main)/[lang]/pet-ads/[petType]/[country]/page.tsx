@@ -14,6 +14,8 @@ import { isValidActivityLevelLabel, isValidSize } from '@pet-ad/model';
 import { isValidGender } from '@shared/domain/gender';
 import { PAGES } from '@shared/application/pages';
 
+export const revalidate = 0;
+
 const PetAdsMarketListByPetType = async ({
   params,
   searchParams,

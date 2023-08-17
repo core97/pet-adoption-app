@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { Breed } from '@breed/model';
 import { PaginationParams, PaginationResult } from '@shared/domain/pagination';
 import { SortBy } from '@shared/domain/sort-by';
@@ -20,14 +21,19 @@ export const breedsListFinder: BreedsListFinder = async ({
   pagination,
 }) => {
   try {
-    const whereFilter = {
+    const whereFilter: Prisma.BreedWhereInput = {
       ...(petType && { petType }),
     };
 
     const [results, total] = await Promise.all([
       prisma.breed.findMany({
         where: whereFilter,
-        ...(sortBy && { orderBy: sortBy }),
+        ...(sortBy && {
+          orderBy: {
+            ...(sortBy.createdAt && { createdAt: sortBy.createdAt }),
+            ...(sortBy.name && { createdAt: sortBy.name }),
+          },
+        }),
         ...(pagination && {
           skip: pagination.limit * pagination.page,
           take: pagination.limit,

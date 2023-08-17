@@ -3,5 +3,5 @@ import { PetAd } from '@pet-ad/model';
 
 export type AdoptionRequestsTabsProps = {
   requestsFromMe: AdoptionRequestDto[];
-  petAds: PetAd[];
+  petAds: Pick<PetAd, 'id' | 'name'>[];
 };

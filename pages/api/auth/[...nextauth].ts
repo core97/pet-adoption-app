@@ -7,7 +7,7 @@ import prisma from '@shared/application/prisma';
 import { CustomSession } from '@shared/application/auth';
 import { PAGES } from '@shared/application/pages';
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -59,6 +59,4 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
+export default NextAuth(authOptions);
