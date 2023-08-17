@@ -1,10 +1,10 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Link } from '@chakra-ui/next-js';
-import { HStack, Box } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useUrl } from '@hooks/useUrl';
 import { Icon } from '@components/Icon';
+import { PaginatorItem } from './PaginatorItem.component';
 import { PAGES_TO_SHOW, PAGE_HALF_TO_SHOW } from './Paginator.contants';
 
 /**
@@ -56,44 +56,48 @@ export const Paginator = ({
   }, [currentPage, totalPages]);
 
   return (
-    <Box as="nav" role="navigation" aria-label="Pagination Navigation">
-      <HStack as="ul">
-        <li>
-          <Link
-            href={addParam(pageSearchParam, currentPage - 1)}
-            style={{ ...(currentPage === 0 && { pointerEvents: 'none' }) }}
-          >
-            <Icon iconName="chevronLeft" />
-          </Link>
-        </li>
+    <Box
+      as="nav"
+      role="navigation"
+      aria-label="Pagination Navigation"
+      border="1px solid"
+      borderColor="gray.300"
+      borderRadius={6}
+    >
+      <Box as="ul" display="flex" alignItems="center">
+        <PaginatorItem
+        px={2.5}
+          disable={currentPage === 0}
+          href={addParam(pageSearchParam, currentPage - 1)}
+        >
+          <Icon iconName="chevronLeft" />
+        </PaginatorItem>
+
         {pages.map(pageIndex => {
           const isActivated = currentPage === pageIndex;
 
           return (
-            <Box as="li" key={pageIndex.toString()}>
-              <Link
-                href={addParam(pageSearchParam, pageIndex)}
-                style={{ color: isActivated ? 'red' : 'gray' }}
-                aria-label={`Current Page, Page ${pageIndex + 1}`}
-                aria-current={isActivated}
-              >
-                {(pageIndex + 1).toString()}
-              </Link>
-            </Box>
+            <PaginatorItem
+              key={pageIndex.toString()}
+              href={addParam(pageSearchParam, pageIndex)}
+              isActivated={isActivated}
+              ariaLabel={`Current Page, Page ${pageIndex + 1}`}
+            >
+              {(pageIndex + 1).toString()}
+            </PaginatorItem>
           );
         })}
 
-        <li>
-          <Link
-            href={addParam(pageSearchParam, currentPage + 1)}
-            style={{
-              ...(currentPage + 1 >= totalPages && { pointerEvents: 'none' }),
-            }}
-          >
-            <Icon iconName="chevronRight" />
-          </Link>
-        </li>
-      </HStack>
+        <PaginatorItem
+        px={2.5}
+
+          hideBorder
+          disable={currentPage + 1 >= totalPages}
+          href={addParam(pageSearchParam, currentPage + 1)}
+        >
+          <Icon iconName="chevronRight" />
+        </PaginatorItem>
+      </Box>
     </Box>
   );
 };

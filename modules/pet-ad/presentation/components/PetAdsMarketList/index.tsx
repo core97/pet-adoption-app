@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { Container } from '@chakra-ui/react';
+import { Container, Box } from '@chakra-ui/react';
 import { PetAdsList } from '@pet-ad/presentation/components/PetAdsList';
 import { PetAdsListHeader } from '@pet-ad/presentation/components/PetAdsListHeader';
 import { PetAdsFilterFormSubmit } from '@pet-ad/presentation/components/PetAdsFilterDrawer';
@@ -79,12 +79,18 @@ export const PetAdsMarketList = ({
         onChangeCountry={handleOnChangeCountry}
         onSubmitFilters={handleOnSubmitFilters}
       />
-      <PetAdsList my={4} petAds={petAds} redirectOnClick={PAGES.PET_AD_DETAIL} />
-      <Paginator
-        pageSearchParam={PET_ADS_PAGE_SEARCH_PARAM}
-        currentPage={Number(currentPage)}
-        totalPages={Math.ceil(total / LIMIT_PER_PET_ADS_PAGE)}
+      <PetAdsList
+        my={4}
+        petAds={petAds}
+        redirectOnClick={PAGES.PET_AD_DETAIL}
       />
+      <Box as="footer" width="100%" display="flex" justifyContent="center">
+        <Paginator
+          pageSearchParam={PET_ADS_PAGE_SEARCH_PARAM}
+          currentPage={Number(currentPage)}
+          totalPages={Math.ceil(total / LIMIT_PER_PET_ADS_PAGE)}
+        />
+      </Box>
     </Container>
   );
 };
